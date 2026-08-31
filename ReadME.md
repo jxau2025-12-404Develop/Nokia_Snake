@@ -34,6 +34,7 @@ Nokia_Snake
 |   `-- main.cpp          # 程序入口（当前为占位输出）
 |-- body/                 # 其他资源目录
 |-- .gitignore            # Git 忽略规则
+|-- .clang-format         # 自动格式化工具配置文件（搭配Clang-Format）
 ```
 
 ## 构建与运行
@@ -81,6 +82,9 @@ build\Debug\Nokia_Snake.exe         # Windows (MSVC)
 ## 说明
 
 本项目为学校实训课程作业，仅供学习交流使用。
+
+## 项目成员
+### jyoushitou
 
 ## 联系方式
 
