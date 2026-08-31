@@ -2,13 +2,13 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>D:\Desktop\Desktop\jxau\202703_202707\practicum\build\x64\Debug\ZERO_CHECK</FullPath>
+      <FullPath>D:\Desktop\Desktop\jxau\practicum\Nokia_Snake\build\x64\Debug\ZERO_CHECK</FullPath>
     </ProjectOutput>
     <ProjectOutput>
-      <FullPath>D:\Desktop\Desktop\jxau\202703_202707\practicum\build\Debug\practicum.exe</FullPath>
+      <FullPath>D:\Desktop\Desktop\jxau\practicum\Nokia_Snake\build\Debug\Nokia_Snake.exe</FullPath>
     </ProjectOutput>
     <ProjectOutput>
-      <FullPath>D:\Desktop\Desktop\jxau\202703_202707\practicum\build\x64\Debug\ALL_BUILD</FullPath>
+      <FullPath>D:\Desktop\Desktop\jxau\practicum\Nokia_Snake\build\x64\Debug\ALL_BUILD</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />
