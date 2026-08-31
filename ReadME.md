@@ -87,7 +87,8 @@ build\Debug\Nokia_Snake.exe         # Windows (MSVC)
 ### jyoushitou
 - 联系方式：[xzt98948364@outlook.com](mailto:xzt98948364@outlook.com)
 - 博客地址：[https://jyoushitou.github.io/](https://jyoushitou.github.io/)
-
+### WB341
+- 联系方式：[2361742861@qq.com](mailto:2361742861@qq.com)
 ## 联系方式
 
 - 项目维护者：[jyoushitou]
