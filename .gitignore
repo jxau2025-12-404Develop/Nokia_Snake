@@ -1,0 +1,5 @@
+# VS Code 本地配置文件
+.vscode/
+
+# 构建目录
+build/
