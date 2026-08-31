@@ -1,3 +1,0 @@
-D:/Desktop/Desktop/jxau/practicum/Nokia_Snake/build/CMakeFiles/Nokia_Snake.dir
-D:/Desktop/Desktop/jxau/practicum/Nokia_Snake/build/CMakeFiles/ALL_BUILD.dir
-D:/Desktop/Desktop/jxau/practicum/Nokia_Snake/build/CMakeFiles/ZERO_CHECK.dir
