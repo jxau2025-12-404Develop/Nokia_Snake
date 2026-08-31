@@ -82,3 +82,12 @@ build\Debug\Nokia_Snake.exe         # Windows (MSVC)
 ## 说明
 
 本项目为学校实训课程作业，仅供学习交流使用。
+
+## 📬 联系方式
+
+- 项目维护者：[jyoushitou]
+- 邮箱：[xzt98948364@outlook.com](mailto:xzt98948364@outlook.com)
+- 博客地址：[https://jyoushitou.github.io/](https://jyoushitou.github.io/)
+- 项目地址：[https://github.com/jyoushitou/Nokia_Snake](https://github.com/jyoushitou/Nokia_Snake)
+
+---
