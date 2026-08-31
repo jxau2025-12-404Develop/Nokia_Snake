@@ -92,7 +92,7 @@ build\Debug\Nokia_Snake.exe         # Windows (MSVC)
 ### myqx0309
 - 联系方式：[mengyqx_2025@qq.com](mailto:mengyqx_2025@qq.com)
 ## 联系方式
-
+[3576592547@qq.com]
 - 项目维护者：[jyoushitou]
 - 邮箱：[xzt98948364@outlook.com](mailto:xzt98948364@outlook.com)
 - 博客地址：[https://jyoushitou.github.io/](https://jyoushitou.github.io/)
