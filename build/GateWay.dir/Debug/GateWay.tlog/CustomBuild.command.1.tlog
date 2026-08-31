@@ -1,0 +1,10 @@
+^D:\DESKTOP\DESKTOP\JXAU\202703_202707\PRACTICUM\CMAKELISTS.TXT
+setlocal
+E:\app\Cmake\bin\cmake.exe -SD:/Desktop/Desktop/jxau/202703_202707/practicum -BD:/Desktop/Desktop/jxau/202703_202707/practicum/build --check-stamp-file D:/Desktop/Desktop/jxau/202703_202707/practicum/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

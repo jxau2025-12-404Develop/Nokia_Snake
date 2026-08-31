@@ -1,0 +1,10 @@
+^D:\DESKTOP\DESKTOP\JXAU\202703_202707\PRACTICUM\BUILD\CMAKEFILES\C3256BBD93EABA14887D736DE270A008\GENERATE.STAMP.RULE
+setlocal
+E:\app\Cmake\bin\cmake.exe -SD:/Desktop/Desktop/jxau/202703_202707/practicum -BD:/Desktop/Desktop/jxau/202703_202707/practicum/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file D:/Desktop/Desktop/jxau/202703_202707/practicum/build/practicum.slnx
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

@@ -1,0 +1,28 @@
+{
+  "cmake.sourceDirectory": "D:/WebServer/MySQL/source",
+  "editor.formatOnSave": true,
+
+  "[cpp]": {
+    "editor.defaultFormatter": "ms-vscode.cpptools"
+  },
+  "[c]": {
+    "editor.defaultFormatter": "ms-vscode.cpptools"
+  },
+  "[h]": {
+    "editor.defaultFormatter": "ms-vscode.cpptools"
+  },
+
+  // proto 正确格式化ID：DrBlury.protobuf-vsc
+  "[proto]": {
+    "editor.defaultFormatter": "DrBlury.protobuf-vsc",
+    "editor.formatOnSave": true
+  },
+  "protobuf.formatting.engine": "builtin",
+  "protobuf.formatter.alignFieldAssignments": true,
+  "protobuf.formatter.insertEmptyLineBetweenDefinitions": true,
+  "protobuf.formatter.renumberFieldsOnFormat": false,
+
+  "C_Cpp.formatting": "clangFormat",
+  "C_Cpp.clang_format_fallbackStyle": "Microsoft",
+  "C_Cpp.docCommentStyle": "xml"
+}

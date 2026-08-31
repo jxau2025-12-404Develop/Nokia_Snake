@@ -1,0 +1,3 @@
+D:/Desktop/Desktop/jxau/202703_202707/practicum/build/CMakeFiles/practicum.dir
+D:/Desktop/Desktop/jxau/202703_202707/practicum/build/CMakeFiles/ALL_BUILD.dir
+D:/Desktop/Desktop/jxau/202703_202707/practicum/build/CMakeFiles/ZERO_CHECK.dir

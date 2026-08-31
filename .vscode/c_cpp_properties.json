@@ -1,0 +1,28 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "C:/Program Files/MySQL/MySQL Server 8.0/include",
+                "C:/Program Files/MySQL/MySQL Server 8.0/lib",
+                "C:/vcpkg/installed/x64-windows/include",
+                "${workspaceFolder}/RPCGateway/source/include",
+                "${workspaceFolder}/MySQL/source/include",
+                "${workspaceFolder}/common/cpp/include",
+                "${workspaceFolder}/ConfigCenter/source/include"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "windowsSdkVersion": "10.0.19041.0",
+            "compilerPath": "C:/mingw/bin/g++.exe",
+            "cStandard": "c17",
+            "cppStandard": "c++17",  // 改为 c++17
+            "intelliSenseMode": "windows-gcc-x64"
+        }
+    ],
+    "version": 4
+}

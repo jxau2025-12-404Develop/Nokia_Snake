@@ -1,0 +1,27 @@
+# CMake generation dependency list for this directory.
+D:/Desktop/Desktop/jxau/202703_202707/practicum/CMakeLists.txt
+D:/Desktop/Desktop/jxau/202703_202707/practicum/build/CMakeFiles/4.3.3/CMakeCXXCompiler.cmake
+D:/Desktop/Desktop/jxau/202703_202707/practicum/build/CMakeFiles/4.3.3/CMakeRCCompiler.cmake
+D:/Desktop/Desktop/jxau/202703_202707/practicum/build/CMakeFiles/4.3.3/CMakeSystem.cmake
+E:/app/Cmake/share/cmake-4.3/Modules/CMakeCXXInformation.cmake
+E:/app/Cmake/share/cmake-4.3/Modules/CMakeCommonLanguageInclude.cmake
+E:/app/Cmake/share/cmake-4.3/Modules/CMakeGenericSystem.cmake
+E:/app/Cmake/share/cmake-4.3/Modules/CMakeInitializeConfigs.cmake
+E:/app/Cmake/share/cmake-4.3/Modules/CMakeLanguageInformation.cmake
+E:/app/Cmake/share/cmake-4.3/Modules/CMakeRCInformation.cmake
+E:/app/Cmake/share/cmake-4.3/Modules/CMakeSystemSpecificInformation.cmake
+E:/app/Cmake/share/cmake-4.3/Modules/CMakeSystemSpecificInitialize.cmake
+E:/app/Cmake/share/cmake-4.3/Modules/Compiler/CMakeCommonCompilerMacros.cmake
+E:/app/Cmake/share/cmake-4.3/Modules/Compiler/MSVC-CXX.cmake
+E:/app/Cmake/share/cmake-4.3/Modules/Compiler/MSVC.cmake
+E:/app/Cmake/share/cmake-4.3/Modules/Internal/CMakeCXXLinkerInformation.cmake
+E:/app/Cmake/share/cmake-4.3/Modules/Internal/CMakeCommonLinkerInformation.cmake
+E:/app/Cmake/share/cmake-4.3/Modules/Linker/MSVC-CXX.cmake
+E:/app/Cmake/share/cmake-4.3/Modules/Linker/MSVC.cmake
+E:/app/Cmake/share/cmake-4.3/Modules/Platform/Linker/Windows-MSVC-CXX.cmake
+E:/app/Cmake/share/cmake-4.3/Modules/Platform/Linker/Windows-MSVC.cmake
+E:/app/Cmake/share/cmake-4.3/Modules/Platform/Windows-Initialize.cmake
+E:/app/Cmake/share/cmake-4.3/Modules/Platform/Windows-MSVC-CXX.cmake
+E:/app/Cmake/share/cmake-4.3/Modules/Platform/Windows-MSVC.cmake
+E:/app/Cmake/share/cmake-4.3/Modules/Platform/Windows.cmake
+E:/app/Cmake/share/cmake-4.3/Modules/Platform/WindowsPaths.cmake
