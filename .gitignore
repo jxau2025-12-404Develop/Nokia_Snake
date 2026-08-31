@@ -3,3 +3,6 @@
 
 # 构建目录
 build/
+
+# 自动格式化文件
+.clang-format

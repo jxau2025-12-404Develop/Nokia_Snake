@@ -34,7 +34,6 @@ Nokia_Snake
 |   `-- main.cpp          # 程序入口（当前为占位输出）
 |-- body/                 # 其他资源目录
 |-- .gitignore            # Git 忽略规则
-|-- .vscode/              # 本地配置文件（不提交）
 ```
 
 ## 构建与运行
