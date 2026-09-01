@@ -2,15 +2,17 @@
 
 > 学校实训项目
 
-一个基于 C++17 / CMake 的经典贪吃蛇小游戏。
+一个基于 C++17 / CMake 的经典贪吃蛇小游戏的复刻项目。
 
-## 功能特性
+## 功能
 
 - [ ] 经典贪吃蛇玩法
 - [ ] 方向控制（W/A/S/D 或方向键）
 - [ ] 食物随机生成
-- [ ] 计分系统
 - [ ] 碰撞检测（撞墙 / 撞到自己则游戏结束）
+- [ ] 计分系统
+- [ ] 账号保存系统
+- [ ] 网络数据库存储
 
 > 当前为项目初始化阶段，仅搭建了 CMake 构建配置与基本目录结构，
 > 入口程序暂为 Hello World 占位输出，上述功能将在后续迭代中逐步实现。
@@ -40,6 +42,9 @@ Nokia_Snake
 ## 构建与运行
 
 ```bash
+mkdir build
+cd build                            # 进入构建的文件夹
+
 # 配置
 cmake -S . -B build
 
@@ -61,16 +66,6 @@ build\Debug\Nokia_Snake.exe         # Windows (MSVC)
 - → / D：向右
 - 空格：暂停 / 继续
 
-## 当前进度
-
-- [x] 项目初始化（CMake 构建配置）
-- [x] 基本目录结构搭建
-- [ ] 游戏主循环
-- [ ] 蛇的移动与增长
-- [ ] 食物随机生成
-- [ ] 碰撞检测
-- [ ] 计分与最高分记录
-
 ## 开发计划
 
 1. 实现游戏画面渲染与游戏界面
@@ -78,22 +73,34 @@ build\Debug\Nokia_Snake.exe         # Windows (MSVC)
 3. 实现食物随机生成与蛇的成长
 4. 实现碰撞检测与游戏结束判定
 5. 实现计分系统与最高分持久化
+6. 实现账号登录
+7. 远程数据库存储
 
 ## 说明
 
 本项目为学校实训课程作业，仅供学习交流使用。
 
 ## 项目成员
+
 ### jyoushitou
+
 - 联系方式：[xzt98948364@outlook.com](mailto:xzt98948364@outlook.com)
 - 博客地址：[https://jyoushitou.github.io/](https://jyoushitou.github.io/)
+
 ### WB341
+
 - 联系方式：[2361742861@qq.com](mailto:2361742861@qq.com)
+
 ### myqx0309
+
 - 联系方式：[mengyqx_2025@qq.com](mailto:mengyqx_2025@qq.com)
+
 ### bridge-tu
+
 - 联系方式：[3576592547@.qq.com](mailto:3576592547@qq.com)
-- 项目维护者：[jyoushitou]
+
+## 项目维护者：[jyoushitou]
+
 - 邮箱：[xzt98948364@outlook.com](mailto:xzt98948364@outlook.com)
 - 博客地址：[https://jyoushitou.github.io/](https://jyoushitou.github.io/)
 - 项目地址：[https://github.com/jyoushitou/Nokia_Snake](https://github.com/jyoushitou/Nokia_Snake)
