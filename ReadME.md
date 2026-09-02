@@ -100,6 +100,9 @@ build\Debug\Nokia_Snake.exe         # Windows (MSVC)
 
 - 联系方式：[3576592547@.qq.com](mailto:3576592547@qq.com)
 
+### liujiaxin123110
+- 联系方式：[2449146540@qq.com](2449146540@qq.com)
+
 ## 项目维护者：[jyoushitou]
 
 - 邮箱：[xzt98948364@outlook.com](mailto:xzt98948364@outlook.com)
