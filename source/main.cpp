@@ -1,9 +1,11 @@
-#include <iostream>
-
+// 工具文件
 #include "Utils.h"
 
 int main()
 {
-    Utils::Out::Out("hello world");
+    int c;
+    Utils::Input::Input(c);
+
+    Utils::Out::Out(c);
     return 0;
 }
