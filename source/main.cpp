@@ -1,6 +1,9 @@
 #include <iostream>
+
+#include "Utils.h"
+
 int main()
 {
-    std::cout << "hello world" << std::endl;
+    Utils::Out::Out("hello world");
     return 0;
 }
