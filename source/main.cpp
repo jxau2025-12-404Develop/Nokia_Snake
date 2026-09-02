@@ -5,9 +5,9 @@ int main()
 {
     int c, a;
 
-    c = Utils::Input::Input(a);
+    c = Input(a);
 
-    Utils::Out::Out(c);
+    Out(c);
 
     return 0;
 }
