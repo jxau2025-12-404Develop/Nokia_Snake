@@ -3,9 +3,11 @@
 
 int main()
 {
-    int c;
-    Utils::Input::Input(c);
+    int c, a;
+
+    c = Utils::Input::Input(a);
 
     Utils::Out::Out(c);
+
     return 0;
 }

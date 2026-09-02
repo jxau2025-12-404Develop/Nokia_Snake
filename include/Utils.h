@@ -17,10 +17,23 @@ namespace Utils
     // 输入命名空间
     namespace Input
     {
+        // 输入函数（无传参函数，必须声明类型）
+        // 使用Input<类型>
+        template <typename T> T Input()
+        {
+            T msg;
+
+            std::cin >> msg;
+
+            return msg;
+        }
+
         // 输入函数（任意类型）
-        template <typename T> void Input(T&& msg)
+        template <typename T> T Input(T&& msg)
         {
             std::cin >> msg;
+
+            return msg;
         }
     } // namespace Input
 
@@ -30,7 +43,7 @@ namespace Utils
         // 写入文件名
         std::string addr = "log";
 
-        // 写入文件名
+        // 写入文件名（默认文件）
         template <typename T> bool File_Add(T&& msg)
         {
             // 打开文件
@@ -53,7 +66,7 @@ namespace Utils
             return 0;
         }
 
-        // 写入文件名
+        // 写入文件名（带文件）
         template <typename T> bool File_add(T&& msg, std::string addr)
         {
             std::ofstream out(addr.c_str(), std::ios::app);
