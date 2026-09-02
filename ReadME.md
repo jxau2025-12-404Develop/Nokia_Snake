@@ -1,8 +1,10 @@
 # 贪吃蛇（Nokia_Snake）
 
+---
+
 > 学校实训项目
 
-一个基于 C++17 / CMake 的经典贪吃蛇小游戏的复刻项目。
+## 一个基于 C++17 / CMake 的经典贪吃蛇小游戏的复刻项目。
 
 ## 功能
 
@@ -12,16 +14,23 @@
 - [ ] 碰撞检测（撞墙 / 撞到自己则游戏结束）
 - [ ] 计分系统
 - [ ] 账号保存系统
+
+## 后期开发
+
 - [ ] 网络数据库存储
 
 > 当前为项目初始化阶段，仅搭建了 CMake 构建配置与基本目录结构，
 > 入口程序暂为 Hello World 占位输出，上述功能将在后续迭代中逐步实现。
+
+---
 
 ## 技术栈
 
 - 语言：C++17
 - 构建工具：CMake
 - 编译器：支持 C++17 的任意编译器（如 GCC、MSVC、Clang）
+
+---
 
 ## 文件结构
 
@@ -31,7 +40,7 @@ Nokia_Snake
 |-- CMakeLists.txt        # CMake 构建配置
 |-- ReadME.md             # 项目说明
 |-- include/              # 头文件目录
-|   `-- auto.h            # 自动头文件（当前为空）
+|   `-- Utils.h           # 工具头文件（当前为空）
 |-- source/               # 源文件目录
 |   `-- main.cpp          # 程序入口（当前为占位输出）
 |-- body/                 # 其他资源目录
@@ -39,22 +48,27 @@ Nokia_Snake
 |-- .clang-format         # 自动格式化工具配置文件（搭配Clang-Format）
 ```
 
+---
+
 ## 构建与运行
 
 ```bash
-mkdir build
+# 创建存储位置
+mkdir build                         # 创建构建build文件（有的话跳过）
 cd build                            # 进入构建的文件夹
 
 # 配置
-cmake -S . -B build
+cmake -S . -B build                 # 构建项目（cmake有更改时记得重新构建）
 
 # 编译
-cmake --build build
+cmake --build build                 # 构建可执行文件（exe）
 
 # 运行
 ./build/Nokia_Snake                 # Linux / macOS
 build\Debug\Nokia_Snake.exe         # Windows (MSVC)
 ```
+
+---
 
 ## 操作说明
 
@@ -66,6 +80,8 @@ build\Debug\Nokia_Snake.exe         # Windows (MSVC)
 - → / D：向右
 - 空格：暂停 / 继续
 
+---
+
 ## 开发计划
 
 0. 工具类的实现
@@ -76,6 +92,8 @@ build\Debug\Nokia_Snake.exe         # Windows (MSVC)
 5. 实现计分系统与最高分持久化
 6. 实现账号登录
 7. 远程数据库存储
+
+---
 
 ## 说明
 
@@ -101,6 +119,7 @@ build\Debug\Nokia_Snake.exe         # Windows (MSVC)
 - 联系方式：[3576592547@.qq.com](mailto:3576592547@qq.com)
 
 ### liujiaxin123110
+
 - 联系方式：[2449146540@qq.com](2449146540@qq.com)
 
 ## 项目维护者：[jyoushitou]
