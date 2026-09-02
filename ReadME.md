@@ -64,6 +64,7 @@ build\Debug\Nokia_Snake.exe         # Windows (MSVC)
 
 - [x] 项目初始化（CMake 构建配置）
 - [x] 基本目录结构搭建
+- [ ] 工具库的编写
 - [ ] 游戏主循环
 - [ ] 蛇的移动与增长
 - [ ] 食物随机生成
