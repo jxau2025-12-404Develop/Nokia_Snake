@@ -3,11 +3,10 @@
 
 int main()
 {
-    int c, a;
+    Out("欢迎游玩贪吃蛇");
 
-    c = Input(a);
+    ClearScreen();
 
-    Out(c);
-
+    Out("游玩结束");
     return 0;
 }

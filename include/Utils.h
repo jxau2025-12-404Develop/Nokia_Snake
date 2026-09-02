@@ -1,4 +1,18 @@
 #include <iostream>
+#include <cstdlib>
+
+#if _WIN32
+#else
+#endif
+
+void ClearScreen()
+{
+#if _WIN32
+    system("cls");
+#else
+    printf("\033[2J\033[H")
+#endif
+}
 
 // 输出函数（任意类型）
 template <typename T> void Out(T&& msg)
