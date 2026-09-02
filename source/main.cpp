@@ -3,10 +3,10 @@
 
 int main()
 {
-    Out("欢迎游玩贪吃蛇");
+    Utils::Out::Out("欢迎游玩贪吃蛇");
 
-    ClearScreen();
+    Utils::System::ClearScreen();
 
-    Out("游玩结束");
+    Utils::Out::Out("游玩结束");
     return 0;
 }
