@@ -1,5 +1,6 @@
 // 工具文件
 #include "Utils.h"
+#include "NoKia_Snake.h"
 
 int main()
 {
@@ -7,11 +8,7 @@ int main()
 
     Utils::Out::Out("欢迎游玩贪吃蛇");
 
-    Utils::Out::Out(Utils::Random::Random());
-
-    Utils::System::Pause();
-
-    Utils::System::ClearScreen();
+    Nokia_Snake();
 
     Utils::Out::Out("游玩结束");
     return 0;

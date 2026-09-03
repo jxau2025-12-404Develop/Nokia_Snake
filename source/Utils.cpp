@@ -48,6 +48,13 @@ namespace Utils
 
             std::cin.get();
         }
+
+        void Pause(const std::string msg)
+        {
+            Out::Out(msg);
+
+            std::cin.get();
+        }
     } // namespace System
 
     // 初始化控制台

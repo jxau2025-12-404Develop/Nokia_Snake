@@ -1,3 +1,5 @@
+// Utils.h
+#pragma once
 #include <iostream>
 #include <random>
 
@@ -11,6 +13,9 @@ namespace Utils
 
         // 等待
         void Pause();
+
+        // 等待
+        void Pause(const std::string msg);
     } // namespace System
 
     // 初始化输出
@@ -101,11 +106,14 @@ namespace Utils
     // 随机数的生成命名空间
     namespace Random
     {
-        //  随机数引擎（种子使用硬件随机数，保证每次运行结果不同）
+        // 随机数引擎（种子使用硬件随机数，保证每次运行结果不同）
         inline std::random_device rd;
-        inline std::mt19937 gen(rd()); // 梅森旋转算法，质量高、速度快
+        // 梅森旋转算法，质量高、速度快
+        inline std::mt19937 gen(rd());
 
+        // 随机数最小的数
         const int min = 1;
+        // 随机数最大的数（尽量保证与棋盘一样大）
         const int max = 50;
 
         // 随机数生成
