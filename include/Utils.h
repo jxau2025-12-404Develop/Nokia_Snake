@@ -76,8 +76,15 @@ namespace Utils
     // 写入文件
     namespace File
     {
-        // 写入文件名
+        // 默认写入文件名
         std::string addr = "log";
+
+        // 设置默认文件名
+        bool SetAddr(const std::string newaddr)
+        {
+            addr = newaddr;
+            return 0;
+        }
 
         // 写入文件名（默认文件）
         template <typename T> bool File_Add(T&& msg)
