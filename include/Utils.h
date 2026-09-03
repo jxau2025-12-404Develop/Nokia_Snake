@@ -1,42 +1,13 @@
 #include <iostream>
-#include <cstdlib>
 #include <random>
 
-#if _WIN32
-#include <windows.h>
-#else
-#endif
 namespace Utils
 {
     // 控制台
     namespace System
     {
         // 清屏
-        void ClearScreen()
-        {
-#if _WIN32
-            HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-            if (hConsole == INVALID_HANDLE_VALUE)
-                return;
-
-            CONSOLE_SCREEN_BUFFER_INFO csbi;
-            if (!GetConsoleScreenBufferInfo(hConsole, &csbi))
-                return;
-
-            DWORD cells = static_cast<DWORD>(csbi.dwSize.X) * csbi.dwSize.Y;
-            DWORD written = 0;
-
-            COORD home{0, 0};
-            // 用空格填充整个屏幕缓冲区（不闪烁）
-            FillConsoleOutputCharacterA(hConsole, ' ', cells, home, &written);
-            // 恢复原属性（避免背景色被改成默认）
-            FillConsoleOutputAttribute(hConsole, csbi.wAttributes, cells, home, &written);
-            // 光标移动回 (0,0)
-            SetConsoleCursorPosition(hConsole, home);
-#else
-            printf("\033[2J\033[H")
-#endif
-        }
+        void ClearScreen();
     } // namespace System
 
     // 初始化输出
@@ -81,14 +52,10 @@ namespace Utils
     namespace File
     {
         // 默认写入文件名
-        std::string addr = "log";
+        inline std::string addr = "log";
 
         // 设置默认文件名
-        bool SetAddr(const std::string newaddr)
-        {
-            addr = newaddr;
-            return 0;
-        }
+        bool SetAddr(const std::string newaddr);
 
         // 写入文件名
         template <typename T> bool File_Add(T&& msg)
@@ -132,26 +99,13 @@ namespace Utils
     namespace Random
     {
         //  随机数引擎（种子使用硬件随机数，保证每次运行结果不同）
-        std::random_device rd;
-        std::mt19937 gen(rd()); // 梅森旋转算法，质量高、速度快
+        inline std::random_device rd;
+        inline std::mt19937 gen(rd()); // 梅森旋转算法，质量高、速度快
 
         const int min = 1;
         const int max = 50;
 
         // 随机数生成
-        int Radom()
-        {
-            try
-            {
-                // 均匀分布在 [min, max] 之间的整数
-                std::uniform_int_distribution<int> dist(min, max);
-                // 生成 min ~ max 的随机整数并返回
-                return dist(gen);
-            }
-            catch (...)
-            {
-                return -1;
-            }
-        }
+        int Random();
     } // namespace Random
 } // namespace Utils

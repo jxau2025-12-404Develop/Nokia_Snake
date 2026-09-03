@@ -19,6 +19,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # 添加c++源文件
 add_executable(${PROJECT_NAME}
     source/main.cpp
+    source/Utils.cpp
 )
 
 # 添加头文件路径
