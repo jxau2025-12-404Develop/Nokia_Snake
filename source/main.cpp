@@ -3,9 +3,9 @@
 
 int main()
 {
-    Utils::Out::Out("欢迎游玩贪吃蛇");
+    Utils::init();
 
-    Utils::System::ClearScreen();
+    Utils::Out::Out("欢迎游玩贪吃蛇");
 
     Utils::Out::Out("游玩结束");
     return 0;
