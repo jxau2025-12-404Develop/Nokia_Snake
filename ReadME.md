@@ -40,9 +40,12 @@ Nokia_Snake
 |-- CMakeLists.txt        # CMake 构建配置
 |-- ReadME.md             # 项目说明
 |-- include/              # 头文件目录
-|   `-- Utils.h           # 工具头文件（当前为空）
+|   `-- Utils.h           # 工具头文件
+|   `-- Nokia_Snake.h     # 项目的工厂头文件
 |-- source/               # 源文件目录
-|   `-- main.cpp          # 程序入口（当前为占位输出）
+|   `-- main.cpp          # 程序入口
+|   `-- Utils.cpp         # 工具库非模版函数的实现
+|   ·-- Nokia_Sanke       # 项目的工厂函数的实现
 |-- body/                 # 其他资源目录
 |-- .gitignore            # Git 忽略规则
 |-- .clang-format         # 自动格式化工具配置文件（搭配Clang-Format）
