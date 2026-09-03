@@ -7,6 +7,10 @@ int main()
 
     Utils::Out::Out("欢迎游玩贪吃蛇");
 
+    Utils::Out::Out(Utils::Random::Random());
+
+    Utils::System::Pause();
+
     Utils::System::ClearScreen();
 
     Utils::Out::Out("游玩结束");

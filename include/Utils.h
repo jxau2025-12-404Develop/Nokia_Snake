@@ -8,6 +8,9 @@ namespace Utils
     {
         // 清屏
         void ClearScreen();
+
+        // 等待
+        void Pause();
     } // namespace System
 
     // 初始化输出

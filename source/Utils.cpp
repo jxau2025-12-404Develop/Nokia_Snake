@@ -40,6 +40,14 @@ namespace Utils
             printf("\033[2J\033[H")
 #endif
         }
+
+        // 等待
+        void Pause()
+        {
+            Out::Out("Please Enter to continue...");
+
+            std::cin.get();
+        }
     } // namespace System
 
     // 初始化控制台
