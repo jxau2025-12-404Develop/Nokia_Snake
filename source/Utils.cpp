@@ -1,12 +1,12 @@
 // Utils.cpp
 #include <cstdlib>
+#include <iostream>
 #include <random>
 
 #include "Utils.h"
 
 #if _WIN32
 #include <windows.h>
-#else
 #endif
 
 namespace Utils
@@ -37,19 +37,12 @@ namespace Utils
             // 光标移动回 (0,0)
             SetConsoleCursorPosition(hConsole, home);
 #else
-            printf("\033[2J\033[H")
+            // ANSI 转义序列清屏（非 Windows 平台）
+            std::cout << "\033[2J\033[H";
 #endif
         }
 
-        // 等待
-        void Pause()
-        {
-            Out::Out("Please Enter to continue...");
-
-            std::cin.get();
-        }
-
-        void Pause(const std::string msg)
+        void Pause(const std::string& msg)
         {
             Out::Out(msg);
 
@@ -75,10 +68,10 @@ namespace Utils
     namespace File
     {
         // 设置默认文件名
-        bool SetAddr(const std::string newaddr)
+        bool SetAddr(const std::string& newaddr)
         {
             addr = newaddr;
-            return 0;
+            return true;
         }
 
     } // namespace File
