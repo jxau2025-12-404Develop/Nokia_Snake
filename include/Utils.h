@@ -1,8 +1,11 @@
 // Utils.h
 #pragma once
-#include <fstream>
+#include <cstdlib>
 #include <iostream>
+#include <limits>
 #include <random>
+#include <fstream>
+#include <string>
 
 namespace Utils
 {
@@ -13,10 +16,7 @@ namespace Utils
         void ClearScreen();
 
         // 等待
-        void Pause();
-
-        // 等待
-        void Pause(const std::string msg);
+        void Pause(const std::string& msg = "Please Enter to continue...");
     } // namespace System
 
     // 初始化输出
@@ -37,23 +37,26 @@ namespace Utils
     namespace Input
     {
 
-        // 输入函数（无传参函数，必须声明类型）
-        // 使用Input<类型>
         template <typename T> T Input()
         {
-            T msg;
+            T value;
+            while (true)
+            {
+                if (std::cin >> value)
+                {
+                    return value;
+                }
 
-            std::cin >> msg;
+                if (std::cin.eof())
+                {
+                    std::cout << "\n输入到达文件尾，程序退出\n";
+                    std::exit(EXIT_FAILURE);
+                }
 
-            return msg;
-        }
-
-        // 输入函数（任意类型）
-        template <typename T> T Input(T&& msg)
-        {
-            std::cin >> msg;
-
-            return msg;
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::cout << "输入无效，请重新输入: ";
+            }
         }
     } // namespace Input
 
@@ -64,7 +67,7 @@ namespace Utils
         inline std::string addr = "log";
 
         // 设置默认文件名
-        bool SetAddr(const std::string newaddr);
+        bool SetAddr(const std::string& newaddr);
 
         // 写入文件名
         template <typename T> bool File_Add(T&& msg)
@@ -77,7 +80,7 @@ namespace Utils
             {
                 std::cerr << "打开文件失败" << std::endl;
 
-                return 1;
+                return 0;
             }
 
             // 写入文件
@@ -86,21 +89,20 @@ namespace Utils
             // 关闭文件
             out.close();
 
-            return 0;
+            return 1;
         }
 
         // 写入文件名
-        template <typename T> bool File_add(T&& msg, std::string addr)
+        template <typename T> bool File_add(T&& msg, const std::string& filename)
         {
-            std::ofstream out(addr.c_str(), std::ios::app);
+            std::ofstream out(filename.c_str(), std::ios::app);
             if (!out)
             {
-                std::cerr << "打开文件失败" << std::endl;
-                return 1;
+                return false;
             }
             out << msg << std::endl;
             out.close();
-            return 0;
+            return true;
         }
     } // namespace File
 
