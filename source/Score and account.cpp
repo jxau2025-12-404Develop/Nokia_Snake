@@ -58,7 +58,7 @@ namespace Account
 			return left.score > right.score;
 		});
 
-		Utils::Out::Out("\n本地历史成绩排行（前十名）");
+		Utils::Out::Out("\n本地历史成绩排行(前十名）");
 		if (ranking.empty())
 		{
 			Utils::Out::Out("暂无历史成绩");
