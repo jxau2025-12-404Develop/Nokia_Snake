@@ -6,6 +6,7 @@
 
 namespace Renderer
 {
+    // 二维棋盘坐标。
     struct Point
     {
         int x = 0;
@@ -17,6 +18,7 @@ namespace Renderer
         }
     };
 
+    // 当前要显示的界面。
     enum class ScreenState
     {
         StartMenu,
@@ -25,6 +27,7 @@ namespace Renderer
         GameOver
     };
 
+    // 渲染一帧所需的游戏数据。
     struct GameView
     {
         int width = 30;
@@ -38,14 +41,17 @@ namespace Renderer
     class Renderer
     {
     public:
+        // 按指定帧率初始化渲染器。
         explicit Renderer(unsigned int framesPerSecond = 10);
 
+        // 根据界面状态绘制当前画面。
         void Render(const GameView& view, ScreenState state);
         void RenderStartMenu() const;
         void RenderPlaying(const GameView& view) const;
         void RenderPaused(const GameView& view) const;
         void RenderGameOver(const GameView& view) const;
 
+        // 设置帧率，并等待下一帧可绘制。
         void SetFrameRate(unsigned int framesPerSecond);
         void WaitForNextFrame();
 
