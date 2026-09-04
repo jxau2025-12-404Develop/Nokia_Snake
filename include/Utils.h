@@ -36,7 +36,7 @@ namespace Utils
     // 输入命名空间
     namespace Input
     {
-
+        // 输入函数
         template <typename T> T Input()
         {
             T value;
