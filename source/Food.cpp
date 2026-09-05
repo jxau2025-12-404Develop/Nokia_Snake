@@ -6,22 +6,26 @@
 
 namespace
 {
-    // 函数作用：判断指定位置是否被蛇身占用。
-    // 函数传参：snake 为待检测的蛇，position 为待检测的位置。
-    // 返回值：位置被蛇身占用时返回 true，否则返回 false。
-    bool IsSnakePosition(const Snake* snake, Position position)
+    // 函数作用：判断指定坐标是否被蛇身占用。
+    // 函数传参：game 为当前游戏状态，x 和 y 为待检测坐标。
+    // 返回值：被蛇身占用时返回 true，否则返回 false。
+    bool IsSnakePosition(const SnakeGame* game, int x, int y)
     {
         for (SnakeNode* node = snake->head; node != nullptr; node = node->next)
         {
-            if (SamePosition(node->position, position))
+            if (node->x == x && node->y == y)
+            {
                 return true;
+            }
+
+            node = node->next;
         }
         return false;
     }
-}
+} // namespace
 
 // 函数作用：生成一个不在蛇身上的随机食物位置。
-// 函数传参：snake 为当前蛇对象，boardWidth 为游戏区域宽度，boardHeight 为游戏区域高度。
+// 函数传参：game 为当前游戏状态，boardWidth 为棋盘宽度，boardHeight 为棋盘高度。
 // 返回值：返回生成的食物对象。
 Food GenerateFood(const Snake* snake, int boardWidth, int boardHeight)
 {
@@ -40,12 +44,11 @@ Food GenerateFood(const Snake* snake, int boardWidth, int boardHeight)
 }
 
 // 函数作用：判断蛇头是否吃到食物，并在吃到食物时更新蛇身、分数和食物位置。
-// 函数传参：food 为食物对象，headPosition 为蛇头位置，snake 为当前蛇对象，score 为当前分数，boardWidth 为游戏区域宽度，boardHeight 为游戏区域高度。
-// 返回值：蛇头吃到食物时返回 true，否则返回 false。
+// 函数传参：food 为食物对象，headPosition 为蛇头位置，snake 为当前蛇对象，score 为当前分数，boardWidth
+// 为游戏区域宽度，boardHeight 为游戏区域高度。 返回值：蛇头吃到食物时返回 true，否则返回 false。
 bool EatFood(Food* food, Position headPosition, Snake* snake, int* score, int boardWidth, int boardHeight)
 {
-    if (food == nullptr || snake == nullptr || score == nullptr ||
-        !SamePosition(food->position, headPosition))
+    if (food == nullptr || snake == nullptr || score == nullptr || !SamePosition(food->position, headPosition))
         return false;
 
     // 吃到食物后头插一个节点，通知蛇增长一节并上报分数。

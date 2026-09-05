@@ -2,8 +2,11 @@
 #include "NoKia_Snake.h"
 #include "Renderer.h"
 #include "Utils.h"
+#include "Food.h"
+#include "Collision.h"
 
 // 重置
+// 引用渲染帧
 void InitGV(GameView& GV)
 {
     // 设置长宽为50
@@ -38,6 +41,8 @@ void Nokia_Snake()
         }
         else
         {
+            int socre = Game(GV);
+
             continue;
         }
 
