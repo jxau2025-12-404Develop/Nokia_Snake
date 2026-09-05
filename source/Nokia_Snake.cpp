@@ -35,30 +35,34 @@ void Nokia_Snake()
         {
             return;
         }
-
-        // 示例：识别 W/A/S/D 和方向键
-        switch (key)
+        else
         {
-        case 'w':
-        case Utils::Input::KEY_UP:
-            // TODO: 蛇向上移动
-            break;
-        case 's':
-        case Utils::Input::KEY_DOWN:
-            // TODO: 蛇向下移动
-            break;
-        case 'a':
-        case Utils::Input::KEY_LEFT:
-            // TODO: 蛇向左移动
-            break;
-        case 'd':
-        case Utils::Input::KEY_RIGHT:
-            // TODO: 蛇向右移动
-            break;
-        default:
-            // 其它按键暂时忽略
-            break;
+            continue;
         }
-        }
+
+        // // 示例：识别 W/A/S/D 和方向键
+        // switch (key)
+        // {
+        // case 'w':
+        // case Utils::Input::KEY_UP:
+        //     // TODO: 蛇向上移动
+        //     break;
+        // case 's':
+        // case Utils::Input::KEY_DOWN:
+        //     // TODO: 蛇向下移动
+        //     break;
+        // case 'a':
+        // case Utils::Input::KEY_LEFT:
+        //     // TODO: 蛇向左移动
+        //     break;
+        // case 'd':
+        // case Utils::Input::KEY_RIGHT:
+        //     // TODO: 蛇向右移动
+        //     break;
+        // default:
+        //     // 其它按键暂时忽略
+        //     break;
+        // }
+    }
     return;
 }
