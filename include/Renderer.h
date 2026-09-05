@@ -35,20 +35,6 @@ extern "C"
         SCREEN_GAME_OVER   // 游戏结束。
     } ScreenState;
 
-    // 功能：保存绘制一帧画面所需要的游戏数据。
-    // 传入参数说明：所有字段由游戏逻辑填写，再传给渲染函数。
-    // 以后可以增加排行榜数据。
-    // 以前的注释：渲染一帧所需的游戏数据。
-    typedef struct
-    {
-        int width;                // 保存棋盘宽度。
-        int height;               // 保存棋盘高度。
-        RendererSnakeNode* snake; // 指向蛇头链表。
-        int snakeLength;          // 保存当前蛇的长度。
-        Point food;               // 保存食物坐标。
-        int score;                // 保存当前分数。
-    } GameView;
-
     // 功能：清空屏幕并绘制当前游戏画面。
     // 传入参数说明：view 是当前游戏数据，state 是当前界面状态。
     // 以后可以增加颜色和图形化显示。

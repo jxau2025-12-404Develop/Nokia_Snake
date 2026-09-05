@@ -6,8 +6,9 @@
 /* 表示蛇身中的一个节点，链表头节点就是蛇头。 */
 typedef struct SnakeNode
 {
-    int x;                  /* 横坐标 */
-    int y;                  /* 纵坐标 */
+    int x; /* 横坐标 */
+    int y; /* 纵坐标 */
+    // ↑用Point结构体替换
     struct SnakeNode* next; /* 指向下一节蛇身 */
 } SnakeNode;
 
