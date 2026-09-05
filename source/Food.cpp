@@ -7,90 +7,79 @@
 
 namespace
 {
-    // 函数作用：判断指定位置是否被蛇身占用。
-    // 函数传参：snake 为待检测的蛇，position 为待检测的位置。
-    // 返回值：位置被蛇身占用时返回 true，否则返回 false。
-    bool IsSnakePosition(const Snake* snake, Position position)
+    // 函数作用：判断指定坐标是否被蛇身占用。
+    // 函数传参：head 为蛇头节点，x 和 y 为待检测坐标。
+    // 返回值：坐标被蛇身占用时返回 true，否则返回 false。
+    bool IsSnakePosition(
+        const SnakeNode* head,
+        int x,
+        int y)
     {
-        for (SnakeNode* node = snake->head;
-             node != nullptr;
-             node = node->next)
+        const SnakeNode* node = head;
+
+        while (node != nullptr)
         {
-            if (SamePosition(node->position, position))
+            if (node->x == x && node->y == y)
+            {
                 return true;
+            }
+
+            node = node->next;
         }
 
         return false;
     }
 }
 
-// 函数作用：在棋盘内部生成一个不在蛇身上的随机食物位置。
-// 函数传参：snake 为当前蛇对象，boardWidth 为棋盘宽度，boardHeight 为棋盘高度。
-// 返回值：返回生成的食物对象；没有空闲格子时抛出异常。
-Food GenerateFood(const Snake* snake, int boardWidth, int boardHeight)
+// 函数作用：在棋盘内部生成一个不与蛇身重叠的食物。
+// 函数传参：game 为当前游戏状态，boardWidth 为棋盘宽度，boardHeight 为棋盘高度。
+// 返回值：返回生成的食物；没有空闲格子或参数无效时抛出异常。
+Food GenerateFood(
+    const SnakeGame* game,
+    int boardWidth,
+    int boardHeight)
 {
-    if (snake == nullptr || boardWidth <= 0 || boardHeight <= 0)
-        throw std::invalid_argument("棋盘大小或蛇指针无效");
+    if (game == nullptr || boardWidth <= 0 || boardHeight <= 0)
+    {
+        throw std::invalid_argument("游戏状态或棋盘大小无效");
+    }
 
-    // 收集所有没有被蛇身占用的棋盘位置。
-    std::vector<Position> freePositions;
+    std::vector<Food> freePositions;
 
-    // Renderer 中有效的游戏区域是：
-    // x = 0 到 boardWidth - 1
-    // y = 0 到 boardHeight - 1
+    // Renderer 的有效棋盘范围为：
+    // x：0 到 boardWidth - 1
+    // y：0 到 boardHeight - 1
     for (int y = 0; y < boardHeight; ++y)
     {
         for (int x = 0; x < boardWidth; ++x)
         {
-            Position position{x, y};
-
-            if (!IsSnakePosition(snake, position))
-                freePositions.push_back(position);
+            if (!IsSnakePosition(game->head, x, y))
+            {
+                Food food{x, y};
+                freePositions.push_back(food);
+            }
         }
     }
 
-    // 没有空闲位置时，表示蛇已经占满整个棋盘。
+    // 蛇身已经占满棋盘，没有可用位置。
     if (freePositions.empty())
-        throw std::runtime_error("棋盘没有可用的食物位置");
-
-    // 从所有空闲位置中随机选择一个位置。
-    const std::size_t randomIndex =
-        static_cast<std::size_t>(Utils::Random::Random() - 1) %
-        freePositions.size();
-
-    Food food{};
-    food.position = freePositions[randomIndex];
-
-    return food;
-}
-
-// 函数作用：判断蛇头是否吃到食物，并在吃到食物时更新蛇身、分数和食物位置。
-// 函数传参：food 为食物对象，headPosition 为蛇头位置，snake 为当前蛇对象，score 为当前分数，boardWidth 为棋盘宽度，boardHeight 为棋盘高度。
-// 返回值：蛇头吃到食物时返回 true，否则返回 false。
-bool EatFood(
-    Food* food,
-    Position headPosition,
-    Snake* snake,
-    int* score,
-    int boardWidth,
-    int boardHeight)
-{
-    if (food == nullptr ||
-        snake == nullptr ||
-        score == nullptr ||
-        !SamePosition(food->position, headPosition))
     {
-        return false;
+        throw std::runtime_error("棋盘没有可用的食物位置");
     }
 
-    // 蛇头吃到食物后，增加一个蛇头节点。
-    AddSnakeHead(snake, headPosition);
+    const int randomValue = Utils::Random::Random();
 
-    // 增加得分。
-    *score += 10;
+    // Utils::Random::Random() 默认返回 1 到 50。
+    // 对异常返回值进行保护，防止出现负数下标。
+    const std::size_t randomIndex =
+        randomValue > 0
+            ? static_cast<std::size_t>(randomValue - 1) %
+                  freePositions.size()
+            : 0;
 
-    // 在新的空闲位置生成食物。
-    *food = GenerateFood(snake, boardWidth, boardHeight);
-
-    return true;
+    return freePositions[randomIndex];
 }
+
+// 函数作用：判断指定坐标是否与食物位置相同。
+// 函数传参：food 为食物对象，x 和 y 为待检测坐标。
+// 返回值：坐标与食物重合时返回 1，否则
