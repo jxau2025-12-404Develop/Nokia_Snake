@@ -20,7 +20,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 add_executable(${PROJECT_NAME}
     source/main.cpp
     source/Utils.cpp
-    source/Renderer.c
+    source/Renderer.cpp
     source/Nokia_Snake.cpp
 )
 
