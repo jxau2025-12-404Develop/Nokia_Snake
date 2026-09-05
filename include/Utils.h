@@ -1,125 +1,25 @@
-// Utils.h
 #pragma once
-#include <cstdlib>
-#include <iostream>
-#include <limits>
-#include <random>
-#include <fstream>
-#include <string>
 
-namespace Utils
-{
-    // 控制台
-    namespace System
-    {
-        // 清屏
-        void ClearScreen();
+// 功能：初始化随机数和控制台。
+// 无参数
+// 以后可以在这里设置控制台颜色。
+// 以前的注释：初始化输出。
+void Utils_Init(void);
 
-        // 等待
-        void Pause(const std::string& msg = "Please Enter to continue...");
-    } // namespace System
+// 功能：清空控制台画面。
+// 无参数
+// 可以改成只刷新发生变化的区域。
+// 以前的注释：清屏。
+void Utils_ClearScreen(void);
 
-    // 初始化输出
-    void init();
+// 功能：等待用户按下回车。
+// 无参数
+// 以后可以增加任意按键继续功能。
+// 以前的注释：等待。
+void Utils_Pause(void);
 
-    // 输出命名空间
-    namespace Out
-    {
-        // 输出函数（任意类型）
-        template <typename T> void Out(T&& msg)
-        {
-            std::cout << msg << std::endl;
-        }
-
-    } // namespace Out
-
-    // 输入命名空间
-    namespace Input
-    {
-        // 输入函数
-        template <typename T> T Input()
-        {
-            T value;
-            while (true)
-            {
-                if (std::cin >> value)
-                {
-                    return value;
-                }
-
-                if (std::cin.eof())
-                {
-                    std::cout << "\n输入到达文件尾，程序退出\n";
-                    std::exit(EXIT_FAILURE);
-                }
-
-                std::cin.clear();
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                std::cout << "输入无效，请重新输入: ";
-            }
-        }
-    } // namespace Input
-
-    // 写入文件命名空间
-    namespace File
-    {
-        // 默认写入文件名
-        inline std::string addr = "log";
-
-        // 设置默认文件名
-        bool SetAddr(const std::string& newaddr);
-
-        // 写入文件名
-        template <typename T> bool File_Add(T&& msg)
-        {
-            // 打开文件
-            std::ofstream out(addr.c_str(), std::ios::app);
-
-            // 判断是否打开
-            if (!out)
-            {
-                std::cerr << "打开文件失败" << std::endl;
-
-                return 0;
-            }
-
-            // 写入文件
-            out << msg << std::endl;
-
-            // 关闭文件
-            out.close();
-
-            return 1;
-        }
-
-        // 写入文件名
-        template <typename T> bool File_add(T&& msg, const std::string& filename)
-        {
-            std::ofstream out(filename.c_str(), std::ios::app);
-            if (!out)
-            {
-                return false;
-            }
-            out << msg << std::endl;
-            out.close();
-            return true;
-        }
-    } // namespace File
-
-    // 随机数的生成命名空间
-    namespace Random
-    {
-        // 随机数引擎（种子使用硬件随机数，保证每次运行结果不同）
-        inline std::random_device rd;
-        // 梅森旋转算法，质量高、速度快
-        inline std::mt19937 gen(rd());
-
-        // 随机数最小的数
-        const int min = 1;
-        // 随机数最大的数（尽量保证与棋盘一样大）
-        const int max = 50;
-
-        // 随机数生成
-        int Random();
-    } // namespace Random
-} // namespace Utils
+// 功能：生成指定范围内的随机整数。
+// 传入参数说明：minimum 是最小值，maximum 是最大值。
+// 调用者需要保证 minimum 不大于 maximum。
+// 以前的注释：随机数生成。
+int Utils_Random(int minimum, int maximum);

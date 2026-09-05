@@ -1,65 +1,37 @@
 #pragma once
 
-#include <chrono>
-#include <string>
-#include <vector>
+// 规定蛇最多可以有多少节身体。
+// 无参数
+// 以后可以把棋盘大小和蛇的最大长度放到配置文件中。
+// 无以前注释
+#define RENDERER_MAX_SNAKE_LENGTH 128
 
-namespace Renderer
+// 保存棋盘上的一个坐标。
+// 传入参数说明：x 表示横坐标，y 表示纵坐标。
+// 以后可以增加坐标相加等常用操作。
+// 二维棋盘坐标。
+typedef struct
 {
-    // 二维棋盘坐标。
-    struct Point
-    {
-        int x = 0;
-        int y = 0;
+    int x; // 保存横坐标。
+    int y; // 保存纵坐标。
+} Point;
 
-        bool operator==(const Point& other) const
-        {
-            return x == other.x && y == other.y;
-        }
-    };
+// 定义功能：保存渲染一帧画面所需要的全部数据。
+// 传入参数说明：由游戏逻辑填写，再传给 Renderer_Draw。
+// 以后可以增加排行榜、暂停状态等显示数据。
+// 以前的注释：渲染一帧所需的游戏数据。
+typedef struct
+{
+    int width;                              // 保存棋盘宽度。
+    int height;                             // 保存棋盘高度。
+    Point snake[RENDERER_MAX_SNAKE_LENGTH]; // 保存蛇的每一节坐标。
+    int snakeLength;                        // 保存当前蛇的长度。
+    Point food;                             // 保存食物坐标。
+    int score;                              // 保存当前分数。
+} GameView;
 
-    // 当前要显示的界面。
-    enum class ScreenState
-    {
-        StartMenu,
-        Playing,
-        Paused,
-        GameOver
-    };
-
-    // 渲染一帧所需的游戏数据。
-    struct GameView
-    {
-        int width = 30;
-        int height = 15;
-        std::vector<Point> snake;
-        Point food;
-        int score = 0;
-        std::vector<int> ranking;
-    };
-
-    class Renderer
-    {
-    public:
-        // 按指定帧率初始化渲染器。
-        explicit Renderer(unsigned int framesPerSecond = 10);
-
-        // 根据界面状态绘制当前画面。
-        void Render(const GameView& view, ScreenState state);
-        void RenderStartMenu() const;
-        void RenderPlaying(const GameView& view) const;
-        void RenderPaused(const GameView& view) const;
-        void RenderGameOver(const GameView& view) const;
-
-        // 设置帧率，并等待下一帧可绘制。
-        void SetFrameRate(unsigned int framesPerSecond);
-        void WaitForNextFrame();
-
-    private:
-        void RenderLines(const std::vector<std::string>& lines) const;
-        std::vector<std::string> BuildBoard(const GameView& view) const;
-
-        std::chrono::milliseconds frameDuration_;
-        std::chrono::steady_clock::time_point lastFrame_;
-    };
-} // namespace Renderer
+// 功能：显示当前游戏画面。
+// 传入参数说明：view 是游戏数据，gameOver 为 1 时显示游戏结束信息。
+// 以后可以增加彩色字符或更大的棋盘。
+// 以前的注释：根据游戏状态绘制当前画面。
+void Renderer_Draw(const GameView* view, int gameOver);

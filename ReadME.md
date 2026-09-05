@@ -19,14 +19,13 @@
 
 - [ ] 网络数据库存储
 
-> 当前为项目初始化阶段，仅搭建了 CMake 构建配置与基本目录结构，
-> 入口程序暂为 Hello World 占位输出，上述功能将在后续迭代中逐步实现。
+> 当前版本使用简单的控制台输入完成基础游戏流程，后续可以继续增加自动移动和存档功能。
 
 ---
 
 ## 技术栈
 
-- 语言：C++17
+- 语言：C11
 - 构建工具：CMake
 - 编译器：支持 C++17 的任意编译器（如 GCC、MSVC、Clang）
 
@@ -40,12 +39,14 @@ Nokia_Snake
 |-- CMakeLists.txt        # CMake 构建配置
 |-- ReadME.md             # 项目说明
 |-- include/              # 头文件目录
-|   `-- Utils.h           # 工具头文件
-|   `-- Nokia_Snake.h     # 项目的工厂头文件
+|   |-- Utils.h           # 工具函数声明
+|   |-- Renderer.h        # 渲染数据和函数声明
+|   `-- NoKia_Snake.h     # 游戏主函数声明
 |-- source/               # 源文件目录
-|   `-- main.cpp          # 程序入口
-|   `-- Utils.cpp         # 工具库非模版函数的实现
-|   ·-- Nokia_Sanke       # 项目的工厂函数的实现
+|   |-- main.c            # 程序入口
+|   |-- Utils.c           # 工具函数实现
+|   |-- Renderer.c        # 棋盘渲染实现
+|   `-- Nokia_Snake.c     # 游戏逻辑实现
 |-- body/                 # 其他资源目录
 |-- .gitignore            # Git 忽略规则
 |-- .clang-format         # 自动格式化工具配置文件（搭配Clang-Format）
