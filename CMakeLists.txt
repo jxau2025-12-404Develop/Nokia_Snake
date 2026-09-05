@@ -21,7 +21,6 @@ add_executable(${PROJECT_NAME}
     source/main.cpp
     source/Utils.cpp
     source/Nokia_Snake.cpp
-    source/Snake.cpp
 )
 
 # 添加头文件路径
