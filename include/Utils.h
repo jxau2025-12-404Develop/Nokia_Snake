@@ -13,14 +13,18 @@ constexpr int WIDTH = 50;
 // 坐标信息
 typedef struct Point
 {
+    // x坐标
     int x;
+    // y坐标
     int y;
 } Point;
 
 // 蛇身节点
 typedef struct Snake
 {
+    // 蛇身坐标
     Point xy;
+    // 下一个蛇身的指针
     SnakeNode* Next;
 } SnakeNode;
 
