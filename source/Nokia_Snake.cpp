@@ -2,14 +2,24 @@
 #include "NoKia_Snake.h"
 #include "Renderer.h"
 #include "Utils.h"
+#include "Food.h"
+#include "Collision.h"
 
 // 重置
+// 引用渲染帧
 void InitGV(GameView& GV)
 {
     // 设置长宽为50
     GV.height = 50;
     GV.width = 50;
     GV.score = 0;
+}
+
+// 游戏主程序
+// 初始帧
+int Game(GameView& GV)
+{
+    // 生成蛇头
 }
 
 // 程序运行的主函数
@@ -38,6 +48,8 @@ void Nokia_Snake()
         }
         else
         {
+            int socre = Game(GV);
+
             continue;
         }
 

@@ -6,8 +6,7 @@
 bool IsWallCollision(Position position, int boardWidth, int boardHeight)
 {
     // 坐标越过棋盘边界，判定为撞墙。
-    return position.x < 0 || position.x >= boardWidth ||
-           position.y < 0 || position.y >= boardHeight;
+    return position.x < 0 || position.x >= boardWidth || position.y < 0 || position.y >= boardHeight;
 }
 
 // 函数作用：判断指定位置是否与蛇的身体发生碰撞。
