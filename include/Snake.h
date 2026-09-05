@@ -3,27 +3,6 @@
 
 #include <stdlib.h>
 
-/* 表示蛇身中的一个节点，链表头节点就是蛇头。 */
-typedef struct SnakeNode
-{
-    int x; /* 横坐标 */
-    int y; /* 纵坐标 */
-    // ↑用Point结构体替换
-    struct SnakeNode* next; /* 指向下一节蛇身 */
-} SnakeNode;
-
-/* 保存游戏运行过程中需要使用的状态。 */
-typedef struct
-{
-    SnakeNode* head; /* 蛇头指针 */
-    int dirX;        /* 水平方向增量 */
-    int dirY;        /* 垂直方向增量 */
-    int foodX;       /* 食物横坐标 */
-    int foodY;       /* 食物纵坐标 */
-    int score;       /* 当前分数 */
-    int gameOver;    /* 游戏结束标志 */
-} SnakeGame;
-
 /* 创建并初始化一个蛇身节点。 */
 static SnakeNode* snake_create_node(int x, int y)
 {
