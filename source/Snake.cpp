@@ -1,191 +1,123 @@
 #include "Snake.h"
 
-#include <cctype>
-
-namespace SnakeGame
+/* 判断目标坐标是否已经被蛇身占用。 */
+static int snake_occupies(const SnakeNode* head, int x, int y)
 {
-    bool Position::operator==(const Position& other) const
-    {
-        return x == other.x && y == other.y;
-    }
+    const SnakeNode* curr = head;
 
-    bool Position::operator!=(const Position& other) const
+    while (curr != NULL)
     {
-        return !(*this == other);
-    }
-
-    Snake::Snake(Position start, Direction direction)
-    {
-        Reset(start, direction);
-    }
-
-    void Snake::Reset(Position start, Direction direction)
-    {
-        body_.clear();
-        body_.push_back(start);
-        direction_ = direction;
-        next_direction_ = direction;
-        grow_pending_ = false;
-        alive_ = true;
-    }
-
-    bool Snake::HandleInput(char key)
-    {
-        switch (std::tolower(static_cast<unsigned char>(key)))
+        if (curr->x == x && curr->y == y)
         {
-        case 'w':
-            SetDirection(Direction::Up);
-            return false;
-        case 's':
-            SetDirection(Direction::Down);
-            return false;
-        case 'a':
-            SetDirection(Direction::Left);
-            return false;
-        case 'd':
-            SetDirection(Direction::Right);
-            return false;
-        case ' ':
-            return true;
-        default:
-            return false;
+            return 1;
         }
+        curr = curr->next;
     }
+    return 0;
+}
 
-    bool Snake::HandleInput(int key)
+/* 初始化游戏状态，并创建第一节蛇身。 */
+void snake_init(SnakeGame* game, int startX, int startY, int foodX, int foodY)
+{
+    if (game == NULL)
     {
-        switch (key)
-        {
-        case 72:
-            SetDirection(Direction::Up);
-            return false;
-        case 80:
-            SetDirection(Direction::Down);
-            return false;
-        case 75:
-            SetDirection(Direction::Left);
-            return false;
-        case 77:
-            SetDirection(Direction::Right);
-            return false;
-        case ' ':
-            return true;
-        default:
-            return false;
-        }
+        return;
     }
+    game->head = NULL;
+    game->dirX = 1;
+    game->dirY = 0;
+    game->foodX = foodX;
+    game->foodY = foodY;
+    game->score = 0;
+    game->gameOver = 0;
+    snake_push_front(&game->head, startX, startY);
+}
 
-    void Snake::SetDirection(Direction direction)
+/* 设置移动方向，禁止直接反向移动。 */
+void snake_set_direction(SnakeGame* game, int dirX, int dirY)
+{
+    if (game == NULL || (dirX == 0 && dirY == 0))
     {
-        if (!IsOpposite(next_direction_, direction))
-            next_direction_ = direction;
+        return;
     }
-
-    bool Snake::Move()
+    if (dirX == -game->dirX && dirY == -game->dirY)
     {
-        Position nextHead = Head();
-        direction_ = next_direction_;
-
-        switch (direction_)
-        {
-        case Direction::Up:
-            --nextHead.y;
-            break;
-        case Direction::Down:
-            ++nextHead.y;
-            break;
-        case Direction::Left:
-            --nextHead.x;
-            break;
-        case Direction::Right:
-            ++nextHead.x;
-            break;
-        }
-
-        return MoveTo(nextHead, false);
+        return;
     }
+    game->dirX = dirX;
+    game->dirY = dirY;
+}
 
-    bool Snake::Move(const Position& food)
+/* 处理 W/A/S/D 和方向键第二码，空格返回暂停请求。 */
+int snake_handle_input(SnakeGame* game, int key)
+{
+    if (key == 'w' || key == 'W' || key == 72)
     {
-        Position nextHead = Head();
-        direction_ = next_direction_;
-
-        switch (direction_)
-        {
-        case Direction::Up:
-            --nextHead.y;
-            break;
-        case Direction::Down:
-            ++nextHead.y;
-            break;
-        case Direction::Left:
-            --nextHead.x;
-            break;
-        case Direction::Right:
-            ++nextHead.x;
-            break;
-        }
-
-        return MoveTo(nextHead, nextHead == food);
+        snake_set_direction(game, 0, -1);
     }
-
-    bool Snake::MoveTo(const Position& nextHead, bool foodEaten)
+    else if (key == 's' || key == 'S' || key == 80)
     {
-        if (!alive_ || Occupies(nextHead))
-        {
-            alive_ = false;
-            return false;
-        }
-
-        body_.push_front(nextHead);
-        if (foodEaten || grow_pending_)
-            grow_pending_ = false;
-        else
-            body_.pop_back();
-
-        return true;
+        snake_set_direction(game, 0, 1);
     }
-
-    bool Snake::Occupies(const Position& position) const
+    else if (key == 'a' || key == 'A' || key == 75)
     {
-        for (const Position& segment : body_)
-        {
-            if (segment == position)
-                return true;
-        }
-        return false;
+        snake_set_direction(game, -1, 0);
     }
-
-    void Snake::Grow()
+    else if (key == 'd' || key == 'D' || key == 77)
     {
-        grow_pending_ = true;
+        snake_set_direction(game, 1, 0);
     }
-
-    const std::deque<Position>& Snake::Body() const
+    else if (key == ' ')
     {
-        return body_;
+        return 1;
     }
+    return 0;
+}
 
-    Position Snake::Head() const
-    {
-        return body_.front();
-    }
+/* 按当前方向移动：头插新节点，未吃到食物时删除蛇尾。 */
+int snake_move(SnakeGame* game)
+{
+    SnakeNode* head;
+    int nextX;
+    int nextY;
+    int foodEaten;
 
-    Direction Snake::GetDirection() const
+    if (game == NULL || game->head == NULL || game->gameOver)
     {
-        return direction_;
+        return 0;
     }
+    head = game->head;
+    nextX = head->x + game->dirX;
+    nextY = head->y + game->dirY;
+    if (snake_occupies(game->head, nextX, nextY))
+    {
+        game->gameOver = 1;
+        return 0;
+    }
+    if (snake_push_front(&game->head, nextX, nextY) != 0)
+    {
+        game->gameOver = 1;
+        return 0;
+    }
+    foodEaten = nextX == game->foodX && nextY == game->foodY;
+    if (foodEaten)
+    {
+        game->score++;
+    }
+    else
+    {
+        snake_pop_back(&game->head);
+    }
+    return 1;
+}
 
-    bool Snake::IsAlive() const
+/* 释放游戏中的整条蛇。 */
+void snake_destroy_game(SnakeGame* game)
+{
+    if (game == NULL)
     {
-        return alive_;
+        return;
     }
-
-    bool Snake::IsOpposite(Direction first, Direction second)
-    {
-        return (first == Direction::Up && second == Direction::Down) ||
-               (first == Direction::Down && second == Direction::Up) ||
-               (first == Direction::Left && second == Direction::Right) ||
-               (first == Direction::Right && second == Direction::Left);
-    }
-} // namespace SnakeGame
+    snake_destory(&game->head);
+    game->gameOver = 1;
+}
