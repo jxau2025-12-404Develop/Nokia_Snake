@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 4.0)
 
 # 设置项目名称
-project(Nokia_Snake VERSION 1.0.0 LANGUAGES CXX)
+project(Nokia_Snake VERSION 1.0.0 LANGUAGES C CXX)
 
 # msvc解析utf-8 BOM编码
 if(MSVC)
@@ -20,8 +20,8 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 add_executable(${PROJECT_NAME}
     source/main.cpp
     source/Utils.cpp
+    source/Renderer.c
     source/Nokia_Snake.cpp
-    source/Snake.cpp
 )
 
 # 添加头文件路径
