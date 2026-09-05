@@ -41,7 +41,7 @@ namespace Utils
     namespace Input
     {
         // 输入函数
-        // 任意类型
+        // 无参
         template <typename T> T Input()
         {
             T value;
