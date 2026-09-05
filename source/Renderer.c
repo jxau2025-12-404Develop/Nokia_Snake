@@ -83,7 +83,8 @@ static void RenderPlaying(const GameView* view)
         {
             // 保存当前位置要显示的字符，默认显示空格。
             char display = ' ';
-            // 保存当前检查的蛇身下标。
+            // 保存当前检查的蛇身节点和位置。
+            const RendererSnakeNode* snakeNode;
             int snakeIndex;
 
             // 检查当前位置是否属于棋盘边框。
@@ -99,15 +100,20 @@ static void RenderPlaying(const GameView* view)
                 display = '*';
             }
 
-            // 从蛇尾向蛇头检查，保证蛇头可以覆盖其他字符。
-            for (snakeIndex = view->snakeLength - 1; snakeIndex >= 0; --snakeIndex)
+            // 沿蛇身链表检查坐标。
+            snakeNode = view->snake;
+            snakeIndex = 0;
+            while (snakeNode != NULL && snakeIndex < view->snakeLength)
             {
                 // 判断当前坐标是否是某一节蛇身。
-                if (view->snake[snakeIndex].x == x && view->snake[snakeIndex].y == y)
+                if (snakeNode->position.x == x && snakeNode->position.y == y)
                 {
                     // 下标 0 是蛇头，其他下标是蛇身。
                     display = snakeIndex == 0 ? '@' : 'o';
                 }
+
+                snakeNode = snakeNode->next;
+                ++snakeIndex;
             }
 
             // 输出当前格子，但暂时不换行。
