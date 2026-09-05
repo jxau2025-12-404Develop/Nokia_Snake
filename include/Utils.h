@@ -13,19 +13,23 @@ namespace Utils
     namespace System
     {
         // 清屏
+        // 无参数
         void ClearScreen();
 
         // 等待
+        // 无参数默认打印"Please Enter to continue..."，有参打印输入的字符串
         void Pause(const std::string& msg = "Please Enter to continue...");
     } // namespace System
 
     // 初始化输出
+    // 无参数
     void init();
 
     // 输出命名空间
     namespace Out
     {
-        // 输出函数（任意类型）
+        // 输出函数
+        // 任意类型
         template <typename T> void Out(T&& msg)
         {
             std::cout << msg << std::endl;
@@ -37,6 +41,7 @@ namespace Utils
     namespace Input
     {
         // 输入函数
+        // 无参
         template <typename T> T Input()
         {
             T value;
@@ -69,11 +74,12 @@ namespace Utils
         // 设置默认文件名
         bool SetAddr(const std::string& newaddr);
 
-        // 写入文件名
-        template <typename T> bool File_Add(T&& msg)
+        // 追加写入文件名
+        // 第一位传入任意类型参数到文件中，第二位，默认为log，有字符串类型参数，为字符串的文件名
+        template <typename T> bool Add(T&& msg, const std::string address = addr)
         {
             // 打开文件
-            std::ofstream out(addr.c_str(), std::ios::app);
+            std::ofstream out(address.c_str(), std::ios::app);
 
             // 判断是否打开
             if (!out)
@@ -91,19 +97,6 @@ namespace Utils
 
             return 1;
         }
-
-        // 写入文件名
-        template <typename T> bool File_add(T&& msg, const std::string& filename)
-        {
-            std::ofstream out(filename.c_str(), std::ios::app);
-            if (!out)
-            {
-                return false;
-            }
-            out << msg << std::endl;
-            out.close();
-            return true;
-        }
     } // namespace File
 
     // 随机数的生成命名空间
@@ -120,6 +113,7 @@ namespace Utils
         const int max = 50;
 
         // 随机数生成
+        // 无参
         int Random();
     } // namespace Random
 } // namespace Utils
