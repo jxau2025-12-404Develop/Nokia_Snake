@@ -2,100 +2,112 @@
 
 #include <stdexcept>
 
-#include "Utils.h"
-
 namespace
 {
     // 函数作用：判断指定坐标是否被蛇身占用。
-    // 函数传参：game 为当前游戏状态，x 和 y 为待检测坐标。
-    // 返回值：被蛇身占用时返回 true，否则返回 false。
-    bool IsSnakePosition(const SnakeGame* game, int x, int y)
+    // 函数传参：view 为当前游戏画面数据，x 和 y 为待检测坐标。
+    // 返回值：坐标被蛇身占用时返回 true，否则返回 false。
+    bool IsSnakePosition(const GameView* view, int x, int y)
     {
-        const SnakeNode* node = game->head;
+        if (view == nullptr)
+        {
+            return false;
+        }
+
+        const SnakeNode* node = view->snake;
 
         while (node != nullptr)
         {
-            if (node->x == x && node->y == y)
+            if (node->xy.x == x && node->xy.y == y)
             {
                 return true;
             }
 
-            node = node->next;
+            node = node->Next;
         }
 
         return false;
     }
 }
 
-// 函数作用：生成一个不在蛇身上的随机食物位置。
-// 函数传参：game 为当前游戏状态，boardWidth 为棋盘宽度，boardHeight 为棋盘高度。
-// 返回值：返回生成的食物对象。
-Food GenerateFood(
-    const SnakeGame* game,
+// 函数作用：在棋盘空闲位置生成食物。
+// 函数传参：view 为当前游戏画面数据，boardWidth 为棋盘宽度，boardHeight 为棋盘高度。
+// 返回值：返回生成的食物坐标；棋盘没有空闲位置时抛出异常。
+Point GenerateFood(
+    const GameView* view,
     int boardWidth,
     int boardHeight)
 {
-    if (game == nullptr || boardWidth <= 0 || boardHeight <= 0)
+    if (view == nullptr || boardWidth <= 0 || boardHeight <= 0)
     {
-        throw std::invalid_argument("游戏状态或棋盘大小无效");
+        throw std::invalid_argument("游戏数据或棋盘大小无效");
     }
 
-    const int boardSize = boardWidth * boardHeight;
-    int occupiedCount = 0;
+    const long long boardSize =
+        static_cast<long long>(boardWidth) * boardHeight;
 
-    for (const SnakeNode* node = game->head;
+    long long occupiedCount = 0;
+
+    // 使用 Utils.h 中的蛇链表统计已占用格子。
+    for (const SnakeNode* node = view->snake;
          node != nullptr;
-         node = node->next)
+         node = node->Next)
     {
         ++occupiedCount;
     }
 
-    // 蛇身占满棋盘时，没有空闲位置。
+    // 蛇身占满棋盘时，没有空闲格子。
     if (occupiedCount >= boardSize)
     {
-        throw std::runtime_error("棋盘没有可用的食物位置");
+        throw std::runtime_error("棋盘没有空闲格子");
     }
 
-    Food food{};
+    Point food{};
 
+    // Renderer 的有效区域是：
+    // x：0 到 boardWidth - 1
+    // y：0 到 boardHeight - 1
     do
     {
-        food.x = (Utils::Random::Random() - 1) % boardWidth;
-        food.y = (Utils::Random::Random() - 1) % boardHeight;
-    } while (IsSnakePosition(game, food.x, food.y));
+        food.x = std::rand() % boardWidth;
+        food.y = std::rand() % boardHeight;
+    }
+    while (IsSnakePosition(view, food.x, food.y));
 
     return food;
 }
 
-// 函数作用：判断蛇头是否吃到食物并更新分数。
-// 函数传参：food 为食物对象，game 为当前游戏状态，boardWidth 为棋盘宽度，boardHeight 为棋盘高度。
+// 函数作用：判断蛇头是否吃到食物，并更新分数和食物坐标。
+// 函数传参：food 为食物坐标，view 为当前游戏画面数据，boardWidth 为棋盘宽度，boardHeight 为棋盘高度。
 // 返回值：吃到食物时返回 true，否则返回 false。
 bool EatFood(
-    Food* food,
-    SnakeGame* game,
+    Point* food,
+    GameView* view,
     int boardWidth,
     int boardHeight)
 {
-    if (food == nullptr || game == nullptr)
+    if (food == nullptr ||
+        view == nullptr ||
+        view->snake == nullptr)
     {
         return false;
     }
 
-    if (game->head == nullptr ||
-        game->head->x != food->x ||
-        game->head->y != food->y)
+    // 判断蛇头坐标是否与食物坐标相同。
+    if (view->snake->xy.x != food->x ||
+        view->snake->xy.y != food->y)
     {
         return false;
     }
 
-    // 当前 Food 模块只负责分数和重新生成食物。
-    // 蛇身增长应由 Snake 模块负责。
-    game->score += 10;
+    // 增加分数。
+    view->score += 10;
 
-    *food = GenerateFood(game, boardWidth, boardHeight);
+    // 生成新的食物。
+    *food = GenerateFood(view, boardWidth, boardHeight);
 
-    game->foodX = food->x;
-    game->foodY = food->y;
+    // 同步 GameView 中的食物坐标。
+    view->food = *food;
 
     return true;
 }
