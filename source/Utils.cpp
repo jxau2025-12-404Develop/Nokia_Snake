@@ -7,6 +7,7 @@
 
 #if _WIN32
 #include <windows.h>
+#include <conio.h> // _kbhit / _getch：直接读取控制台按键
 #endif
 
 namespace Utils
@@ -49,6 +50,60 @@ namespace Utils
             std::cin.get();
         }
     } // namespace System
+
+    // 立即读取按键，不需要按回车
+    namespace Input
+    {
+        // 检查是否有按键被按下（非阻塞）
+        bool HasKey()
+        {
+#if _WIN32
+            // _kbhit 返回非 0 表示有按键等待读取
+            return _kbhit() != 0;
+#else
+            // 非 Windows 平台暂时不支持
+            return false;
+#endif
+        }
+
+        // 读取一个按键（阻塞等待，按下后立刻返回，不需要按回车）
+        int GetKey()
+        {
+#if _WIN32
+            int key = _getch();
+
+            // 方向键在 Windows 下会先返回 0 或 224，再返回第二个扫描码
+            if (key == 0 || key == 224)
+            {
+                int second = _getch();
+                switch (second)
+                {
+                case 72:
+                    return KEY_UP; // ↑
+                case 80:
+                    return KEY_DOWN; // ↓
+                case 75:
+                    return KEY_LEFT; // ←
+                case 77:
+                    return KEY_RIGHT; // →
+                default:
+                    return second; // 其它特殊功能键
+                }
+            }
+
+            // 大写字母统一转换成小写：A -> 'a', Q -> 'q'
+            if (key >= 'A' && key <= 'Z')
+            {
+                key += ('a' - 'A');
+            }
+
+            return key;
+#else
+            // 非 Windows 平台暂时不支持
+            return 0;
+#endif
+        }
+    } // namespace Input
 
     // 初始化控制台
     void init()
@@ -94,11 +149,3 @@ namespace Utils
         }
     } // namespace Random
 } // namespace Utils
-
-
-
-
-
-
-
-
