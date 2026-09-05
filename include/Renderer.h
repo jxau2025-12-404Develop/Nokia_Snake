@@ -1,0 +1,70 @@
+#pragma once
+
+// 功能：规定蛇最多可以有多少节身体。
+// 传入参数说明：不需要传入参数。
+// 以后可以把这个数值放到游戏配置中。
+// 以前的注释：使用动态数组保存蛇身。
+#define RENDERER_MAX_SNAKE_LENGTH 128
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+    // 功能：保存棋盘上的一个坐标。
+    // 传入参数说明：x 是横坐标，y 是纵坐标。
+    // 以后可以增加坐标相加和坐标比较函数。
+    // 以前的注释：二维棋盘坐标。
+    typedef struct
+    {
+        int x; // 保存横坐标。
+        int y; // 保存纵坐标。
+    } Point;
+
+    // 功能：表示当前需要显示的游戏界面。
+    // 传入参数说明：调用者使用其中一个枚举值表示当前界面。
+    // 以后可以增加设置界面。
+    // 以前的注释：当前要显示的界面。
+    typedef enum
+    {
+        SCREEN_START_MENU, // 开始菜单。
+        SCREEN_PLAYING,    // 游戏进行中。
+        SCREEN_PAUSED,     // 游戏暂停。
+        SCREEN_GAME_OVER   // 游戏结束。
+    } ScreenState;
+
+    // 功能：保存绘制一帧画面所需要的游戏数据。
+    // 传入参数说明：所有字段由游戏逻辑填写，再传给渲染函数。
+    // 以后可以增加排行榜数据。
+    // 以前的注释：渲染一帧所需的游戏数据。
+    typedef struct
+    {
+        int width;                              // 保存棋盘宽度。
+        int height;                             // 保存棋盘高度。
+        Point snake[RENDERER_MAX_SNAKE_LENGTH]; // 保存蛇头和蛇身坐标。
+        int snakeLength;                        // 保存当前蛇的长度。
+        Point food;                             // 保存食物坐标。
+        int score;                              // 保存当前分数。
+    } GameView;
+
+    // 功能：清空屏幕并绘制当前游戏画面。
+    // 传入参数说明：view 是当前游戏数据，state 是当前界面状态。
+    // 以后可以增加颜色和图形化显示。
+    // 以前的注释：根据界面状态绘制当前画面。
+    void Renderer_Render(const GameView* view, ScreenState state);
+
+    // 功能：设置目标帧率。
+    // 传入参数说明：framesPerSecond 是每秒需要绘制的帧数。
+    // 以后可以限制最大帧率。
+    // 以前的注释：设置帧率。
+    void Renderer_SetFrameRate(unsigned int framesPerSecond);
+
+    // 功能：等待到下一帧应该绘制的时间。
+    // 传入参数说明：不需要传入参数。
+    // 以后可以使用更精确的定时器。
+    // 以前的注释：等待下一帧可绘制。
+    void Renderer_WaitForNextFrame(void);
+
+#ifdef __cplusplus
+}
+#endif
