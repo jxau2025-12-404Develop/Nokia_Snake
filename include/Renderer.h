@@ -1,11 +1,5 @@
 #pragma once
 
-// 功能：规定蛇最多可以有多少节身体。
-// 传入参数说明：不需要传入参数。
-// 以后可以把这个数值放到游戏配置中。
-// 以前的注释：使用动态数组保存蛇身。
-#define RENDERER_MAX_SNAKE_LENGTH 128
-
 #ifdef __cplusplus
 extern "C"
 {
@@ -20,6 +14,14 @@ extern "C"
         int x; // 保存横坐标。
         int y; // 保存纵坐标。
     } Point;
+
+    // 功能：保存一节蛇身及其下一节的位置。
+    // 传入参数说明：由游戏逻辑负责维护链表节点的生命周期。
+    typedef struct RendererSnakeNode
+    {
+        Point position;                 // 保存当前蛇节坐标。
+        struct RendererSnakeNode* next; // 指向下一节蛇身。
+    } RendererSnakeNode;
 
     // 功能：表示当前需要显示的游戏界面。
     // 传入参数说明：调用者使用其中一个枚举值表示当前界面。
@@ -39,12 +41,12 @@ extern "C"
     // 以前的注释：渲染一帧所需的游戏数据。
     typedef struct
     {
-        int width;                              // 保存棋盘宽度。
-        int height;                             // 保存棋盘高度。
-        Point snake[RENDERER_MAX_SNAKE_LENGTH]; // 保存蛇头和蛇身坐标。
-        int snakeLength;                        // 保存当前蛇的长度。
-        Point food;                             // 保存食物坐标。
-        int score;                              // 保存当前分数。
+        int width;                // 保存棋盘宽度。
+        int height;               // 保存棋盘高度。
+        RendererSnakeNode* snake; // 指向蛇头链表。
+        int snakeLength;          // 保存当前蛇的长度。
+        Point food;               // 保存食物坐标。
+        int score;                // 保存当前分数。
     } GameView;
 
     // 功能：清空屏幕并绘制当前游戏画面。
