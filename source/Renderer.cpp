@@ -175,8 +175,6 @@ static void RenderGameOver(const GameView* view)
 // 以前的注释：根据界面状态绘制当前画面。
 void Renderer_Render(const GameView* view, ScreenState state)
 {
-    // 每次绘制前清空旧画面。
-    ClearScreen();
 
     // 根据当前界面状态调用对应的绘制函数。
     switch (state)
