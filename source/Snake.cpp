@@ -72,7 +72,7 @@ static void snake_destroy_nodes(SnakeNode** head)
     curr = *head;
     while (curr != NULL)
     {
-        next = curr->next;
+        next = curr->Next;
         free(curr);
         curr = next;
     }
@@ -86,17 +86,17 @@ static int snake_occupies(const SnakeNode* head, int x, int y)
 
     while (curr != NULL)
     {
-        if (curr->x == x && curr->y == y)
+        if (curr->xy.x == x && curr->xy.y == y)
         {
             return 1;
         }
-        curr = curr->next;
+        curr = curr->Next;
     }
     return 0;
 }
 
 /* 初始化游戏状态，并创建第一节蛇身。 */
-void snake_init(SnakeGame* game, int startX, int startY, int foodX, int foodY)
+int snake_init(SnakeGame* game, int startX, int startY, int foodX, int foodY)
 {
     if (game == NULL)
     {
@@ -113,7 +113,7 @@ void snake_init(SnakeGame* game, int startX, int startY, int foodX, int foodY)
 }
 
 /* 设置移动方向，禁止直接反向移动。 */
-void snake_set_direction(SnakeGame* game, int dirX, int dirY)
+int snake_set_direction(SnakeGame* game, int dirX, int dirY)
 {
     if (game == NULL || (dirX == 0 && dirY == 0))
     {
@@ -166,8 +166,8 @@ int snake_move(SnakeGame* game)
         return 0;
     }
     head = game->head;
-    nextX = head->x + game->dirX;
-    nextY = head->y + game->dirY;
+    nextX = head->xy.x + game->dirX;
+    nextY = head->xy.y + game->dirY;
     if (snake_occupies(game->head, nextX, nextY))
     {
         game->gameOver = 1;

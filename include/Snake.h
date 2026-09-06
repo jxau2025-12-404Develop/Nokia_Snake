@@ -2,7 +2,23 @@
 #define SNAKE_H
 
 #include <stdlib.h>
+
+/* 提前声明节点类型，供 Utils.h 中的 Next 指针使用。 */
+typedef struct Snake SnakeNode;
+
 #include "Utils.h"
+
+/* 保存整个贪吃蛇游戏的状态。 */
+typedef struct SnakeGame
+{
+    SnakeNode* head; /* 蛇头链表指针。 */
+    int dirX;        /* X 方向增量。 */
+    int dirY;        /* Y 方向增量。 */
+    int foodX;       /* 食物的 X 坐标。 */
+    int foodY;       /* 食物的 Y 坐标。 */
+    int score;       /* 当前分数。 */
+    int gameOver;    /* 游戏结束标志。 */
+} SnakeGame;
 
 /* 创建并初始化一个蛇身节点。 */
 static SnakeNode* snake_create_node(int x, int y);
@@ -26,7 +42,7 @@ static void snake_destory(SnakeNode** head)
     curr = *head;
     while (curr != NULL)
     {
-        next = curr->next;
+        next = curr->Next;
         free(curr);
         curr = next;
     }
