@@ -1,12 +1,22 @@
 // Nokia_Snake.cpp
+#include <memory>
+
 #include "NoKia_Snake.h"
 #include "Utils.h"
+
+// 重置/初始化
+void InitGame(GameView& GV)
+{
+    GV.GameFlag = false;
+    std::shared_ptr<SnakeHead> head = std::make_shared<SnakeHead>();
+
+    GV.snake = &(head->Node);
+}
 
 // 程序运行的主函数
 // TODO后续在这个函数里编写，不要动main函数
 void Nokia_Snake()
 {
-
     // // 示例：识别 W/A/S/D 和方向键
     // switch (key)
     // {

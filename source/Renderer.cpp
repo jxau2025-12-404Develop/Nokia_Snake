@@ -11,21 +11,6 @@
 // 保存每一帧之间需要等待的毫秒数。
 static unsigned int g_frameDurationMilliseconds = 100;
 
-// 功能：清空控制台画面。
-// 传入参数说明：不需要传入参数。
-// 以后可以使用更平滑的局部刷新方式。
-// 以前的注释：每次绘制前清空屏幕。
-static void ClearScreen(void)
-{
-#ifdef _WIN32
-    // Windows 使用 cls 命令清空屏幕。
-    system("cls");
-#else
-    // Linux 和 macOS 使用 ANSI 转义序列清空屏幕。
-    printf("\033[2J\033[H");
-#endif
-}
-
 // 功能：判断坐标是否位于棋盘内部。
 // 传入参数说明：point 是需要判断的坐标，width 和 height 是棋盘尺寸。
 // 以后可以增加坐标碰撞检测。
