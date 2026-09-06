@@ -1,23 +1,6 @@
 #include <stddef.h>
 #include <stdlib.h>
-
-typedef struct SnakeNode
-{
-    int x;
-    int y;
-    struct SnakeNode* next;
-} SnakeNode;
-
-typedef struct
-{
-    SnakeNode* head;
-    int dirX;
-    int dirY;
-    int foodX;
-    int foodY;
-    int score;
-    int gameOver;
-} SnakeGame;
+#include "Snake.h"
 
 static SnakeNode* snake_create_node(int x, int y)
 {
@@ -27,9 +10,9 @@ static SnakeNode* snake_create_node(int x, int y)
     {
         return NULL;
     }
-    node->x = x;
-    node->y = y;
-    node->next = NULL;
+    node->xy.x = x;
+    node->xy.y = y;
+    node->Next = NULL;
     return node;
 }
 

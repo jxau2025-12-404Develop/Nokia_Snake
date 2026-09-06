@@ -2,21 +2,10 @@
 #define SNAKE_H
 
 #include <stdlib.h>
+#include "Utils.h"
 
 /* 创建并初始化一个蛇身节点。 */
-static SnakeNode* snake_create_node(int x, int y)
-{
-    SnakeNode* node = (SnakeNode*)malloc(sizeof(SnakeNode));
-
-    if (node == NULL)
-    {
-        return NULL;
-    }
-    node->x = x;
-    node->y = y;
-    node->next = NULL;
-    return node;
-}
+static SnakeNode* snake_create_node(int x, int y);
 
 /* 将新节点插入链表头部，使它成为新的蛇头。 */
 static int snake_push_front(SnakeNode** head, int x, int y)
