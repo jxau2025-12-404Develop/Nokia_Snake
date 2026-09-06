@@ -12,33 +12,9 @@ static int snake_push_front(SnakeNode** head, int x, int y);
 
 /* 删除链表最后一个节点，用于蛇正常移动时缩短蛇尾。 */
 static void snake_pop_back(SnakeNode** head)
-{
-    SnakeNode* curr;
-    SnakeNode* prev;
 
-    if (head == NULL || *head == NULL)
-    {
-        return;
-    }
-    if ((*head)->next == NULL)
-    {
-        free(*head);
-        *head = NULL;
-        return;
-    }
-    prev = NULL;
-    curr = *head;
-    while (curr->next != NULL)
-    {
-        prev = curr;
-        curr = curr->next;
-    }
-    prev->next = NULL;
-    free(curr);
-}
-
-/* 释放蛇链表中的全部节点，并将头指针置为空。 */
-static void snake_destory(SnakeNode** head)
+    /* 释放蛇链表中的全部节点，并将头指针置为空。 */
+    static void snake_destory(SnakeNode** head)
 {
     SnakeNode* curr;
     SnakeNode* next;

@@ -43,7 +43,7 @@ static void snake_pop_back(SnakeNode** head)
     {
         return;
     }
-    if ((*head)->next == NULL)
+    if ((*head)->Next == NULL)
     {
         free(*head);
         *head = NULL;
@@ -51,12 +51,12 @@ static void snake_pop_back(SnakeNode** head)
     }
     prev = NULL;
     curr = *head;
-    while (curr->next != NULL)
+    while (curr->Next != NULL)
     {
         prev = curr;
-        curr = curr->next;
+        curr = curr->Next;
     }
-    prev->next = NULL;
+    prev->Next = NULL;
     free(curr);
 }
 
