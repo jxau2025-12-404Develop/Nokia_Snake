@@ -1,22 +1,32 @@
 // Nokia_Snake.cpp
-#include <memory>
-
 #include "NoKia_Snake.h"
 #include "Utils.h"
+#include "Snake.h"
 
 // 重置/初始化
 void InitGame(GameView& GV)
 {
-    GV.GameFlag = false;
-    std::shared_ptr<SnakeHead> head = std::make_shared<SnakeHead>();
+    // 设置棋盘的长宽
+    GV.height = HIGHT;
+    GV.width = WIDTH;
 
-    GV.snake = &(head->Node);
+    // 标记其为正在运行状态
+    GV.GameFlag = false;
+
+    if (GV.snake != NULL)
+    {
+        snake_destroy_game(&GV.snake);
+    }
+    GV.snake = snake_create_node(HIGHT, WIDTH);
+    GV.snakeLength = 0;
 }
 
 // 程序运行的主函数
 // TODO后续在这个函数里编写，不要动main函数
 void Nokia_Snake()
 {
+    GameView GV;
+
     // // 示例：识别 W/A/S/D 和方向键
     // switch (key)
     // {

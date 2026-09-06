@@ -32,7 +32,7 @@ typedef struct SnakeNode
 typedef struct SnakeHead
 {
     // 基础信息
-    SnakeNode Node;
+    SnakeNode* Node;
     // 行走方向
     char hir;
 } SnakeHead;

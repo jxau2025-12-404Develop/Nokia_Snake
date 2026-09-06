@@ -60,7 +60,7 @@ static void snake_pop_back(SnakeNode** head)
     free(curr);
 }
 
-static void snake_destroy_nodes(SnakeNode** head)
+static void snake_destroy_game(SnakeNode** head)
 {
     SnakeNode* curr;
     SnakeNode* next;
@@ -197,6 +197,6 @@ void snake_destroy_game(SnakeGame* game)
     {
         return;
     }
-    snake_destroy_nodes(&game->head);
+    snake_destroy_game(&game->head);
     game->gameOver = 1;
 }

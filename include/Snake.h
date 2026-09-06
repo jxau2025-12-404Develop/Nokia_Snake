@@ -3,9 +3,6 @@
 
 #include <stdlib.h>
 
-/* 提前声明节点类型，供 Utils.h 中的 Next 指针使用。 */
-typedef struct Snake SnakeNode;
-
 #include "Utils.h"
 
 /* 保存整个贪吃蛇游戏的状态。 */
@@ -30,6 +27,6 @@ static int snake_push_front(SnakeNode** head, int x, int y);
 static void snake_pop_back(SnakeNode** head);
 
 /* 释放蛇链表中的全部节点，并将头指针置为空。 */
-static void snake_destroy(SnakeNode** head);
+static void snake_destroy_game(SnakeNode** head);
 
 #endif
