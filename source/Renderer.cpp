@@ -85,7 +85,7 @@ static void RenderPlaying(const GameView* view)
             // 保存当前位置要显示的字符，默认显示空格。
             char display = ' ';
             // 保存当前检查的蛇身节点和位置。
-            const RendererSnakeNode* snakeNode;
+            const SnakeNode* snakeNode;
             int snakeIndex;
 
             // 检查当前位置是否属于棋盘边框。
@@ -107,13 +107,13 @@ static void RenderPlaying(const GameView* view)
             while (snakeNode != NULL && snakeIndex < view->snakeLength)
             {
                 // 判断当前坐标是否是某一节蛇身。
-                if (snakeNode->position.x == x && snakeNode->position.y == y)
+                if (snakeNode->xy.x == x && snakeNode->xy.y == y)
                 {
                     // 下标 0 是蛇头，其他下标是蛇身。
                     display = snakeIndex == 0 ? '@' : 'o';
                 }
 
-                snakeNode = snakeNode->next;
+                snakeNode = snakeNode->Next;
                 ++snakeIndex;
             }
 
