@@ -96,7 +96,7 @@ static int snake_occupies(const SnakeNode* head, int x, int y)
 }
 
 /* 初始化游戏状态，并创建第一节蛇身。 */
-int snake_init(SnakeGame* game, int startX, int startY, int foodX, int foodY)
+void snake_init(SnakeGame* game, int startX, int startY, int foodX, int foodY)
 {
     if (game == NULL)
     {
@@ -113,7 +113,7 @@ int snake_init(SnakeGame* game, int startX, int startY, int foodX, int foodY)
 }
 
 /* 设置移动方向，禁止直接反向移动。 */
-int snake_set_direction(SnakeGame* game, int dirX, int dirY)
+void snake_set_direction(SnakeGame* game, int dirX, int dirY)
 {
     if (game == NULL || (dirX == 0 && dirY == 0))
     {

@@ -30,23 +30,6 @@ static int snake_push_front(SnakeNode** head, int x, int y);
 static void snake_pop_back(SnakeNode** head);
 
 /* 释放蛇链表中的全部节点，并将头指针置为空。 */
-static void snake_destory(SnakeNode** head)
-{
-    SnakeNode* curr;
-    SnakeNode* next;
-
-    if (head == NULL)
-    {
-        return;
-    }
-    curr = *head;
-    while (curr != NULL)
-    {
-        next = curr->Next;
-        free(curr);
-        curr = next;
-    }
-    *head = NULL;
-}
+static void snake_destroy(SnakeNode** head);
 
 #endif
