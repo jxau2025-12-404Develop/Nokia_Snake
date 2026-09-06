@@ -1,7 +1,7 @@
 #ifndef COLLISION_H
 #define COLLISION_H
 
-#include "Snake.h"
+#include "Utils.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -9,7 +9,7 @@ extern "C"
 #endif
 
 int IsWallCollision(int x, int y, int boardWidth, int boardHeight);
-int IsSelfCollision(const SnakeGame* game, int x, int y);
+int IsSelfCollision(const GameView* view, int x, int y);
 
 #ifdef __cplusplus
 }

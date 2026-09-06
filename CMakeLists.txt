@@ -20,8 +20,9 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 add_executable(${PROJECT_NAME}
     source/main.cpp
     source/Utils.cpp
-    source/Renderer.c
     source/Nokia_Snake.cpp
+    source/Food.cpp
+    source/Collision.cpp
 )
 
 # 添加头文件路径

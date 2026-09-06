@@ -1,7 +1,7 @@
 // Nokia_Snake.h
 #pragma once
 
-#include "Renderer.h"
+#include "Utils.h"
 
 // 重置画面
 // 将所有数值重置为开始

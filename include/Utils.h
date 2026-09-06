@@ -21,7 +21,7 @@ typedef struct Point
 typedef struct Snake
 {
     Point xy;
-    SnakeNode* Next;
+    struct Snake* Next;
 } SnakeNode;
 
 // 蛇头节点
