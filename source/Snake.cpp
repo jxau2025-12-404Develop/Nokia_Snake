@@ -29,7 +29,7 @@ static int snake_push_front(SnakeNode** head, int x, int y)
     {
         return -1;
     }
-    node->next = *head;
+    node->Next = *head;
     *head = node;
     return 0;
 }

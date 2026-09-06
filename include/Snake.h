@@ -8,23 +8,7 @@
 static SnakeNode* snake_create_node(int x, int y);
 
 /* 将新节点插入链表头部，使它成为新的蛇头。 */
-static int snake_push_front(SnakeNode** head, int x, int y)
-{
-    SnakeNode* node;
-
-    if (head == NULL)
-    {
-        return -1;
-    }
-    node = snake_create_node(x, y);
-    if (node == NULL)
-    {
-        return -1;
-    }
-    node->next = *head;
-    *head = node;
-    return 0;
-}
+static int snake_push_front(SnakeNode** head, int x, int y);
 
 /* 删除链表最后一个节点，用于蛇正常移动时缩短蛇尾。 */
 static void snake_pop_back(SnakeNode** head)
