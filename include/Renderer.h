@@ -1,27 +1,11 @@
 #pragma once
 
+#include "Utils.h"
+
 #ifdef __cplusplus
 extern "C"
 {
 #endif
-
-    // 功能：保存棋盘上的一个坐标。
-    // 传入参数说明：x 是横坐标，y 是纵坐标。
-    // 以后可以增加坐标相加和坐标比较函数。
-    // 以前的注释：二维棋盘坐标。
-    typedef struct
-    {
-        int x; // 保存横坐标。
-        int y; // 保存纵坐标。
-    } Point;
-
-    // 功能：保存一节蛇身及其下一节的位置。
-    // 传入参数说明：由游戏逻辑负责维护链表节点的生命周期。
-    typedef struct RendererSnakeNode
-    {
-        Point position;                 // 保存当前蛇节坐标。
-        struct RendererSnakeNode* next; // 指向下一节蛇身。
-    } RendererSnakeNode;
 
     // 功能：表示当前需要显示的游戏界面。
     // 传入参数说明：调用者使用其中一个枚举值表示当前界面。
@@ -34,20 +18,6 @@ extern "C"
         SCREEN_PAUSED,     // 游戏暂停。
         SCREEN_GAME_OVER   // 游戏结束。
     } ScreenState;
-
-    // 功能：保存绘制一帧画面所需要的游戏数据。
-    // 传入参数说明：所有字段由游戏逻辑填写，再传给渲染函数。
-    // 以后可以增加排行榜数据。
-    // 以前的注释：渲染一帧所需的游戏数据。
-    typedef struct
-    {
-        int width;                // 保存棋盘宽度。
-        int height;               // 保存棋盘高度。
-        RendererSnakeNode* snake; // 指向蛇头链表。
-        int snakeLength;          // 保存当前蛇的长度。
-        Point food;               // 保存食物坐标。
-        int score;                // 保存当前分数。
-    } GameView;
 
     // 功能：清空屏幕并绘制当前游戏画面。
     // 传入参数说明：view 是当前游戏数据，state 是当前界面状态。

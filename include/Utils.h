@@ -20,12 +20,12 @@ typedef struct Point
 } Point;
 
 // 蛇身节点
-typedef struct Snake
+typedef struct SnakeNode
 {
     // 蛇身坐标
     Point xy;
     // 下一个蛇身的指针
-    SnakeNode* Next;
+    struct SnakeNode* Next;
 } SnakeNode;
 
 // 蛇头节点
