@@ -8,7 +8,8 @@
 
 namespace
 {
-    const std::string scoreFile = "scores.log"; // 保存历史成绩的文件名。
+    const std::string scoreFile = "scores.log"; // 保存历史成绩排行榜的文件名。
+    const std::string accountFile = "user.txt"; // 保存玩家账号（昵称 分数 密码）的文件名。
     constexpr int foodScore = 10;               // 吃到食物增加的分数。
     constexpr int collisionPenalty = 10;        // 碰撞时扣除的分数。
     constexpr int scorePerLevel = 50;           // 每增加 50 分提升一个难度等级。
@@ -19,25 +20,63 @@ namespace
 
 namespace Account
 {
-    ScoreAccount::ScoreAccount(const std::string& nickname)            // 构造玩家账号对象。
-        : nickname_(nickname.empty() ? "Player" : nickname), score_(0) // 设置昵称并将初始分数设为 0。
-    {
-    }
-
-    ScoreAccount::ScoreAccount(const std::string& username, const std::string& accountToken) // 构造登录账号。
+    ScoreAccount::ScoreAccount(const std::string& username, const std::string& accountToken,
+                               const char LS) // 构造玩家登录账号。
         : nickname_(username.empty() ? "Player" : username), score_(0),
-          token(accountToken) // 保存用户名、初始分数和登录凭证。
+          token(accountToken) // 保存昵称、初始分数和登录凭证。
     {
+        if (LS == 's') // 只有状态字符为 s 时才认为其为注册。
+        {
+            // 新账号分数固定为 0，格式为：昵称 分数 密码
+            const std::string record = nickname_ + " " + std::to_string(0) + " " + token;
+            // 追加写入账号文件，保存成功即视为注册成功。
+            checktoken = Utils::File::Add(record, accountFile);
+        }
+        else if (LS == 'l')
+        {
+            checktoken = CheckToken(); // 登录时从文件逐行比对昵称和密码。
+        }
     }
 
-    bool ScoreAccount::checktoken() // 检查登录账号的用户名和凭证是否有效。
+    bool ScoreAccount::CheckToken() // 读取 score.txt 逐行比对昵称和密码，判断登录是否成功。
     {
-        const bool valid = !nickname_.empty() && !token.empty(); // 用户名和凭证都不为空时认为登录信息有效。
-        if (!valid)                                              // 判断登录信息是否缺失。
+        if (nickname_.empty() || token.empty()) // 先检查输入是否为空。
         {
-            std::cout << "登录失败：用户名或凭证不能为空。\n"; // 输出失败原因，避免程序静默运行。
+            std::cout << "登录失败：用户名或凭证不能为空。\n"; // 输出失败原因。
+            return false;                                      // 输入为空直接登录失败。
         }
-        return valid; // 返回登录检查结果。
+
+        std::ifstream input(accountFile); // 打开保存账号信息的 score.txt。
+        if (!input)                       // 文件不存在或打开失败时无法比对。
+        {
+            std::cout << "登录失败：账号文件不存在。\n"; // 提示账号文件缺失。
+            return false;                                // 没有账号文件即登录失败。
+        }
+
+        std::string line;                 // 用来保存逐行读取的文本。
+        while (std::getline(input, line)) // 逐行读取每个账号记录。
+        {
+            if (line.empty()) // 跳过空行，避免无效记录干扰比对。
+            {
+                continue; // 继续读取下一行。
+            }
+            std::istringstream record(line);                         // 将一行文本转为输入流，便于按空格拆字段。
+            std::string fileNickname;                                // 保存文件中的昵称。
+            int fileScore = 0;                                       // 保存文件中的分数。
+            std::string fileToken;                                   // 保存文件中的密码。
+            if (!(record >> fileNickname >> fileScore >> fileToken)) // 按“昵称 分数 密码”格式解析，缺字段视为无效行。
+            {
+                continue; // 格式错误时跳过该行。
+            }
+            if (fileNickname == nickname_ && fileToken == token) // 昵称和密码都匹配才算登录成功。
+            {
+                score_ = fileScore; // 登录成功后把文件中保存的分数恢复到当前分数。
+                std::cout << "登录成功！欢迎回来，" << nickname_ << "。\n"; // 输出登录成功的提示信息。
+                return true;                                                // 返回登录成功结果。
+            }
+        }
+        std::cout << "登录失败：用户名或密码不正确。\n"; // 遍历完所有记录后仍无匹配时输出失败提示。
+        return false;                                    // 返回登录失败结果。
     }
 
     void ScoreAccount::InputNickname() // 从控制台读取玩家昵称。
