@@ -23,6 +23,16 @@ int main()
     // 设置 raylib 窗口创建前必须使用的窗口属性。
     Event_Initialize();
 
+    // 初始化音频设备，并加载指定的背景音乐。
+    InitAudioDevice();
+    Music backgroundMusic = LoadMusicStream("D:/awake/res/1.mp3");
+    const bool musicReady = IsMusicValid(backgroundMusic);
+    if (musicReady)
+    {
+        backgroundMusic.looping = true;
+        PlayMusicStream(backgroundMusic);
+    }
+
     // 设置目标帧率，并通过 Renderer API 保持对外接口不变。
     Renderer_SetFrameRate(60);
 
@@ -36,6 +46,12 @@ int main()
         // Event 模块根据键盘输入更新当前界面状态，并处理全屏切换。
         Event_Process(&state);
 
+        // 持续更新音乐流，保证背景音乐正常播放和循环。
+        if (musicReady)
+        {
+            UpdateMusicStream(backgroundMusic);
+        }
+
         // Renderer 模块将最新状态和游戏数据交给 UI 模块绘制。
         Renderer_Render(&view, state);
 
@@ -44,6 +60,12 @@ int main()
     }
 
     // 程序退出前释放 raylib 创建的窗口和图形资源。
+    if (musicReady)
+    {
+        StopMusicStream(backgroundMusic);
+        UnloadMusicStream(backgroundMusic);
+    }
+    CloseAudioDevice();
     CloseWindow();
     return 0;
 }
