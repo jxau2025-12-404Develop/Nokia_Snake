@@ -42,6 +42,8 @@ namespace Account
         bool SaveScore(int score) const;
         // 游戏结束时保存当前成绩并展示排行榜。
         bool SaveGameResult();
+        //设置一个全区score
+        void SetScore(int score) { score_ = score; }
         // 查询当前玩家的历史最高分。
         int PersonalBest(const std::vector<ScoreRecord>& scores) const;
     private:
