@@ -194,6 +194,7 @@ void Game(GameView& GV)
 
     // 游戏结束
     Renderer_Render(&GV, SCREEN_GAME_OVER);
+    player->SetScore(GV.score);
     player->SaveGameResult();
 }
 
