@@ -2,6 +2,8 @@
 #include "Utils.h"
 #include "NoKia_Snake.h"
 
+#include "raylib.h"
+
 int main()
 {
     // 初始化控制台
