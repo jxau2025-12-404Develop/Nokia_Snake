@@ -24,6 +24,22 @@ namespace Account
     {
     }
 
+    ScoreAccount::ScoreAccount(const std::string& username, const std::string& accountToken) // 构造登录账号。
+        : nickname_(username.empty() ? "Player" : username), score_(0),
+          token(accountToken) // 保存用户名、初始分数和登录凭证。
+    {
+    }
+
+    bool ScoreAccount::checktoken() // 检查登录账号的用户名和凭证是否有效。
+    {
+        const bool valid = !nickname_.empty() && !token.empty(); // 用户名和凭证都不为空时认为登录信息有效。
+        if (!valid)                                              // 判断登录信息是否缺失。
+        {
+            std::cout << "登录失败：用户名或凭证不能为空。\n"; // 输出失败原因，避免程序静默运行。
+        }
+        return valid; // 返回登录检查结果。
+    }
+
     void ScoreAccount::InputNickname() // 从控制台读取玩家昵称。
     {
         std::string nickname = Utils::Input::InputLine(); // 创建变量保存控制台输入内容。
@@ -86,16 +102,24 @@ namespace Account
         std::string line;                 // 保存当前读取的文本行。
         while (std::getline(input, line)) // 循环读取每一行成绩。
         {
+            if (line.empty()) // 跳过空行，避免无效记录影响排行榜。
+            {
+                continue; // 继续读取下一条成绩。
+            }
             std::istringstream record(line); // 将文本行转换为输入流。
             ScoreRecord item{};              // 创建一条临时成绩记录。
-            if (std::getline(record, item.nickname, '\t') && record >> item.score &&
-                !item.nickname.empty()) // 校验昵称和分数格式。
+            if (std::getline(record, item.nickname, '\t') && record >> item.score && item.score >= 0 &&
+                !item.nickname.empty()) // 校验昵称和非负分数格式。
             {
                 scores.push_back(item); // 保存格式正确的成绩。
             }
         }
         std::sort(scores.begin(), scores.end(), [](const ScoreRecord& left, const ScoreRecord& right) { // 按分数从高到低排序。
-            return left.score > right.score; // 让高分排在前面。
+            if (left.score != right.score) // 分数不同时优先比较分数。
+            {
+                return left.score > right.score; // 让高分排在前面。
+            }
+            return left.nickname < right.nickname; // 分数相同时按昵称排序，保证排行稳定。
         });
         return scores; // 返回排序后的历史成绩。
     }

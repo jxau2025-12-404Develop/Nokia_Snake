@@ -167,6 +167,31 @@ namespace Utils
 
             return 1;
         }
+
+        // 读取整个文件内容
+        // 参数：文件名，默认为当前设置的 log 文件
+        // 返回：文件内容字符串；文件打开失败返回空字符串
+        template <typename T = std::string> T ReadFile(const std::string address = addr)
+        {
+            // 打开文件
+            std::ifstream in(address.c_str());
+
+            // 判断是否打开
+            if (!in)
+            {
+                std::cerr << "打开文件失败" << std::endl;
+
+                return T{};
+            }
+
+            // 读取整个文件内容
+            T content((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
+
+            // 关闭文件
+            in.close();
+
+            return content;
+        }
     } // namespace File
 
     // 随机数的生成命名空间
