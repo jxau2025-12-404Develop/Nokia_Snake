@@ -24,14 +24,33 @@ namespace Account
     {
     }
 
+    ScoreAccount::ScoreAccount(const std::string& username, const std::string& accountToken) // 构造登录账号。
+        : nickname_(username.empty() ? "Player" : username), score_(0), token(accountToken) // 保存用户名、初始分数和登录凭证。
+    {
+    }
+
+    bool ScoreAccount::checktoken() // 检查登录账号的用户名和凭证是否有效。
+    {
+        const bool valid = !nickname_.empty() && !token.empty(); // 用户名和凭证都不为空时认为登录信息有效。
+        if (!valid) // 判断登录信息是否缺失。
+        {
+            std::cout << "登录失败：用户名或凭证不能为空。\n"; // 输出失败原因，避免程序静默运行。
+        }
+        return valid; // 返回登录检查结果。
+    }
+
     void ScoreAccount::InputNickname() // 从控制台读取玩家昵称。
     {
         std::string nickname; // 创建变量保存控制台输入内容。
         do
         {
             std::cout << "请输入玩家昵称："; // 提示玩家输入昵称。
-            std::getline(std::cin, nickname); // 读取一整行昵称。
-        } while (nickname.empty() && !std::cin.eof()); // 输入为空时继续读取，直到昵称有效。
+            if (!std::getline(std::cin, nickname)) // 读取一整行昵称并检查输入状态。
+            {
+                nickname = "Player"; // 输入流结束时使用默认昵称，避免循环卡住。
+                break; // 结束输入循环。
+            }
+        } while (nickname.empty()); // 输入为空时继续读取，直到昵称有效。
 
         SetNickname(nickname); // 使用成员方法保存并展示昵称。
     }
@@ -90,15 +109,23 @@ namespace Account
         std::string line; // 保存当前读取的文本行。
         while (std::getline(input, line)) // 循环读取每一行成绩。
         {
+            if (line.empty()) // 跳过空行，避免无效记录影响排行榜。
+            {
+                continue; // 继续读取下一条成绩。
+            }
             std::istringstream record(line); // 将文本行转换为输入流。
             ScoreRecord item{}; // 创建一条临时成绩记录。
-            if (std::getline(record, item.nickname, '\t') && record >> item.score && !item.nickname.empty()) // 校验昵称和分数格式。
+            if (std::getline(record, item.nickname, '\t') && record >> item.score && item.score >= 0 && !item.nickname.empty()) // 校验昵称和非负分数格式。
             {
                 scores.push_back(item); // 保存格式正确的成绩。
             }
         }
         std::sort(scores.begin(), scores.end(), [](const ScoreRecord& left, const ScoreRecord& right) { // 按分数从高到低排序。
-            return left.score > right.score; // 让高分排在前面。
+            if (left.score != right.score) // 分数不同时优先比较分数。
+            {
+                return left.score > right.score; // 让高分排在前面。
+            }
+            return left.nickname < right.nickname; // 分数相同时按昵称排序，保证排行稳定。
         });
         return scores; // 返回排序后的历史成绩。
     }
