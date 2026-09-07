@@ -19,19 +19,18 @@ namespace
 
 namespace Account
 {
-    ScoreAccount::ScoreAccount(const std::string& nickname) // 构造玩家账号对象。
-        : nickname_(nickname.empty() ? "Player" : nickname), score_(0) // 设置昵称并将初始分数设为 0。
+    ScoreAccount::ScoreAccount(const std::string& username, const std::string& accountToken, const char loginStatus) // 构造玩家登录账号。
+        : nickname_(username.empty() ? "Player" : username), score_(0), token(accountToken) // 保存昵称、初始分数和登录凭证。
     {
-    }
-
-    ScoreAccount::ScoreAccount(const std::string& username, const std::string& accountToken) // 构造登录账号。
-        : nickname_(username.empty() ? "Player" : username), score_(0), token(accountToken) // 保存用户名、初始分数和登录凭证。
-    {
+        if (loginStatus != 's') // 只有状态字符为 s 时才认为登录成功。
+        {
+            token.clear(); // 登录失败时清除凭证，避免后续误认为已经登录。
+        }
     }
 
     bool ScoreAccount::checktoken() // 检查登录账号的用户名和凭证是否有效。
     {
-        const bool valid = !nickname_.empty() && !token.empty(); // 用户名和凭证都不为空时认为登录信息有效。
+        const bool valid = !nickname_.empty() && !token.empty(); // 昵称和有效凭证都存在时认为登录成功。
         if (!valid) // 判断登录信息是否缺失。
         {
             std::cout << "登录失败：用户名或凭证不能为空。\n"; // 输出失败原因，避免程序静默运行。

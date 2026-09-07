@@ -17,9 +17,7 @@ namespace Account
     {
     public:
         // 创建账号对象，并保存玩家昵称。
-        explicit ScoreAccount(const std::string& nickname = "Player");
-        // 登录账号
-        explicit ScoreAccount(const std::string& username, const std::string& token);
+        explicit ScoreAccount(const std::string& nickname = "Player",const std::string& token,const char LS='s');
         // 是否成功
         bool checktoken();
 
