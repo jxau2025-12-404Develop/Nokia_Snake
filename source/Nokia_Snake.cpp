@@ -88,7 +88,7 @@ void Game(GameView& GV)
                     GameFlag = SCREEN_PAUSED;
             }
             // 暂停时按 Esc 退出游戏
-            else if (GameFlag == SCREEN_PAUSED && key == 27)
+            else if (GameFlag == SCREEN_PAUSED && key == 'q')
             {
                 GameFlag = SCREEN_GAME_OVER;
                 GV.GameFlag = true;
