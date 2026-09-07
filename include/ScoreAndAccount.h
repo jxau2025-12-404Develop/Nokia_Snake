@@ -9,7 +9,7 @@ namespace Account
     struct ScoreRecord
     {
         std::string nickname; // 玩家昵称。
-        int score; // 本局分数。
+        int score;            // 本局分数。
     };
 
     // 封装玩家账号、计分、难度、存档和排行榜功能。
@@ -18,6 +18,11 @@ namespace Account
     public:
         // 创建账号对象，并保存玩家昵称。
         explicit ScoreAccount(const std::string& nickname = "Player");
+        // 登录账号
+        explicit ScoreAccount(const std::string& username, const std::string& token);
+        // 是否成功
+        bool checktoken();
+
         // 从控制台输入玩家昵称。
         void InputNickname();
         // 设置玩家昵称。
@@ -42,15 +47,20 @@ namespace Account
         bool SaveScore(int score) const;
         // 游戏结束时保存当前成绩并展示排行榜。
         bool SaveGameResult();
-        //设置一个全区score
-        void SetScore(int score) { score_ = score; }
+        // 设置一个全区score
+        void SetScore(int score)
+        {
+            score_ = score;
+        }
         // 查询当前玩家的历史最高分。
         int PersonalBest(const std::vector<ScoreRecord>& scores) const;
+
     private:
         std::string nickname_; // 保存玩家昵称。
-        int score_; // 保存当前分数。
+        int score_;            // 保存当前分数。
+        std::string token;     // 保存玩家密码
     };
 
     // 展示历史成绩前十名，不属于 ScoreAccount 类。
     void ShowRanking(const std::vector<ScoreRecord>& scores);
-}
+} // namespace Account
