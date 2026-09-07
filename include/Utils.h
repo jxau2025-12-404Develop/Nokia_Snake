@@ -110,6 +110,9 @@ namespace Utils
             }
         }
 
+        // 获取整行
+        std::string InputLine();
+
         // 方向键返回值
         enum Key
         {
@@ -120,6 +123,9 @@ namespace Utils
         };
 
         // 检查是否有按键被按下（非阻塞，不会等待）
+        // 普通字母自动转为小写，如 A -> 'a'
+        // 回车返回 '\r'，空格返回 ' '，Esc 返回 27
+        // 方向键返回 KEY_UP / KEY_DOWN / KEY_LEFT / KEY_RIGHT
         bool HasKey();
 
         // 读取一个按键（阻塞等待，按下后立刻返回，不需要按回车）

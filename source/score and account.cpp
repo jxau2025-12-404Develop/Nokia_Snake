@@ -26,12 +26,7 @@ namespace Account
 
     void ScoreAccount::InputNickname() // 从控制台读取玩家昵称。
     {
-        std::string nickname; // 创建变量保存控制台输入内容。
-        do
-        {
-            std::cout << "请输入玩家昵称：";  // 提示玩家输入昵称。
-            std::getline(std::cin, nickname); // 读取一整行昵称。
-        } while (nickname.empty() && !std::cin.eof()); // 输入为空时继续读取，直到昵称有效。
+        std::string nickname = Utils::Input::InputLine(); // 创建变量保存控制台输入内容。
 
         SetNickname(nickname); // 使用成员方法保存并展示昵称。
     }
@@ -39,7 +34,8 @@ namespace Account
     void ScoreAccount::SetNickname(const std::string& nickname) // 设置玩家昵称。
     {
         nickname_ = nickname.empty() ? "Player" : nickname; // 空昵称使用默认名称 Player。
-        std::cout << "当前玩家：" << nickname_ << "\n";     // 展示当前玩家昵称。
+        // 展示当前玩家昵称。
+        Utils::Out::Out("当前玩家： " + nickname_);
     }
 
     const std::string& ScoreAccount::GetNickname() const // 获取玩家昵称。
@@ -77,10 +73,10 @@ namespace Account
 
     void ScoreAccount::ShowScoreState() const // 展示游戏中的账号状态。
     {
-        std::cout << "玩家：" << nickname_                           // 输出玩家昵称。
-                  << " | 分数：" << score_                           // 输出当前分数。
-                  << " | 难度：" << GetDifficultyLevel()             // 输出当前难度。
-                  << " | 移动间隔：" << GetMoveDelay() << " 毫秒\n"; // 输出当前速度。
+        Utils::Out::Out("玩家：" + nickname_                                           // 输出玩家昵称。
+                        + " | 分数：" + std::to_string(score_)                         // 输出当前分数。
+                        + " | 难度：" + std::to_string(GetDifficultyLevel())           // 输出当前难度。
+                        + " | 移动间隔：" + std::to_string(GetMoveDelay()) + " 毫秒"); // 输出当前速度。
     }
 
     std::vector<Account::ScoreRecord> ScoreAccount::LoadScores() const // 读取并排序历史成绩。
@@ -118,16 +114,16 @@ namespace Account
     {
         if (!SaveScore(score_)) // 保存当前玩家本局成绩。
         {
-            std::cout << "成绩保存失败。\n"; // 保存失败时显示提示。
-            return false;                    // 返回失败结果。
+            Utils::Out::Out("成绩保存失败。");
+            return false; // 返回失败结果。
         }
         const std::vector<ScoreRecord> scores = LoadScores();           // 重新读取包含本局成绩的排行榜。
-        std::cout << "===== 游戏结束 =====\n";                          // 输出游戏结束标题。
-        std::cout << "玩家：" << nickname_ << "\n";                     // 展示结束时的玩家昵称。
-        std::cout << "本局成绩：" << score_ << " 分\n";                 // 展示本局最终成绩。
-        std::cout << "个人最高分：" << PersonalBest(scores) << " 分\n"; // 展示玩家历史最高分。
-        Account::ShowRanking(scores);                                   // 展示历史成绩排行。
-        return true;                                                    // 返回保存和展示成功。
+        Utils::Out::Out("===== 游戏结束 =====");                        // 输出游戏结束标题。
+        Utils::Out::Out("玩家：" + nickname_);                          // 展示结束时的玩家昵称。
+        Utils::Out::Out("本局成绩：" + std::to_string(score_) + " 分"); // 展示本局最终成绩。
+        Utils::Out::Out("个人最高分：" + std::to_string(PersonalBest(scores)) + " 分"); // 展示玩家历史最高分。
+        Account::ShowRanking(scores);                                                   // 展示历史成绩排行。
+        return true;                                                                    // 返回保存和展示成功。
     }
 
     int ScoreAccount::PersonalBest(const std::vector<ScoreRecord>& scores) const // 查询当前玩家历史最高分。
@@ -145,17 +141,17 @@ namespace Account
 
     void ShowRanking(const std::vector<ScoreRecord>& scores) // 展示历史成绩排行榜。
     {
-        std::cout << "\n===== 历史成绩排行 =====\n"; // 输出排行榜标题。
-        if (scores.empty())                          // 判断是否存在历史成绩。
+        Utils::Out::Out("\n===== 历史成绩排行 ====="); // 输出排行榜标题。
+        if (scores.empty())                            // 判断是否存在历史成绩。
         {
-            std::cout << "暂无历史成绩\n"; // 没有成绩时显示提示。
-            return;                        // 结束排行榜展示。
+            Utils::Out::Out("暂无历史成绩"); // 没有成绩时显示提示。
+            return;                          // 结束排行榜展示。
         }
         const std::size_t count = std::min<std::size_t>(scores.size(), 10); // 最多展示前十名。
         for (std::size_t index = 0; index < count; ++index)                 // 遍历需要展示的成绩。
         {
-            std::cout << index + 1 << ". " << scores[index].nickname << " : " << scores[index].score
-                      << " 分\n"; // 输出名次、昵称和分数。
+            Utils::Out::Out(std::to_string(index + 1) + ". " + scores[index].nickname + " : " +
+                            std::to_string(scores[index].score) + " 分"); // 输出名次、昵称和分数。
         }
     }
 } // namespace Account

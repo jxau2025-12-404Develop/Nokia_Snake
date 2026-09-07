@@ -9,7 +9,7 @@ namespace Account
     struct ScoreRecord
     {
         std::string nickname; // 玩家昵称。
-        int score; // 本局分数。
+        int score;            // 本局分数。
     };
 
     // 封装玩家账号、计分、难度、存档和排行榜功能。
@@ -44,11 +44,12 @@ namespace Account
         bool SaveGameResult();
         // 查询当前玩家的历史最高分。
         int PersonalBest(const std::vector<ScoreRecord>& scores) const;
+
     private:
         std::string nickname_; // 保存玩家昵称。
-        int score_; // 保存当前分数。
+        int score_;            // 保存当前分数。
     };
 
     // 展示历史成绩前十名，不属于 ScoreAccount 类。
     void ShowRanking(const std::vector<ScoreRecord>& scores);
-}
+} // namespace Account
