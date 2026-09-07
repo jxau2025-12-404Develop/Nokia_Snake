@@ -25,7 +25,7 @@ int main()
 
     // 初始化音频设备，并加载指定的背景音乐。
     InitAudioDevice();
-    Music backgroundMusic = LoadMusicStream("D:/awake/res/1.mp3");
+    Music backgroundMusic = LoadMusicStream("music/1.mp3");
     const bool musicReady = IsMusicValid(backgroundMusic);
     if (musicReady)
     {
