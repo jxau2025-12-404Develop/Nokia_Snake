@@ -58,6 +58,8 @@ static void RenderPlaying(const GameView* view)
     // 保存当前绘制的横坐标。
     int x;
 
+    Utils::System::ClearScreen();
+
     // 输出游戏标题和分数。
     printf("NOKIA SNAKE    得分: %d\n", view->score);
 

@@ -211,7 +211,7 @@ void Nokia_Snake()
     Renderer_Render(&GV, SCREEN_START_MENU);
 
     // 设置帧率
-    Renderer_SetFrameRate(10); // 蛇移动速度比较合适，10帧/秒
+    Renderer_SetFrameRate(30); // 蛇移动速度比较合适，10帧/秒
 
     while (true)
     {
