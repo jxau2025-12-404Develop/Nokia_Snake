@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "Snake.h"
 
-static SnakeNode* snake_create_node(int x, int y)
+SnakeNode* snake_create_node(int x, int y)
 {
     SnakeNode* node = (SnakeNode*)malloc(sizeof(SnakeNode));
 
@@ -16,7 +16,7 @@ static SnakeNode* snake_create_node(int x, int y)
     return node;
 }
 
-static int snake_push_front(SnakeNode** head, int x, int y)
+int snake_push_front(SnakeNode** head, int x, int y)
 {
     SnakeNode* node;
 
@@ -34,7 +34,7 @@ static int snake_push_front(SnakeNode** head, int x, int y)
     return 0;
 }
 
-static void snake_pop_back(SnakeNode** head)
+void snake_pop_back(SnakeNode** head)
 {
     SnakeNode* curr;
     SnakeNode* prev;
@@ -60,7 +60,7 @@ static void snake_pop_back(SnakeNode** head)
     free(curr);
 }
 
-static void snake_destroy_game(SnakeNode** head)
+void snake_destroy_game(SnakeNode** head)
 {
     SnakeNode* curr;
     SnakeNode* next;

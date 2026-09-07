@@ -2,10 +2,12 @@
 #include <memory>
 
 #include "NoKia_Snake.h"
+
 #include "Utils.h"
 #include "Snake.h"
 #include "ScoreAndAccount.h"
 #include "Renderer.h"
+#include "Food.h"
 
 // 重置/初始化
 void InitGame(GameView& GV)
@@ -23,7 +25,11 @@ void InitGame(GameView& GV)
         snake_destroy_game(&GV.snake);
     }
     GV.snake = snake_create_node(HIGHT, WIDTH);
+
+    // 重置蛇身
     GV.snakeLength = 0;
+    // 生成初始化的食物坐标
+    GV.food = GenerateFood(&GV, GV.height, GV.width);
 }
 
 // 游戏运行函数
@@ -37,9 +43,77 @@ void Game(GameView& GV)
     auto player = std::make_unique<Account::ScoreAccount>();
     player->InputNickname();
 
-    while (true)
+    // 创建蛇头
+    auto snakehead = std::make_unique<SnakeHead>();
+    snakehead->Node = GV.snake;
+
+    // 保存游戏当前状态
+    auto GameFlag = SCREEN_PLAYING;
+
+    // 渲染画面
+    Renderer_Render(&GV, GameFlag);
+    Utils::Out::Out("按wasd任意一键开始");
+
+    // 获取移动方向
+    char key = Utils::Input::GetKey();
+    if (key == 'w')
     {
-        Renderer_Render(&GV, SCREEN_PLAYING);
+        snakehead->hir = 'w';
+    }
+    else if (key == 'a')
+    {
+        snakehead->hir = 'a';
+    }
+    else if (key == 's')
+    {
+        snakehead->hir = 's';
+    }
+    else if (key == 'd')
+    {
+        snakehead->hir = 'd';
+    }
+
+    while (!GV.GameFlag)
+    {
+        // 渲染画面
+        Renderer_Render(&GV, GameFlag);
+
+        // 获取键
+        char key = Utils::Input::HasKey();
+        // 判断是否为暂停
+        if (key == ' ')
+        {
+            if (GameFlag == SCREEN_PAUSED)
+            {
+                GameFlag = SCREEN_PLAYING;
+            }
+            else
+            {
+                GameFlag = SCREEN_PAUSED;
+            }
+        }
+        else if (GameFlag == SCREEN_PAUSED && key == 27)
+        {
+            GameFlag = SCREEN_GAME_OVER;
+            GV.GameFlag = true;
+        }
+        // 判断移动
+        if (key == 'w')
+        {
+            snakehead->hir = 'w';
+        }
+        else if (key == 'a')
+        {
+            snakehead->hir = 'a';
+        }
+        else if (key == 's')
+        {
+            snakehead->hir = 's';
+        }
+        else if (key == 'd')
+        {
+            snakehead->hir = 'd';
+        }
     }
 }
 
@@ -56,13 +130,14 @@ void Nokia_Snake()
     // 设置帧率
     Renderer_SetFrameRate(60);
 
-    // 选择
-    auto key = Utils::Input::GetKey();
     while (true)
     {
+        // 选择
+        auto key = Utils::Input::GetKey();
         if (key == '\r')
         {
             Game(GV);
+            break;
         }
         else if (key == 'q')
         {

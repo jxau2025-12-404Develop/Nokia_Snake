@@ -25,6 +25,7 @@ add_executable(${PROJECT_NAME}
     source/Snake.cpp
     source/Collision.cpp
     source/Food.cpp
+    source/SAA.cpp
 )
 
 # 添加头文件路径

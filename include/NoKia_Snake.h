@@ -1,8 +1,9 @@
 // Nokia_Snake.h
 #pragma once
+#include "Utils.h"
 
 // 重置/初始化
-void InitGame(GameView& GV, SnakeHead head);
+void InitGame(GameView& GV);
 
 // 程序运行的主函数
 void Nokia_Snake();
