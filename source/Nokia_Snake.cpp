@@ -35,6 +35,12 @@ void InitGame(GameView& GV)
     GV.food = GenerateFood(&GV, GV.height, GV.width);
 }
 
+// 用户的登录和注册
+void LoginSignIN(GameView& GV, std::unique_ptr<Account::ScoreAccount> player)
+{
+    Renderer_Render(&GV, SCREEN_USER);
+}
+
 // 游戏运行函数
 void Game(GameView& GV)
 {
