@@ -23,6 +23,8 @@ add_executable(${PROJECT_NAME}
     source/Renderer.cpp
     source/Nokia_Snake.cpp
     source/Snake.cpp
+    source/Collision.cpp
+    source/Food.cpp
 )
 
 # 添加头文件路径

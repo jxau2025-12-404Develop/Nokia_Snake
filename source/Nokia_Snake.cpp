@@ -17,6 +17,7 @@ void InitGame(GameView& GV)
     // 标记其为正在运行状态
     GV.GameFlag = false;
 
+    // 判断是否有蛇数据
     if (GV.snake != NULL)
     {
         snake_destroy_game(&GV.snake);
@@ -49,7 +50,7 @@ void Nokia_Snake()
     // 初始化帧
     GameView GV;
 
-    // 获取到对应的按键
+    // 输出开始菜单
     Renderer_Render(&GV, SCREEN_START_MENU);
 
     // 设置帧率
