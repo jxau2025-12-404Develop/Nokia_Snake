@@ -196,6 +196,7 @@ void Renderer_Render(const GameView* view, ScreenState state)
         break;
     case SCREEN_USER:
         RenderUser(view);
+        break;
     default:
         // 未知状态不绘制游戏内容。
         printf("未知的界面状态。\n");

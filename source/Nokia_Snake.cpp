@@ -36,9 +36,44 @@ void InitGame(GameView& GV)
 }
 
 // 用户的登录和注册
-void LoginSignIN(GameView& GV, std::unique_ptr<Account::ScoreAccount> player)
+void LoginSignIN(GameView& GV, std::unique_ptr<Account::ScoreAccount>& player)
 {
-    Renderer_Render(&GV, SCREEN_USER);
+
+    while (true)
+    {
+        Utils::System::ClearScreen();
+        // 渲染登录与注册界面
+        Renderer_Render(&GV, SCREEN_USER);
+        // 获取输入
+        Utils::Out::Out("默认注册");
+        auto key = Utils::Input::GetKey();
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        Utils::Out::Out("输入昵称");
+        std::string name = Utils::Input::InputLine();
+        Utils::Out::Out("输入密码");
+        std::string token = Utils::Input::InputLine();
+
+        // 判断到对应的
+        if (key == 'l')
+        {
+            player = std::make_unique<Account::ScoreAccount>(name, token, 'l');
+            if (player->CheckToken())
+            {
+                break;
+            }
+            else
+            {
+                Utils::Out::Out("密码/账号错误");
+                continue;
+            }
+        }
+        else
+        {
+            player = std::make_unique<Account::ScoreAccount>(name, token, 's');
+            break;
+        }
+    }
 }
 
 // 游戏运行函数
@@ -48,9 +83,10 @@ void Game(GameView& GV)
     InitGame(GV);
 
     // 创建玩家名称对象
-    Utils::Out::Out("输入玩家名称");
     auto player = std::make_unique<Account::ScoreAccount>();
-    player->InputNickname();
+    LoginSignIN(GV, player);
+
+    Utils::System::ClearScreen();
 
     // 创建蛇头信息
     auto snakehead = std::make_unique<SnakeHead>();
