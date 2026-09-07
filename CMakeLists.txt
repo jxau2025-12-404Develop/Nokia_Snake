@@ -32,20 +32,3 @@ add_executable(${PROJECT_NAME}
 target_include_directories(${PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
-
-# 引入 raylib
-include(FetchContent)
-
-# 关闭 raylib 自带的示例和测试，只编译库本身
-set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
-
-FetchContent_Declare(
-    raylib
-    URL https://github.com/raysan5/raylib/archive/refs/tags/5.5.tar.gz
-    DOWNLOAD_EXTRACT_TIMESTAMP ON
-)
-
-FetchContent_MakeAvailable(raylib)
-
-# 链接 raylib
-target_link_libraries(${PROJECT_NAME} PRIVATE raylib)
