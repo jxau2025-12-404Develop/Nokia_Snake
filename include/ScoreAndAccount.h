@@ -1,0 +1,55 @@
+#pragma once
+
+#include <string>
+#include <vector>
+
+namespace Account
+{
+    // 保存一条玩家成绩记录。
+    struct ScoreRecord
+    {
+        std::string nickname; // 玩家昵称。
+        int score;            // 本局分数。
+    };
+
+    // 封装玩家账号、计分、难度、存档和排行榜功能。
+    class ScoreAccount
+    {
+    public:
+        // 创建账号对象，并保存玩家昵称。
+        explicit ScoreAccount(const std::string& nickname = "Player");
+        // 从控制台输入玩家昵称。
+        void InputNickname();
+        // 设置玩家昵称。
+        void SetNickname(const std::string& nickname);
+        // 返回玩家昵称。
+        const std::string& GetNickname() const;
+        // 返回当前分数。
+        int GetScore() const;
+        // 吃到食物增加 10 分。
+        int AddFoodScore();
+        // 碰撞扣除 10 分，最低为 0 分。
+        int ApplyCollisionPenalty();
+        // 根据分数返回难度等级。
+        int GetDifficultyLevel() const;
+        // 根据分数返回移动间隔。
+        int GetMoveDelay() const;
+        // 展示昵称、分数、难度和速度。
+        void ShowScoreState() const;
+        // 读取并排序历史成绩。
+        std::vector<ScoreRecord> LoadScores() const;
+        // 保存当前玩家的指定成绩。
+        bool SaveScore(int score) const;
+        // 游戏结束时保存当前成绩并展示排行榜。
+        bool SaveGameResult();
+        // 查询当前玩家的历史最高分。
+        int PersonalBest(const std::vector<ScoreRecord>& scores) const;
+
+    private:
+        std::string nickname_; // 保存玩家昵称。
+        int score_;            // 保存当前分数。
+    };
+
+    // 展示历史成绩前十名，不属于 ScoreAccount 类。
+    void ShowRanking(const std::vector<ScoreRecord>& scores);
+} // namespace Account

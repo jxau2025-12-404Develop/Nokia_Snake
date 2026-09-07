@@ -1,11 +1,12 @@
 // Nokia_Snake.h
 #pragma once
+#include "Utils.h"
 
-#include "Renderer.h"
+// 重置/初始化
+void InitGame(GameView& GV);
 
-// 重置画面
-// 将所有数值重置为开始
-void InitGV(GameView& GV);
+// 单次游戏的函数
+void Game(GameView& GV);
 
 // 程序运行的主函数
 void Nokia_Snake();

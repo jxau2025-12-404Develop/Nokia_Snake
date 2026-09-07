@@ -7,6 +7,49 @@
 #include <fstream>
 #include <string>
 
+constexpr int HIGHT = 30;
+constexpr int WIDTH = 30;
+
+// 坐标信息
+typedef struct Point
+{
+    // x坐标
+    int x;
+    // y坐标
+    int y;
+} Point;
+
+// 蛇身节点
+typedef struct SnakeNode
+{
+    // 蛇身坐标
+    Point xy;
+    // 下一个蛇身的指针
+    struct SnakeNode* Next;
+} SnakeNode;
+
+// 蛇头节点
+typedef struct SnakeHead
+{
+    // 基础信息
+    SnakeNode* Node;
+    // 行走方向
+    char hir;
+} SnakeHead;
+
+// 功能：保存绘制一帧画面所需要的游戏数据。
+// 保存这一帧的数据
+typedef struct
+{
+    int width;        // 保存棋盘宽度。
+    int height;       // 保存棋盘高度。
+    SnakeNode* snake; // 指向蛇头链表。
+    int snakeLength;  // 保存当前蛇的长度。
+    Point food;       // 保存食物坐标。
+    int score;        // 保存当前分数。
+    bool GameFlag;    // 游戏状态
+} GameView;
+
 namespace Utils
 {
     // 控制台
@@ -67,6 +110,9 @@ namespace Utils
             }
         }
 
+        // 获取整行
+        std::string InputLine();
+
         // 方向键返回值
         enum Key
         {
@@ -77,6 +123,9 @@ namespace Utils
         };
 
         // 检查是否有按键被按下（非阻塞，不会等待）
+        // 普通字母自动转为小写，如 A -> 'a'
+        // 回车返回 '\r'，空格返回 ' '，Esc 返回 27
+        // 方向键返回 KEY_UP / KEY_DOWN / KEY_LEFT / KEY_RIGHT
         bool HasKey();
 
         // 读取一个按键（阻塞等待，按下后立刻返回，不需要按回车）

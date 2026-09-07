@@ -1,4 +1,5 @@
 #include "Renderer.h"
+#include "Utils.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -9,21 +10,6 @@
 
 // 保存每一帧之间需要等待的毫秒数。
 static unsigned int g_frameDurationMilliseconds = 100;
-
-// 功能：清空控制台画面。
-// 传入参数说明：不需要传入参数。
-// 以后可以使用更平滑的局部刷新方式。
-// 以前的注释：每次绘制前清空屏幕。
-static void ClearScreen(void)
-{
-#ifdef _WIN32
-    // Windows 使用 cls 命令清空屏幕。
-    system("cls");
-#else
-    // Linux 和 macOS 使用 ANSI 转义序列清空屏幕。
-    printf("\033[2J\033[H");
-#endif
-}
 
 // 功能：判断坐标是否位于棋盘内部。
 // 传入参数说明：point 是需要判断的坐标，width 和 height 是棋盘尺寸。
@@ -72,6 +58,8 @@ static void RenderPlaying(const GameView* view)
     // 保存当前绘制的横坐标。
     int x;
 
+    Utils::System::ClearScreen();
+
     // 输出游戏标题和分数。
     printf("NOKIA SNAKE    得分: %d\n", view->score);
 
@@ -84,7 +72,7 @@ static void RenderPlaying(const GameView* view)
             // 保存当前位置要显示的字符，默认显示空格。
             char display = ' ';
             // 保存当前检查的蛇身节点和位置。
-            const RendererSnakeNode* snakeNode;
+            const SnakeNode* snakeNode;
             int snakeIndex;
 
             // 检查当前位置是否属于棋盘边框。
@@ -106,13 +94,13 @@ static void RenderPlaying(const GameView* view)
             while (snakeNode != NULL && snakeIndex < view->snakeLength)
             {
                 // 判断当前坐标是否是某一节蛇身。
-                if (snakeNode->position.x == x && snakeNode->position.y == y)
+                if (snakeNode->xy.x == x && snakeNode->xy.y == y)
                 {
                     // 下标 0 是蛇头，其他下标是蛇身。
                     display = snakeIndex == 0 ? '@' : 'o';
                 }
 
-                snakeNode = snakeNode->next;
+                snakeNode = snakeNode->Next;
                 ++snakeIndex;
             }
 
@@ -174,8 +162,6 @@ static void RenderGameOver(const GameView* view)
 // 以前的注释：根据界面状态绘制当前画面。
 void Renderer_Render(const GameView* view, ScreenState state)
 {
-    // 每次绘制前清空旧画面。
-    ClearScreen();
 
     // 根据当前界面状态调用对应的绘制函数。
     switch (state)

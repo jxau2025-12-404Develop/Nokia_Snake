@@ -1,18 +1,23 @@
-#pragma once
+#ifndef FOOD_H
+#define FOOD_H
 
-#include "SnakeTypes.h"
+#include "Utils.h"
 
-struct Food
-{
-    Position position;
-};
+// 函数作用：在棋盘空闲位置生成食物。
+// 函数传参：view 为当前游戏画面数据，boardWidth 为棋盘宽度，boardHeight 为棋盘高度。
+// 返回值：返回生成的食物坐标；棋盘没有空闲位置时抛出异常。
+Point GenerateFood(
+    const GameView* view,
+    int boardWidth,
+    int boardHeight);
 
-// 生成一个不在蛇身上的食物位置。
-// snake 为当前蛇对象，boardWidth 为游戏区域宽度，boardHeight 为游戏区域高度。
-// 返回生成的食物对象。
-Food GenerateFood(const Snake* snake, int boardWidth, int boardHeight);
+// 函数作用：判断蛇头是否吃到食物，并更新分数和食物坐标。
+// 函数传参：food 为食物坐标，view 为当前游戏画面数据，boardWidth 为棋盘宽度，boardHeight 为棋盘高度。
+// 返回值：吃到食物时返回 true，否则返回 false。
+bool EatFood(
+    Point* food,
+    GameView* view,
+    int boardWidth,
+    int boardHeight);
 
-// 判断蛇头是否吃到食物，并在吃到食物时更新蛇身、分数和食物位置。
-// food 为食物对象，headPosition 为蛇头位置，snake 为当前蛇对象，score 为当前分数，boardWidth 为游戏区域宽度，boardHeight 为游戏区域高度。
-// 蛇头吃到食物时返回 true，否则返回 false。
-bool EatFood(Food* food, Position headPosition, Snake* snake, int* score, int boardWidth, int boardHeight);
+#endif

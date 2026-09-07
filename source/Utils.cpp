@@ -54,6 +54,21 @@ namespace Utils
     // 立即读取按键，不需要按回车
     namespace Input
     {
+        // 获取整行
+        std::string InputLine()
+        {
+            std::string msg;
+            do
+            {
+                // 提示玩家输入昵称。
+                std::cout << "请输入玩家昵称：";
+                // 读取一整行昵称。
+                std::getline(std::cin, msg);
+                // 输入为空时继续读取，直到昵称有效。
+            } while (msg.empty() && !std::cin.eof());
+            return msg;
+        }
+
         // 检查是否有按键被按下（非阻塞）
         bool HasKey()
         {
