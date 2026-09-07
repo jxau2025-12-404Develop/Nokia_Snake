@@ -156,6 +156,18 @@ static void RenderGameOver(const GameView* view)
     printf("==============================\n");
 }
 
+static void RenderUser(const GameView* view)
+{
+    // 输出结束界面的上边框。
+    printf("==============================\n");
+    // 输出登陆。
+    printf("          Login|L\n\n");
+    // 输出注册
+    printf("          Sign in|S\n\n");
+    // 输出结束界面的下边框。
+    printf("==============================\n");
+}
+
 // 功能：根据界面状态绘制当前画面。
 // 传入参数说明：view 保存游戏数据，state 表示当前界面。
 // 以后可以增加错误状态提示。
@@ -182,6 +194,8 @@ void Renderer_Render(const GameView* view, ScreenState state)
         // 绘制游戏结束界面。
         RenderGameOver(view);
         break;
+    case SCREEN_USER:
+        RenderUser(view);
     default:
         // 未知状态不绘制游戏内容。
         printf("未知的界面状态。\n");
