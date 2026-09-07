@@ -16,7 +16,8 @@ extern "C"
         SCREEN_START_MENU, // 开始菜单。
         SCREEN_PLAYING,    // 游戏进行中。
         SCREEN_PAUSED,     // 游戏暂停。
-        SCREEN_GAME_OVER   // 游戏结束。
+        SCREEN_GAME_OVER,  // 游戏结束。
+        SCREEN_USER        // 用户选择界面
     } ScreenState;
 
     // 功能：清空屏幕并绘制当前游戏画面。
