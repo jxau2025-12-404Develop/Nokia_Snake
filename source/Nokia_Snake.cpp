@@ -94,7 +94,7 @@ void LoginSignIN(GameView& GV, std::unique_ptr<Account::ScoreAccount>& player)
 }
 
 // 游戏运行函数
-void Game(GameView& GV, Music backgroundMusic)
+void Game(GameView& GV)
 {
     // 重置状态
     InitGame(GV);
@@ -117,8 +117,6 @@ void Game(GameView& GV, Music backgroundMusic)
     unsigned int fps = 5;
     UI_SetFrameRate(fps);
 
-    UpdateMusicStream(backgroundMusic);
-
     // 渲染画面
     UI_Render(&GV, GameFlag);
 
@@ -134,7 +132,6 @@ void Game(GameView& GV, Music backgroundMusic)
 
     while (!GV.GameFlag && !WindowShouldClose())
     {
-        UpdateMusicStream(backgroundMusic);
         // 渲染画面
         UI_Render(&GV, GameFlag);
 
@@ -228,7 +225,7 @@ void Game(GameView& GV, Music backgroundMusic)
 }
 
 // 程序运行的主函数
-void Nokia_Snake(Music backgroundMusic)
+void Nokia_Snake()
 {
     // 初始化帧
     GameView GV;
@@ -245,7 +242,6 @@ void Nokia_Snake(Music backgroundMusic)
 
     while (true && !WindowShouldClose())
     {
-        UpdateMusicStream(backgroundMusic);
         // 每帧渲染菜单：UI_Render 内部的 EndDrawing 会调用 PollInputEvents，
         // 否则 raylib 不会刷新键盘状态，IsKeyPressed 永远读不到按键。
         UI_Render(&GV, SCREEN_START_MENU);
@@ -254,7 +250,7 @@ void Nokia_Snake(Music backgroundMusic)
         if (IsKeyPressed(KEY_ENTER))
         {
             // 进入游戏函数
-            Game(GV, backgroundMusic);
+            Game(GV);
             // 游戏结束返回开始菜单，下一轮循环会自动重新渲染菜单
             while (!WindowShouldClose())
             {

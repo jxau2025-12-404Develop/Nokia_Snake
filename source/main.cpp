@@ -21,14 +21,6 @@ int main()
     Renderer_SetFrameRate(60);
 
     // ═════ 窗口创建之后，再初始化音频设备 ═════
-    // 注意：raylib 要求先 InitWindow 再 InitAudioDevice，否则音乐会无声或加载失败。
-    // UI_Render 中的 EnsureWindow 会检测窗口是否已创建，因此这里先主动创建一次。
-    if (!IsWindowReady())
-    {
-        InitWindow(960, 720, "Nokia Snake");
-        SetTargetFPS(60);
-    }
-
     InitAudioDevice();
     Music backgroundMusic = LoadMusicStream("music/back.mp3");
     const bool musicReady = IsMusicValid(backgroundMusic);
@@ -39,7 +31,7 @@ int main()
     }
 
     // 程序运行的主函数
-    Nokia_Snake(backgroundMusic);
+    Nokia_Snake();
 
     // 程序退出前释放 raylib 创建的窗口和图形资源。
     if (musicReady)
