@@ -257,9 +257,6 @@ void Nokia_Snake(Music backgroundMusic)
     // 输出开始菜单
     UI_Render(&GV, SCREEN_START_MENU);
 
-    // 设置 UI 使用的目标帧率。
-    UI_SetFrameRate(10);
-
     while (true && !WindowShouldClose())
     {
         UpdateMusicStream(backgroundMusic);
