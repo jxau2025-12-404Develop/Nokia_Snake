@@ -47,6 +47,7 @@ typedef struct
     int snakeLength;  // 保存当前蛇的长度。
     Point food;       // 保存食物坐标。
     int score;        // 保存当前分数。
+    int maxscore;     // 保存最高得分
     bool GameFlag;    // 游戏状态
 } GameView;
 

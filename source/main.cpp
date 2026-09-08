@@ -22,7 +22,7 @@ int main()
 
     // ═════ 窗口创建之后，再初始化音频设备 ═════
     InitAudioDevice();
-    Music backgroundMusic = LoadMusicStream("./music/back.mp3");
+    Music backgroundMusic = LoadMusicStream("music/back.mp3");
     const bool musicReady = IsMusicValid(backgroundMusic);
     if (musicReady)
     {

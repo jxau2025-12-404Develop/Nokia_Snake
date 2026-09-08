@@ -4,7 +4,7 @@
 #include "NoKia_Snake.h"
 
 #include "raylib.h"
-// #include "raygui.h"
+#include "raygui.h"
 
 #include "Utils.h"
 #include "Snake.h"
@@ -39,59 +39,59 @@ void InitGame(GameView& GV)
     GV.food = GenerateFood(&GV, GV.height, GV.width);
 }
 
-// // 用户的登录和注册
-// void LoginSignIN(GameView& GV, std::unique_ptr<Account::ScoreAccount>& player)
-// {
-//     // 输入缓冲区：必须跨帧存活，GuiTextBox 每帧往里追加字符
-//     char username[64] = "";
-//     char password[64] = "";
+// 用户的登录和注册
+void LoginSignIN(GameView& GV, std::unique_ptr<Account::ScoreAccount>& player)
+{
+    // 输入缓冲区：必须跨帧存活，GuiTextBox 每帧往里追加字符
+    char username[64] = "";
+    char password[64] = "";
 
-//     // 当前获得焦点的输入框：-1=无，0=用户名，1=密码（跨帧保存！）
-//     int activeField = -1;
+    // 当前获得焦点的输入框：-1=无，0=用户名，1=密码（跨帧保存！）
+    int activeField = -1;
 
-//     const Rectangle userBox = {330, 300, 300, 44};
-//     const Rectangle passBox = {330, 380, 300, 44};
+    const Rectangle userBox = {330, 300, 300, 44};
+    const Rectangle passBox = {330, 380, 300, 44};
 
-//     while (!WindowShouldClose())
-//     {
-//         // ===== 1. 输入状态更新 =====
-//         Vector2 mouse = GetMousePosition();
-//         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
-//         {
-//             if (CheckCollisionPointRec(mouse, userBox))
-//                 activeField = 0; // 点到用户名框
-//             else if (CheckCollisionPointRec(mouse, passBox))
-//                 activeField = 1; // 点到密码框
-//             else
-//                 activeField = -1; // 点空白处失焦
-//         }
+    while (!WindowShouldClose())
+    {
+        // ===== 1. 输入状态更新 =====
+        Vector2 mouse = GetMousePosition();
+        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+        {
+            if (CheckCollisionPointRec(mouse, userBox))
+                activeField = 0; // 点到用户名框
+            else if (CheckCollisionPointRec(mouse, passBox))
+                activeField = 1; // 点到密码框
+            else
+                activeField = -1; // 点空白处失焦
+        }
 
-//         // 按回车视为提交一次输入
-//         bool submitted = (activeField != -1 && IsKeyPressed(KEY_ENTER));
-//         if (submitted)
-//             activeField = -1;
+        // 按回车视为提交一次输入
+        bool submitted = (activeField != -1 && IsKeyPressed(KEY_ENTER));
+        if (submitted)
+            activeField = -1;
 
-//         // ===== 2. 整帧绘制 =====
-//         BeginDrawing();
-//         ClearBackground(Color{12, 20, 24, 255});
+        // ===== 2. 整帧绘制 =====
+        BeginDrawing();
+        ClearBackground(Color{12, 20, 24, 255});
 
-//         const char* title = "USER LOGIN";
-//         DrawText(title, (GetScreenWidth() - MeasureText(title, 48)) / 2, 180, 48, Color{117, 220, 89, 255});
+        const char* title = "USER LOGIN";
+        DrawText(title, (GetScreenWidth() - MeasureText(title, 48)) / 2, 180, 48, Color{117, 220, 89, 255});
 
-//         // editMode 直接传“本框是否持有焦点”
-//         GuiTextBox(userBox, username, sizeof(username), activeField == 0);
-//         GuiTextBox(passBox, password, sizeof(password), activeField == 1);
+        // editMode 直接传“本框是否持有焦点”
+        GuiTextBox(userBox, username, sizeof(username), activeField == 0);
+        GuiTextBox(passBox, password, sizeof(password), activeField == 1);
 
-//         EndDrawing();
+        EndDrawing();
 
-//         // ===== 3. 提交后处理（接入账号校验/注册逻辑）=====
-//         if (submitted)
-//         {
-//             player = std::make_unique<Account::ScoreAccount>(username, password, 'l');
-//             break;
-//         }
-//     }
-// }
+        // ===== 3. 提交后处理（接入账号校验/注册逻辑）=====
+        if (submitted)
+        {
+            player = std::make_unique<Account::ScoreAccount>(username, password, 'l');
+            break;
+        }
+    }
+}
 
 // 游戏运行函数
 void Game(GameView& GV)
