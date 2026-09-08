@@ -87,7 +87,7 @@ void LoginSignIN(GameView& GV, std::unique_ptr<Account::ScoreAccount>& player)
         // ===== 3. 提交后处理（接入账号校验/注册逻辑）=====
         if (submitted)
         {
-            player = std::make_unique<Account::ScoreAccount>(username, password, 'l');
+            player = std::make_unique<Account::ScoreAccount>(username, password, 's');
             break;
         }
     }
