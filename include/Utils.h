@@ -200,10 +200,14 @@ namespace Utils
         // 随机数最小的数
         const int min = 1;
         // 随机数最大的数（尽量保证与棋盘一样大）
-        const int max = 50;
+        const int WALL = std::max(HIGHT, WIDTH);
 
         // 随机数生成
         // 无参
         int Random();
+
+        // fps增加算法
+        // 现在的帧率,现在的分数
+        int FPSAdd(int fps, int score);
     } // namespace Random
 } // namespace Utils
