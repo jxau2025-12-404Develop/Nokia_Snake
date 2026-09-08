@@ -102,7 +102,7 @@ void Game(GameView& GV, Music backgroundMusic)
     // 创建玩家名称对象
     auto player = std::make_unique<Account::ScoreAccount>();
 
-    // LoginSignIN(GV, player);
+    LoginSignIN(GV, player);
 
     // Utils::System::ClearScreen();
 
@@ -119,18 +119,34 @@ void Game(GameView& GV, Music backgroundMusic)
 
     UpdateMusicStream(backgroundMusic);
 
-    // 渲染画面
-    UI_Render(&GV, GameFlag);
+    while (!WindowShouldClose())
+    {
 
-    // 获取起始移动方向（阻塞等待）
-    if (IsKeyPressed(KEY_W))
-        snakehead->hir = 'w';
-    else if (IsKeyPressed(KEY_A))
-        snakehead->hir = 'a';
-    else if (IsKeyPressed(KEY_S))
-        snakehead->hir = 's';
-    else if (IsKeyPressed(KEY_D))
-        snakehead->hir = 'd';
+        // 渲染画面
+        UI_Render(&GV, GameFlag);
+
+        // 获取起始移动方向（阻塞等待）
+        if (IsKeyPressed(KEY_W))
+        {
+            snakehead->hir = 'w';
+            break;
+        }
+        else if (IsKeyPressed(KEY_A))
+        {
+            snakehead->hir = 'a';
+            break;
+        }
+        else if (IsKeyPressed(KEY_S))
+        {
+            snakehead->hir = 's';
+            break;
+        }
+        else if (IsKeyPressed(KEY_D))
+        {
+            snakehead->hir = 'd';
+            break;
+        }
+    }
 
     while (!GV.GameFlag && !WindowShouldClose())
     {
@@ -225,6 +241,7 @@ void Game(GameView& GV, Music backgroundMusic)
         Renderer_WaitForNextFrame();
     }
     player->SetScore(GV.score);
+    player->SaveGameResult();
 }
 
 // 程序运行的主函数
@@ -260,7 +277,6 @@ void Nokia_Snake(Music backgroundMusic)
             {
                 // 游戏结束
                 UI_Render(&GV, SCREEN_GAME_OVER);
-                // player->SaveGameResult();
                 if (IsKeyPressed(KEY_SPACE))
                 {
                     break;
