@@ -7,8 +7,8 @@
 #include <fstream>
 #include <string>
 
-constexpr int HIGHT = 30;
-constexpr int WIDTH = 30;
+extern int HIGHT;
+extern int WIDTH;
 
 // 坐标信息
 typedef struct Point
@@ -47,6 +47,7 @@ typedef struct
     int snakeLength;  // 保存当前蛇的长度。
     Point food;       // 保存食物坐标。
     int score;        // 保存当前分数。
+    int maxscore;     // 保存最高得分
     bool GameFlag;    // 游戏状态
 } GameView;
 
@@ -127,12 +128,6 @@ namespace Utils
         // 回车返回 '\r'，空格返回 ' '，Esc 返回 27
         // 方向键返回 KEY_UP / KEY_DOWN / KEY_LEFT / KEY_RIGHT
         bool HasKey();
-
-        // 读取一个按键（阻塞等待，按下后立刻返回，不需要按回车）
-        // 普通字母自动转为小写，如 A -> 'a'
-        // 回车返回 '\r'，空格返回 ' '，Esc 返回 27
-        // 方向键返回 KEY_UP / KEY_DOWN / KEY_LEFT / KEY_RIGHT
-        int GetKey();
     } // namespace Input
 
     // 写入文件命名空间
