@@ -184,28 +184,7 @@ void Game(GameView& GV)
             ++newX;
 
         // 墙壁碰撞检测
-        if (IsWallCollision(newX, newY, GV.width, GV.height))
-        {
-            GV.GameFlag = true;
-            GameFlag = SCREEN_GAME_OVER;
-            break;
-        }
-
-        // 自己碰撞检测（移动时蛇尾会离开，所以只要新头不在蛇身（除尾外）即可）
-        SnakeNode* tailNode = snakehead->Node;
-        while (tailNode->Next != NULL)
-            tailNode = tailNode->Next;
-
-        bool hitSelf = false;
-        for (SnakeNode* p = snakehead->Node; p != NULL; p = p->Next)
-        {
-            if (p != tailNode && p->xy.x == newX && p->xy.y == newY)
-            {
-                hitSelf = true;
-                break;
-            }
-        }
-        if (hitSelf)
+        if (IsWallCollision(newX, newY, GV.width, GV.height) || IsSelfCollision(&GV, newX, newY))
         {
             GV.GameFlag = true;
             GameFlag = SCREEN_GAME_OVER;
@@ -222,7 +201,7 @@ void Game(GameView& GV)
         ++GV.snakeLength;
 
         // 若吃到食物则加分并重新生成食物，否则删除蛇尾
-        if (newX == GV.food.x && newY == GV.food.y)
+        if (EatFood(&GV.food, &GV, GV.width, GV.height))
         {
             GV.score += 10;
             GV.food = GenerateFood(&GV, GV.height, GV.width);
