@@ -110,12 +110,13 @@ namespace Utils
 
     namespace Random
     {
+        // 随机数
         int Random()
         {
             try
             {
                 // 均匀分布在 [min, max] 之间的整数
-                std::uniform_int_distribution<int> dist(min, max);
+                std::uniform_int_distribution<int> dist(min, WALL);
                 // 生成 min ~ max 的随机整数并返回
                 return dist(gen);
             }
@@ -123,6 +124,12 @@ namespace Utils
             {
                 return -1;
             }
+        }
+
+        // 生成目前帧率
+        int FPSAdd(int fps, int score)
+        {
+            return fps + score / 10 / Random() / 10;
         }
     } // namespace Random
 } // namespace Utils
