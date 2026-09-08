@@ -41,7 +41,7 @@ void InitGame(GameView& GV)
 // // 用户的登录和注册
 // void LoginSignIN(GameView& GV, std::unique_ptr<Account::ScoreAccount>& player)
 // {
-
+//     UI_Render(&GV, SCREEN_USER);
 //     while (true)
 //     {
 //         Utils::System::ClearScreen();
@@ -85,8 +85,9 @@ void Game(GameView& GV)
     // 重置状态
     InitGame(GV);
 
-    // // 创建玩家名称对象
-    // auto player = std::make_unique<Account::ScoreAccount>();
+    // 创建玩家名称对象
+    auto player = std::make_unique<Account::ScoreAccount>();
+
     // LoginSignIN(GV, player);
 
     // Utils::System::ClearScreen();
@@ -94,25 +95,25 @@ void Game(GameView& GV)
     // 创建蛇头信息
     auto snakehead = std::make_unique<SnakeHead>();
     snakehead->Node = GV.snake;
-    snakehead->hir = 'd'; // 默认向右
 
     // 保存游戏当前状态
     auto GameFlag = SCREEN_PLAYING;
 
-    // 游戏进行中恢复 60 FPS（菜单为 10 FPS）
-    UI_SetFrameRate(60);
+    // 游戏进行从5 FPS开始（菜单为 10 FPS）
+    unsigned int fps = 5;
+    UI_SetFrameRate(fps);
 
     // 渲染画面
-    Renderer_Render(&GV, GameFlag);
+    UI_Render(&GV, GameFlag);
 
     // 获取起始移动方向（阻塞等待）
-    if (IsKeyDown(KEY_W))
+    if (IsKeyPressed(KEY_W))
         snakehead->hir = 'w';
-    else if (IsKeyDown(KEY_A))
+    else if (IsKeyPressed(KEY_A))
         snakehead->hir = 'a';
-    else if (IsKeyDown(KEY_S))
+    else if (IsKeyPressed(KEY_S))
         snakehead->hir = 's';
-    else if (IsKeyDown(KEY_D))
+    else if (IsKeyPressed(KEY_D))
         snakehead->hir = 'd';
 
     while (!GV.GameFlag && !WindowShouldClose())
@@ -139,13 +140,13 @@ void Game(GameView& GV)
         // 普通移动键：只有非暂停状态下才响应
         if (GameFlag == SCREEN_PLAYING)
         {
-            if (IsKeyDown(KEY_W) && snakehead->hir != 's')
+            if (IsKeyPressed(KEY_W) && snakehead->hir != 's')
                 snakehead->hir = 'w';
-            else if (IsKeyDown(KEY_A) && snakehead->hir != 'd')
+            else if (IsKeyPressed(KEY_A) && snakehead->hir != 'd')
                 snakehead->hir = 'a';
-            else if (IsKeyDown(KEY_S) && snakehead->hir != 'w')
+            else if (IsKeyPressed(KEY_S) && snakehead->hir != 'w')
                 snakehead->hir = 's';
-            else if (IsKeyDown(KEY_D) && snakehead->hir != 'a')
+            else if (IsKeyPressed(KEY_D) && snakehead->hir != 'a')
                 snakehead->hir = 'd';
         }
 
@@ -221,14 +222,12 @@ void Game(GameView& GV)
         // 同步回 GameView
         GV.snake = snakehead->Node;
 
+        // 计算新的帧率
+        UI_SetFrameRate(fps + GV.score / 10);
+
         // 等待到下一帧再继续
         Renderer_WaitForNextFrame();
     }
-
-    // 游戏结束
-    UI_Render(&GV, SCREEN_GAME_OVER);
-    // player->SetScore(GV.score);
-    // player->SaveGameResult();
 }
 
 // 程序运行的主函数
@@ -259,6 +258,17 @@ void Nokia_Snake()
             // 进入游戏函数
             Game(GV);
             // 游戏结束返回开始菜单，下一轮循环会自动重新渲染菜单
+            while (!WindowShouldClose())
+            {
+                // 游戏结束
+                UI_Render(&GV, SCREEN_GAME_OVER);
+                // player->SetScore(GV.score);
+                // player->SaveGameResult();
+                if (IsKeyPressed(KEY_SPACE))
+                {
+                    break;
+                }
+            }
         }
         else if (IsKeyPressed(KEY_Q))
         {
