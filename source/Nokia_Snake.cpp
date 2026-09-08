@@ -242,6 +242,7 @@ void Game(GameView& GV)
         // 等待到下一帧再继续
         Renderer_WaitForNextFrame();
     }
+    player->SetScore(GV.score);
 }
 
 // 程序运行的主函数
@@ -276,7 +277,6 @@ void Nokia_Snake()
             {
                 // 游戏结束
                 UI_Render(&GV, SCREEN_GAME_OVER);
-                // player->SetScore(GV.score);
                 // player->SaveGameResult();
                 if (IsKeyPressed(KEY_SPACE))
                 {
