@@ -20,7 +20,7 @@
 ## 后期开发
 
 - [x] 图形化
-- [ ] 登录系统
+- [x] 登录系统
 - [ ] 难度设置
 - [ ] 自定义棋盘大小
 - [ ] 网络数据库存储
@@ -95,11 +95,7 @@ cmake --build build                 # 构建可执行文件（exe）
 build\Debug\Nokia_Snake.exe         # Windows (MSVC)
 ```
 
-<<<<<<< HEAD
-### PS:运行后会在你运行exe的目录下自动生成一个score.txt去保存账号
-=======
-### PS:运行后会在你运行exe的目录下自动生成一个user.txt去持久化账号
->>>>>>> update-readme
+### PS:运行后会在你运行exe的目录下自动生成一个user.txt去持久化账号，score.txt去实现排行榜功能
 
 ---
 
