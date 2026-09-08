@@ -7,6 +7,9 @@
 
 #include "NoKia_Snake.h"
 
+extern int HIGHT = 50;
+extern int WIDTH = 50;
+
 int main()
 {
     Utils::init();

@@ -170,12 +170,13 @@ void UI_Render(const GameView* view, ScreenState state)
     case SCREEN_PAUSED:
         DrawPlaying(view, "PAUSED - PRESS SPACE TO CONTINUE");
         DrawRectangle(0, 0, kWindowWidth, kWindowHeight, Color{0, 0, 0, 110});
+        DrawCenteredText("score" + view->score, 190.0f, 56, Color{231, 76, 60, 255});
         DrawCenteredText("PAUSED", 310.0f, 52, RAYWHITE);
         break;
     case SCREEN_GAME_OVER:
         DrawCenteredText("GAME OVER", 190.0f, 56, Color{231, 76, 60, 255});
         DrawCenteredText(TextFormat("SCORE %d", view == nullptr ? 0 : view->score), 300.0f, 30, RAYWHITE);
-        DrawCenteredText("PRESS ENTER TO RESTART", 390.0f, 24, LIGHTGRAY);
+        DrawCenteredText("PRESS SPACE TO RESTART", 390.0f, 24, LIGHTGRAY);
         DrawCenteredText("Q TO QUIT", 430.0f, 22, LIGHTGRAY);
         break;
     case SCREEN_USER:

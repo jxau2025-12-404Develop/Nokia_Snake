@@ -28,6 +28,7 @@ add_executable(${PROJECT_NAME}
     source/Collision.cpp
     source/Food.cpp
     source/SAA.cpp
+    # source/raygui_impl.cpp
 )
 
 # 添加头文件路径
@@ -49,19 +50,19 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(raylib)
 
-# 引入 raygui
-FetchContent_Declare(
-    raygui
-    URL https://github.com/raysan5/raygui/archive/refs/heads/master.tar.gz
-    DOWNLOAD_EXTRACT_TIMESTAMP ON
-)
+# # 引入 raygui
+# FetchContent_Declare(
+#     raygui
+#     URL https://github.com/raysan5/raygui/archive/refs/heads/master.tar.gz
+#     DOWNLOAD_EXTRACT_TIMESTAMP ON
+# )
 
-FetchContent_MakeAvailable(raygui)
+# FetchContent_MakeAvailable(raygui)
 
-# 添加 raygui 头文件路径（下载后会生成 raygui_SOURCE_DIR）
-target_include_directories(${PROJECT_NAME} PRIVATE
-    ${raygui_SOURCE_DIR}/src
-)
+# # 添加 raygui 头文件路径（下载后会生成 raygui_SOURCE_DIR）
+# target_include_directories(${PROJECT_NAME} PRIVATE
+#     ${raygui_SOURCE_DIR}/src
+# )
 
 # 链接 raylib
 target_link_libraries(${PROJECT_NAME} PRIVATE raylib)

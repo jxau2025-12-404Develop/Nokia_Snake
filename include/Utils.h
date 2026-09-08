@@ -7,8 +7,8 @@
 #include <fstream>
 #include <string>
 
-constexpr int HIGHT = 50;
-constexpr int WIDTH = 50;
+extern int HIGHT;
+extern int WIDTH;
 
 // 坐标信息
 typedef struct Point
