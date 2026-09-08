@@ -87,14 +87,14 @@ void LoginSignIN(GameView& GV, std::unique_ptr<Account::ScoreAccount>& player)
         // ===== 3. 提交后处理（接入账号校验/注册逻辑）=====
         if (submitted)
         {
-            player = std::make_unique<Account::ScoreAccount>(username, password, 'l');
+            player = std::make_unique<Account::ScoreAccount>(username, password, 's');
             break;
         }
     }
 }
 
 // 游戏运行函数
-void Game(GameView& GV)
+void Game(GameView& GV, Music backgroundMusic)
 {
     // 重置状态
     InitGame(GV);
@@ -103,6 +103,7 @@ void Game(GameView& GV)
     auto player = std::make_unique<Account::ScoreAccount>();
 
     // LoginSignIN(GV, player);
+    LoginSignIN(GV, player);
 
     // Utils::System::ClearScreen();
 
@@ -117,21 +118,40 @@ void Game(GameView& GV)
     unsigned int fps = 5;
     UI_SetFrameRate(fps);
 
-    // 渲染画面
-    UI_Render(&GV, GameFlag);
+    UpdateMusicStream(backgroundMusic);
 
-    // 获取起始移动方向（阻塞等待）
-    if (IsKeyPressed(KEY_W))
-        snakehead->hir = 'w';
-    else if (IsKeyPressed(KEY_A))
-        snakehead->hir = 'a';
-    else if (IsKeyPressed(KEY_S))
-        snakehead->hir = 's';
-    else if (IsKeyPressed(KEY_D))
-        snakehead->hir = 'd';
+    while (!WindowShouldClose())
+    {
+
+        // 渲染画面
+        UI_Render(&GV, GameFlag);
+
+        // 获取起始移动方向（阻塞等待）
+        if (IsKeyPressed(KEY_W))
+        {
+            snakehead->hir = 'w';
+            break;
+        }
+        else if (IsKeyPressed(KEY_A))
+        {
+            snakehead->hir = 'a';
+            break;
+        }
+        else if (IsKeyPressed(KEY_S))
+        {
+            snakehead->hir = 's';
+            break;
+        }
+        else if (IsKeyPressed(KEY_D))
+        {
+            snakehead->hir = 'd';
+            break;
+        }
+    }
 
     while (!GV.GameFlag && !WindowShouldClose())
     {
+        UpdateMusicStream(backgroundMusic);
         // 渲染画面
         UI_Render(&GV, GameFlag);
 
@@ -184,28 +204,7 @@ void Game(GameView& GV)
             ++newX;
 
         // 墙壁碰撞检测
-        if (IsWallCollision(newX, newY, GV.width, GV.height))
-        {
-            GV.GameFlag = true;
-            GameFlag = SCREEN_GAME_OVER;
-            break;
-        }
-
-        // 自己碰撞检测（移动时蛇尾会离开，所以只要新头不在蛇身（除尾外）即可）
-        SnakeNode* tailNode = snakehead->Node;
-        while (tailNode->Next != NULL)
-            tailNode = tailNode->Next;
-
-        bool hitSelf = false;
-        for (SnakeNode* p = snakehead->Node; p != NULL; p = p->Next)
-        {
-            if (p != tailNode && p->xy.x == newX && p->xy.y == newY)
-            {
-                hitSelf = true;
-                break;
-            }
-        }
-        if (hitSelf)
+        if (IsWallCollision(newX, newY, GV.width, GV.height) || IsSelfCollision(&GV, newX, newY))
         {
             GV.GameFlag = true;
             GameFlag = SCREEN_GAME_OVER;
@@ -222,7 +221,7 @@ void Game(GameView& GV)
         ++GV.snakeLength;
 
         // 若吃到食物则加分并重新生成食物，否则删除蛇尾
-        if (newX == GV.food.x && newY == GV.food.y)
+        if (EatFood(&GV.food, &GV, GV.width, GV.height))
         {
             GV.score += 10;
             GV.food = GenerateFood(&GV, GV.height, GV.width);
@@ -242,10 +241,12 @@ void Game(GameView& GV)
         // 等待到下一帧再继续
         Renderer_WaitForNextFrame();
     }
+    player->SetScore(GV.score);
+    player->SaveGameResult();
 }
 
 // 程序运行的主函数
-void Nokia_Snake()
+void Nokia_Snake(Music backgroundMusic)
 {
     // 初始化帧
     GameView GV;
@@ -262,6 +263,7 @@ void Nokia_Snake()
 
     while (true && !WindowShouldClose())
     {
+        UpdateMusicStream(backgroundMusic);
         // 每帧渲染菜单：UI_Render 内部的 EndDrawing 会调用 PollInputEvents，
         // 否则 raylib 不会刷新键盘状态，IsKeyPressed 永远读不到按键。
         UI_Render(&GV, SCREEN_START_MENU);
@@ -270,14 +272,12 @@ void Nokia_Snake()
         if (IsKeyPressed(KEY_ENTER))
         {
             // 进入游戏函数
-            Game(GV);
+            Game(GV, backgroundMusic);
             // 游戏结束返回开始菜单，下一轮循环会自动重新渲染菜单
             while (!WindowShouldClose())
             {
                 // 游戏结束
                 UI_Render(&GV, SCREEN_GAME_OVER);
-                // player->SetScore(GV.score);
-                // player->SaveGameResult();
                 if (IsKeyPressed(KEY_SPACE))
                 {
                     break;
