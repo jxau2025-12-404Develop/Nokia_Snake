@@ -7,8 +7,8 @@
 #include <fstream>
 #include <string>
 
-constexpr int HIGHT = 30;
-constexpr int WIDTH = 30;
+extern int HIGHT;
+extern int WIDTH;
 
 // 坐标信息
 typedef struct Point
@@ -47,6 +47,7 @@ typedef struct
     int snakeLength;  // 保存当前蛇的长度。
     Point food;       // 保存食物坐标。
     int score;        // 保存当前分数。
+    int maxscore;     // 保存最高得分
     bool GameFlag;    // 游戏状态
 } GameView;
 
@@ -127,12 +128,6 @@ namespace Utils
         // 回车返回 '\r'，空格返回 ' '，Esc 返回 27
         // 方向键返回 KEY_UP / KEY_DOWN / KEY_LEFT / KEY_RIGHT
         bool HasKey();
-
-        // 读取一个按键（阻塞等待，按下后立刻返回，不需要按回车）
-        // 普通字母自动转为小写，如 A -> 'a'
-        // 回车返回 '\r'，空格返回 ' '，Esc 返回 27
-        // 方向键返回 KEY_UP / KEY_DOWN / KEY_LEFT / KEY_RIGHT
-        int GetKey();
     } // namespace Input
 
     // 写入文件命名空间
@@ -166,6 +161,31 @@ namespace Utils
             out.close();
 
             return 1;
+        }
+
+        // 读取整个文件内容
+        // 参数：文件名，默认为当前设置的 log 文件
+        // 返回：文件内容字符串；文件打开失败返回空字符串
+        template <typename T = std::string> T ReadFile(const std::string address = addr)
+        {
+            // 打开文件
+            std::ifstream in(address.c_str());
+
+            // 判断是否打开
+            if (!in)
+            {
+                std::cerr << "打开文件失败" << std::endl;
+
+                return T{};
+            }
+
+            // 读取整个文件内容
+            T content((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
+
+            // 关闭文件
+            in.close();
+
+            return content;
         }
     } // namespace File
 

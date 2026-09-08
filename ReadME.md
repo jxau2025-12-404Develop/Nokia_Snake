@@ -16,6 +16,7 @@
 - [x] 完整游戏循环（蛇移动 + 键盘控制贯穿）
 - [x] 计分系统与最高分持久化
 - [x] 账号保存
+
 ## 后期开发
 
 - [ ] 图形化
@@ -49,9 +50,9 @@ Nokia_Snake
 |   |-- Renderer.h          # 渲染器头文件（C 接口）
 |   |-- Collision.h         # 碰撞检测头文件
 |   |-- Snake.h             # 蛇的操作头文件
-|   |-- ScoreAndAccount     # 账号头文件 
+|   |-- ScoreAndAccount     # 账号头文件
 |   `-- Food.h              # 食物模块头文件
-|   
+|
 |-- source/                 # 源文件目录
 |   |-- main.cpp            # 程序入口
 |   |-- Utils.cpp           # 工具库非模板函数的实现
@@ -84,12 +85,12 @@ cmake --build build                 # 构建可执行文件（exe）
 ./build/Nokia_Snake                 # Linux / macOS
 build\Debug\Nokia_Snake.exe         # Windows (MSVC)
 ```
+
 ### PS:运行后会在你运行exe的目录下自动生成一个score.txt去保存账号
+
 ---
 
 ## 操作说明
-
-> 待游戏功能实现后生效
 
 - ↑ / W：向上
 - ↓ / S：向下
@@ -117,6 +118,7 @@ build\Debug\Nokia_Snake.exe         # Windows (MSVC)
 本项目为学校实训课程作业，仅供学习交流使用。
 
 ---
+
 ## 项目成员
 
 ### jyoushitou
@@ -143,6 +145,8 @@ build\Debug\Nokia_Snake.exe         # Windows (MSVC)
 - 完成了蛇的移动逻辑
 - 负责文件：Snake.h、Snake.cpp
 
+---
+
 ### myqx0309
 
 - 联系方式：[mengyqx_2025@qq.com](mailto:mengyqx_2025@qq.com)
@@ -154,6 +158,8 @@ build\Debug\Nokia_Snake.exe         # Windows (MSVC)
 - 画面刷新：配合主循环实现清屏 + 重绘，控制帧率
 - 负责文件：Renderer.h、Renderer.cpp
 
+---
+
 ### bridge-tu
 
 - 联系方式：[3576592547@.qq.com](mailto:3576592547@qq.com)
@@ -164,17 +170,21 @@ build\Debug\Nokia_Snake.exe         # Windows (MSVC)
 - 碰撞检测：撞墙判定、撞到自己判定，触发游戏结束
 - 负责文件：Food.h、Food.cpp、Collision.h、Collision.cpp
 
+---
 
 ### liujiaxin123110
 
 - 联系方式：[2449146540@qq.com](2449146540@qq.com)
 
 #### 负责部分
+
 - 计分逻辑：吃到食物加分规则
 - 账号保存：玩家昵称输入与展示
 - 本地历史成绩排行
 - 成绩联动：游戏结束时把成绩写入本地存档，结束界面展示
 - 负责文件：ScoreAndAccount.h、SAA.cpp
+
+---
 
 ## 项目维护者：[jyoushitou]
 

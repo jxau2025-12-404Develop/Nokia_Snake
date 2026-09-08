@@ -3,12 +3,16 @@
 
 #include "NoKia_Snake.h"
 
+#include "raylib.h"
+#include "raygui.h"
+
 #include "Utils.h"
 #include "Snake.h"
 #include "ScoreAndAccount.h"
 #include "Renderer.h"
 #include "Food.h"
 #include "Collision.h"
+#include "UI.h"
 
 // 重置/初始化
 void InitGame(GameView& GV)
@@ -35,6 +39,60 @@ void InitGame(GameView& GV)
     GV.food = GenerateFood(&GV, GV.height, GV.width);
 }
 
+// 用户的登录和注册
+void LoginSignIN(GameView& GV, std::unique_ptr<Account::ScoreAccount>& player)
+{
+    // 输入缓冲区：必须跨帧存活，GuiTextBox 每帧往里追加字符
+    char username[64] = "";
+    char password[64] = "";
+
+    // 当前获得焦点的输入框：-1=无，0=用户名，1=密码（跨帧保存！）
+    int activeField = -1;
+
+    const Rectangle userBox = {330, 300, 300, 44};
+    const Rectangle passBox = {330, 380, 300, 44};
+
+    while (!WindowShouldClose())
+    {
+        // ===== 1. 输入状态更新 =====
+        Vector2 mouse = GetMousePosition();
+        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+        {
+            if (CheckCollisionPointRec(mouse, userBox))
+                activeField = 0; // 点到用户名框
+            else if (CheckCollisionPointRec(mouse, passBox))
+                activeField = 1; // 点到密码框
+            else
+                activeField = -1; // 点空白处失焦
+        }
+
+        // 按回车视为提交一次输入
+        bool submitted = (activeField != -1 && IsKeyPressed(KEY_ENTER));
+        if (submitted)
+            activeField = -1;
+
+        // ===== 2. 整帧绘制 =====
+        BeginDrawing();
+        ClearBackground(Color{12, 20, 24, 255});
+
+        const char* title = "USER LOGIN";
+        DrawText(title, (GetScreenWidth() - MeasureText(title, 48)) / 2, 180, 48, Color{117, 220, 89, 255});
+
+        // editMode 直接传“本框是否持有焦点”
+        GuiTextBox(userBox, username, sizeof(username), activeField == 0);
+        GuiTextBox(passBox, password, sizeof(password), activeField == 1);
+
+        EndDrawing();
+
+        // ===== 3. 提交后处理（接入账号校验/注册逻辑）=====
+        if (submitted)
+        {
+            player = std::make_unique<Account::ScoreAccount>(username, password, 'l');
+            break;
+        }
+    }
+}
+
 // 游戏运行函数
 void Game(GameView& GV)
 {
@@ -42,78 +100,68 @@ void Game(GameView& GV)
     InitGame(GV);
 
     // 创建玩家名称对象
-    Utils::Out::Out("输入玩家名称");
     auto player = std::make_unique<Account::ScoreAccount>();
-    player->InputNickname();
+
+    // LoginSignIN(GV, player);
+
+    // Utils::System::ClearScreen();
 
     // 创建蛇头信息
     auto snakehead = std::make_unique<SnakeHead>();
     snakehead->Node = GV.snake;
-    snakehead->hir = 'd'; // 默认向右
 
     // 保存游戏当前状态
     auto GameFlag = SCREEN_PLAYING;
 
+    // 游戏进行从5 FPS开始（菜单为 10 FPS）
+    unsigned int fps = 5;
+    UI_SetFrameRate(fps);
+
     // 渲染画面
-    Renderer_Render(&GV, GameFlag);
-    Utils::Out::Out("按wasd任意一键开始");
+    UI_Render(&GV, GameFlag);
 
     // 获取起始移动方向（阻塞等待）
-    int key = Utils::Input::GetKey();
-    if (key == 'w' || key == Utils::Input::KEY_UP)
+    if (IsKeyPressed(KEY_W))
         snakehead->hir = 'w';
-    else if (key == 'a' || key == Utils::Input::KEY_LEFT)
+    else if (IsKeyPressed(KEY_A))
         snakehead->hir = 'a';
-    else if (key == 's' || key == Utils::Input::KEY_DOWN)
+    else if (IsKeyPressed(KEY_S))
         snakehead->hir = 's';
-    else if (key == 'd' || key == Utils::Input::KEY_RIGHT)
+    else if (IsKeyPressed(KEY_D))
         snakehead->hir = 'd';
 
-    while (!GV.GameFlag)
+    while (!GV.GameFlag && !WindowShouldClose())
     {
         // 渲染画面
-        Renderer_Render(&GV, GameFlag);
+        UI_Render(&GV, GameFlag);
 
-        // 非阻塞检查按键
-        while (Utils::Input::HasKey())
+        // 非阻塞检查按键（raylib 每次 EndDrawing 后自动刷新按键状态）
+        // 空格键切换暂停/继续
+        if (IsKeyPressed(KEY_SPACE))
         {
-            key = Utils::Input::GetKey();
+            if (GameFlag == SCREEN_PAUSED)
+                GameFlag = SCREEN_PLAYING;
+            else if (GameFlag == SCREEN_PLAYING)
+                GameFlag = SCREEN_PAUSED;
+        }
+        // 暂停时按 Q 退出游戏
+        else if (GameFlag == SCREEN_PAUSED && IsKeyPressed(KEY_Q))
+        {
+            GameFlag = SCREEN_GAME_OVER;
+            GV.GameFlag = true;
+        }
 
-            // 空格键切换暂停/继续
-            if (key == ' ')
-            {
-                if (GameFlag == SCREEN_PAUSED)
-                    GameFlag = SCREEN_PLAYING;
-                else
-                    GameFlag = SCREEN_PAUSED;
-            }
-            // 暂停时按 Esc 退出游戏
-            else if (GameFlag == SCREEN_PAUSED && key == 'q')
-            {
-                GameFlag = SCREEN_GAME_OVER;
-                GV.GameFlag = true;
-            }
-            // 普通移动键
-            else if (key == 'w' || key == Utils::Input::KEY_UP)
-            {
-                if (snakehead->hir != 's')
-                    snakehead->hir = 'w';
-            }
-            else if (key == 'a' || key == Utils::Input::KEY_LEFT)
-            {
-                if (snakehead->hir != 'd')
-                    snakehead->hir = 'a';
-            }
-            else if (key == 's' || key == Utils::Input::KEY_DOWN)
-            {
-                if (snakehead->hir != 'w')
-                    snakehead->hir = 's';
-            }
-            else if (key == 'd' || key == Utils::Input::KEY_RIGHT)
-            {
-                if (snakehead->hir != 'a')
-                    snakehead->hir = 'd';
-            }
+        // 普通移动键：只有非暂停状态下才响应
+        if (GameFlag == SCREEN_PLAYING)
+        {
+            if (IsKeyPressed(KEY_W) && snakehead->hir != 's')
+                snakehead->hir = 'w';
+            else if (IsKeyPressed(KEY_A) && snakehead->hir != 'd')
+                snakehead->hir = 'a';
+            else if (IsKeyPressed(KEY_S) && snakehead->hir != 'w')
+                snakehead->hir = 's';
+            else if (IsKeyPressed(KEY_D) && snakehead->hir != 'a')
+                snakehead->hir = 'd';
         }
 
         // 暂停状态下不移动，等待下一帧
@@ -188,13 +236,12 @@ void Game(GameView& GV)
         // 同步回 GameView
         GV.snake = snakehead->Node;
 
+        // 计算新的帧率
+        UI_SetFrameRate(fps + GV.score / 10);
+
         // 等待到下一帧再继续
         Renderer_WaitForNextFrame();
     }
-
-    // 游戏结束
-    Renderer_Render(&GV, SCREEN_GAME_OVER);
-    player->SaveGameResult();
 }
 
 // 程序运行的主函数
@@ -208,23 +255,36 @@ void Nokia_Snake()
     InitGame(GV);
 
     // 输出开始菜单
-    Renderer_Render(&GV, SCREEN_START_MENU);
+    UI_Render(&GV, SCREEN_START_MENU);
 
-    // 设置帧率
-    Renderer_SetFrameRate(10); // 蛇移动速度比较合适，10帧/秒
+    // 设置 UI 使用的目标帧率。
+    UI_SetFrameRate(10);
 
-    while (true)
+    while (true && !WindowShouldClose())
     {
-        // 选择
-        auto key = Utils::Input::GetKey();
-        if (key == '\r')
+        // 每帧渲染菜单：UI_Render 内部的 EndDrawing 会调用 PollInputEvents，
+        // 否则 raylib 不会刷新键盘状态，IsKeyPressed 永远读不到按键。
+        UI_Render(&GV, SCREEN_START_MENU);
+
+        // 使用 IsKeyPressed 检测“按下瞬间”，避免长按导致反复进入游戏。
+        if (IsKeyPressed(KEY_ENTER))
         {
             // 进入游戏函数
             Game(GV);
-            // 游戏结束后返回开始菜单，允许再来一局
-            Renderer_Render(&GV, SCREEN_START_MENU);
+            // 游戏结束返回开始菜单，下一轮循环会自动重新渲染菜单
+            while (!WindowShouldClose())
+            {
+                // 游戏结束
+                UI_Render(&GV, SCREEN_GAME_OVER);
+                // player->SetScore(GV.score);
+                // player->SaveGameResult();
+                if (IsKeyPressed(KEY_SPACE))
+                {
+                    break;
+                }
+            }
         }
-        else if (key == 'q')
+        else if (IsKeyPressed(KEY_Q))
         {
             break;
         }
