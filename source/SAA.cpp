@@ -9,6 +9,7 @@
 namespace
 {
     const std::string scoreFile = "scores.log"; // 保存历史成绩的文件名。
+    const std::string accountFile = "accounts.log"; // 保存账号昵称和密码的文件名。
     constexpr int foodScore = 10; // 吃到食物增加的分数。
     constexpr int collisionPenalty = 10; // 碰撞时扣除的分数。
     constexpr int scorePerLevel = 50; // 每增加 50 分提升一个难度等级。
@@ -20,12 +21,35 @@ namespace
 namespace Account
 {
     ScoreAccount::ScoreAccount(const std::string& username, const std::string& accountToken, const char loginStatus) // 构造玩家登录账号。
-        : nickname_(username.empty() ? "Player" : username), score_(0), token(accountToken) // 保存昵称、初始分数和登录凭证。
+        : nickname_(username.empty() ? "Player" : username), score_(0), token(accountToken), saveOnDestroy_(false) // 初始化账号信息，默认不在构造或析构时写入文件。
     {
         if (loginStatus != 's') // 只有状态字符为 s 时才认为登录成功。
         {
             token.clear(); // 登录失败时清除凭证，避免后续误认为已经登录。
         }
+    }
+
+    ScoreAccount::~ScoreAccount() // 销毁账号对象时，根据开关决定是否保存账号信息。
+    {
+        if (saveOnDestroy_) // 只有调用方明确开启自动保存时才写入文件。
+        {
+            WriteAccount(); // 保存当前对象中的昵称和密码。
+        }
+    }
+
+    bool ScoreAccount::WriteAccount() const // 将当前对象的昵称和密码写入账号文件。
+    {
+        if (nickname_.empty() || token.empty()) // 不保存不完整的账号信息。
+        {
+            return false; // 返回写入失败。
+        }
+        const std::string record = nickname_ + "\t" + token; // 使用制表符分隔昵称和密码。
+        return Utils::File::Add(record, accountFile); // 追加写入账号文件。
+    }
+
+    void ScoreAccount::SetSaveOnDestroy(bool shouldSave) // 设置析构时是否保存账号信息。
+    {
+        saveOnDestroy_ = shouldSave; // 保存调用方的自动保存选择。
     }
 
     bool ScoreAccount::checktoken() // 检查登录账号的用户名和凭证是否有效。
