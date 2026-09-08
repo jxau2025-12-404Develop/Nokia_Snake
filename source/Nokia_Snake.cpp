@@ -101,19 +101,13 @@ void Game(GameView& GV)
 
     // 创建玩家名称对象
     auto player = std::make_unique<Account::ScoreAccount>();
-<<<<<<< HEAD
-    LoginSignIN(GV, player);
 
-    Utils::System::ClearScreen();
-    == == == =
+    // LoginSignIN(GV, player);
 
-                 // LoginSignIN(GV, player);
+    // Utils::System::ClearScreen();
 
-        // Utils::System::ClearScreen();
->>>>>>> update-readme
-
-        // 创建蛇头信息
-        auto snakehead = std::make_unique<SnakeHead>();
+    // 创建蛇头信息
+    auto snakehead = std::make_unique<SnakeHead>();
     snakehead->Node = GV.snake;
 
     // 保存游戏当前状态
@@ -248,14 +242,6 @@ void Game(GameView& GV)
         // 等待到下一帧再继续
         Renderer_WaitForNextFrame();
     }
-<<<<<<< HEAD
-
-    // 游戏结束
-    Renderer_Render(&GV, SCREEN_GAME_OVER);
-    player->SetScore(GV.score);
-    player->SaveGameResult();
-    == == == =
->>>>>>> update-readme
 }
 
 // 程序运行的主函数
