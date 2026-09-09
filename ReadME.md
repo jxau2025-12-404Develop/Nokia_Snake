@@ -201,6 +201,6 @@ build\Debug\Nokia_Snake.exe         # Windows (MSVC)
 
 - 邮箱：[xzt98948364@outlook.com](mailto:xzt98948364@outlook.com)
 - 博客地址：[https://jyoushitou.github.io/](https://jyoushitou.github.io/)
-- 项目地址：[https://github.com/jyoushitou/Nokia_Snake](https://github.com/jyoushitou/Nokia_Snake)
+- 项目地址：[https://github.com/jxau2025-12-404Develop/Nokia_Snake.git](https://github.com/jxau2025-12-404Develop/Nokia_Snake.git)
 
 ---
