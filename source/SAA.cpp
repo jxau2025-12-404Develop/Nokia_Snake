@@ -1,31 +1,37 @@
 #include "ScoreAndAccount.h" // 引入成绩账号类的声明。
-#include "Utils.h" // 引入成员一提供的文件写入工具。
+#include "Utils.h"           // 引入成员一提供的文件写入工具。
 
 #include <algorithm> // 提供排序和分数限制函数。
-#include <fstream> // 提供本地存档读取功能。
-#include <iostream> // 提供控制台输入输出功能。
-#include <sstream> // 提供成绩行解析功能。
+#include <fstream>   // 提供本地存档读取功能。
+#include <iostream>  // 提供控制台输入输出功能。
+#include <sstream>   // 提供成绩行解析功能。
 
 namespace
 {
-    const std::string scoreFile = "scores.log"; // 保存历史成绩的文件名。
-    const std::string accountFile = "accounts.log"; // 保存账号昵称和密码的文件名。
-    constexpr int foodScore = 10; // 吃到食物增加的分数。
-    constexpr int collisionPenalty = 10; // 碰撞时扣除的分数。
-    constexpr int scorePerLevel = 50; // 每增加 50 分提升一个难度等级。
-    constexpr int firstLevelDelay = 220; // 初始移动间隔，单位为毫秒。
-    constexpr int delayDecreasePerLevel = 20; // 每提升一级减少的移动间隔。
-    constexpr int fastestDelay = 60; // 允许的最短移动间隔。
-}
+    const std::string scoreFile = "scores.log"; // 保存历史成绩排行榜的文件名。
+    const std::string accountFile = "user.txt"; // 保存玩家账号（昵称 分数 密码）的文件名。
+    constexpr int foodScore = 10;               // 吃到食物增加的分数。
+    constexpr int collisionPenalty = 10;        // 碰撞时扣除的分数。
+    constexpr int scorePerLevel = 50;           // 每增加 50 分提升一个难度等级。
+    constexpr int firstLevelDelay = 220;        // 初始移动间隔，单位为毫秒。
+    constexpr int delayDecreasePerLevel = 20;   // 每提升一级减少的移动间隔。
+    constexpr int fastestDelay = 60;            // 允许的最短移动间隔。
+} // namespace
 
 namespace Account
 {
-    ScoreAccount::ScoreAccount(const std::string& username, const std::string& accountToken, const char loginStatus) // 构造玩家登录账号。
-        : nickname_(username.empty() ? "Player" : username), score_(0), token(accountToken), saveOnDestroy_(false) // 初始化账号信息，默认不在构造或析构时写入文件。
+    ScoreAccount::ScoreAccount(const std::string& username, const std::string& accountToken,
+                               const char LS) // 构造玩家登录账号。
+        : nickname_(username.empty() ? "Player" : username), score_(0),
+          token(accountToken), saveOnDestroy_(false), checkToken_(false) // 只初始化账号信息，不自动写入文件。
     {
-        if (loginStatus != 's') // 只有状态字符为 s 时才认为登录成功。
+        if (LS == 's') // 注册对象只校验输入，不在构造时写入文件。
         {
-            token.clear(); // 登录失败时清除凭证，避免后续误认为已经登录。
+            checkToken_ = !nickname_.empty() && !token.empty();
+        }
+        else if (LS == 'l')
+        {
+            checkToken_ = CheckToken(); // 登录时从文件逐行比对昵称和密码。
         }
     }
 
@@ -37,13 +43,13 @@ namespace Account
         }
     }
 
-    bool ScoreAccount::WriteAccount() const // 将当前对象的昵称和密码写入账号文件。
+    bool ScoreAccount::WriteAccount() const // 将当前对象的昵称、分数和密码写入账号文件。
     {
-        if (nickname_.empty() || token.empty()) // 不保存不完整的账号信息。
+        if (nickname_.empty() || token.empty() || score_ < 0) // 不保存不完整或无效的账号信息。
         {
             return false; // 返回写入失败。
         }
-        const std::string record = nickname_ + "\t" + token; // 使用制表符分隔昵称和密码。
+        const std::string record = nickname_ + " " + std::to_string(score_) + " " + token; // 按“昵称 分数 密码”格式保存账号。
         return Utils::File::Add(record, accountFile); // 追加写入账号文件。
     }
 
@@ -52,14 +58,49 @@ namespace Account
         saveOnDestroy_ = shouldSave; // 保存调用方的自动保存选择。
     }
 
-    bool ScoreAccount::checktoken() // 检查登录账号的用户名和凭证是否有效。
+    bool ScoreAccount::CheckToken() // 读取账号文件逐行比对昵称和密码，判断登录是否成功。
     {
-        const bool valid = !nickname_.empty() && !token.empty(); // 昵称和有效凭证都存在时认为登录成功。
-        if (!valid) // 判断登录信息是否缺失。
+        if (nickname_.empty() || token.empty()) // 先检查输入是否为空。
         {
-            std::cout << "登录失败：用户名或凭证不能为空。\n"; // 输出失败原因，避免程序静默运行。
+            checkToken_ = false; // 输入无效时同步更新登录状态。
+            std::cout << "登录失败：用户名或凭证不能为空。\n"; // 输出失败原因。
+            return false;                                      // 输入为空直接登录失败。
         }
-        return valid; // 返回登录检查结果。
+
+        std::ifstream input(accountFile); // 打开保存账号信息的 score.txt。
+        if (!input)                       // 文件不存在或打开失败时无法比对。
+        {
+            checkToken_ = false; // 文件无法打开时同步更新登录状态。
+            std::cout << "登录失败：账号文件不存在。\n"; // 提示账号文件缺失。
+            return false;                                // 没有账号文件即登录失败。
+        }
+
+        std::string line;                 // 用来保存逐行读取的文本。
+        while (std::getline(input, line)) // 逐行读取每个账号记录。
+        {
+            if (line.empty()) // 跳过空行，避免无效记录干扰比对。
+            {
+                continue; // 继续读取下一行。
+            }
+            std::istringstream record(line);                         // 将一行文本转为输入流，便于按空格拆字段。
+            std::string fileNickname;                                // 保存文件中的昵称。
+            int fileScore = 0;                                       // 保存文件中的分数。
+            std::string fileToken;                                   // 保存文件中的密码。
+            if (!(record >> fileNickname >> fileScore >> fileToken) || fileScore < 0) // 按“昵称 分数 密码”格式解析，并拒绝负分记录。
+            {
+                continue; // 格式错误时跳过该行。
+            }
+            if (fileNickname == nickname_ && fileToken == token) // 昵称和密码都匹配才算登录成功。
+            {
+                score_ = fileScore; // 登录成功后把文件中保存的分数恢复到当前分数。
+                checkToken_ = true; // 保存登录成功状态，供对象后续使用。
+                std::cout << "登录成功！欢迎回来，" << nickname_ << "。\n"; // 输出登录成功的提示信息。
+                return true;                                                // 返回登录成功结果。
+            }
+        }
+        checkToken_ = false; // 遍历结束仍无匹配时同步更新登录状态。
+        std::cout << "登录失败：用户名或密码不正确。\n"; // 遍历完所有记录后仍无匹配时输出失败提示。
+        return false;                                    // 返回登录失败结果。
     }
 
     void ScoreAccount::InputNickname() // 从控制台读取玩家昵称。
@@ -67,11 +108,11 @@ namespace Account
         std::string nickname; // 创建变量保存控制台输入内容。
         do
         {
-            std::cout << "请输入玩家昵称："; // 提示玩家输入昵称。
+            std::cout << "请输入玩家昵称：";       // 提示玩家输入昵称。
             if (!std::getline(std::cin, nickname)) // 读取一整行昵称并检查输入状态。
             {
                 nickname = "Player"; // 输入流结束时使用默认昵称，避免循环卡住。
-                break; // 结束输入循环。
+                break;               // 结束输入循环。
             }
         } while (nickname.empty()); // 输入为空时继续读取，直到昵称有效。
 
@@ -81,7 +122,7 @@ namespace Account
     void ScoreAccount::SetNickname(const std::string& nickname) // 设置玩家昵称。
     {
         nickname_ = nickname.empty() ? "Player" : nickname; // 空昵称使用默认名称 Player。
-        std::cout << "当前玩家：" << nickname_ << "\n"; // 展示当前玩家昵称。
+        std::cout << "当前玩家：" << nickname_ << "\n";     // 展示当前玩家昵称。
     }
 
     const std::string& ScoreAccount::GetNickname() const // 获取玩家昵称。
@@ -97,13 +138,13 @@ namespace Account
     int ScoreAccount::AddFoodScore() // 处理吃到食物后的加分。
     {
         score_ += foodScore; // 吃到食物增加 10 分。
-        return score_; // 返回加分后的分数。
+        return score_;       // 返回加分后的分数。
     }
 
     int ScoreAccount::ApplyCollisionPenalty() // 处理撞墙或撞身后的扣分。
     {
         score_ = std::max(0, score_ - collisionPenalty); // 扣除 10 分且保证分数不低于 0。
-        return score_; // 返回扣分后的分数。
+        return score_;                                   // 返回扣分后的分数。
     }
 
     int ScoreAccount::GetDifficultyLevel() const // 根据当前分数计算难度等级。
@@ -119,17 +160,17 @@ namespace Account
 
     void ScoreAccount::ShowScoreState() const // 展示游戏中的账号状态。
     {
-        std::cout << "玩家：" << nickname_ // 输出玩家昵称。
-                  << " | 分数：" << score_ // 输出当前分数。
-                  << " | 难度：" << GetDifficultyLevel() // 输出当前难度。
+        std::cout << "玩家：" << nickname_                           // 输出玩家昵称。
+                  << " | 分数：" << score_                           // 输出当前分数。
+                  << " | 难度：" << GetDifficultyLevel()             // 输出当前难度。
                   << " | 移动间隔：" << GetMoveDelay() << " 毫秒\n"; // 输出当前速度。
     }
 
     std::vector<Account::ScoreRecord> ScoreAccount::LoadScores() const // 读取并排序历史成绩。
     {
-        std::vector<ScoreRecord> scores; // 创建成绩列表保存读取结果。
-        std::ifstream input(scoreFile); // 打开本地成绩文件。
-        std::string line; // 保存当前读取的文本行。
+        std::vector<ScoreRecord> scores;  // 创建成绩列表保存读取结果。
+        std::ifstream input(scoreFile);   // 打开本地成绩文件。
+        std::string line;                 // 保存当前读取的文本行。
         while (std::getline(input, line)) // 循环读取每一行成绩。
         {
             if (line.empty()) // 跳过空行，避免无效记录影响排行榜。
@@ -137,8 +178,9 @@ namespace Account
                 continue; // 继续读取下一条成绩。
             }
             std::istringstream record(line); // 将文本行转换为输入流。
-            ScoreRecord item{}; // 创建一条临时成绩记录。
-            if (std::getline(record, item.nickname, '\t') && record >> item.score && item.score >= 0 && !item.nickname.empty()) // 校验昵称和非负分数格式。
+            ScoreRecord item{};              // 创建一条临时成绩记录。
+            if (std::getline(record, item.nickname, '\t') && record >> item.score && item.score >= 0 &&
+                !item.nickname.empty()) // 校验昵称和非负分数格式。
             {
                 scores.push_back(item); // 保存格式正确的成绩。
             }
@@ -160,7 +202,7 @@ namespace Account
             return false; // 返回保存失败。
         }
         const std::string record = nickname_ + "\t" + std::to_string(score); // 按“昵称+制表符+分数”拼接存档内容。
-        return Utils::File::Add(record, scoreFile); // 调用 FileHelper 的 Add 方法写入成绩。
+        return Utils::File::Add(record, scoreFile);                          // 调用 FileHelper 的 Add 方法写入成绩。
     }
 
     bool ScoreAccount::SaveGameResult() // 游戏结束时保存成绩并展示排行。
@@ -168,20 +210,20 @@ namespace Account
         if (!SaveScore(score_)) // 保存当前玩家本局成绩。
         {
             std::cout << "成绩保存失败。\n"; // 保存失败时显示提示。
-            return false; // 返回失败结果。
+            return false;                    // 返回失败结果。
         }
-        const std::vector<ScoreRecord> scores = LoadScores(); // 重新读取包含本局成绩的排行榜。
-        std::cout << "===== 游戏结束 =====\n"; // 输出游戏结束标题。
-        std::cout << "玩家：" << nickname_ << "\n"; // 展示结束时的玩家昵称。
-        std::cout << "本局成绩：" << score_ << " 分\n"; // 展示本局最终成绩。
+        const std::vector<ScoreRecord> scores = LoadScores();           // 重新读取包含本局成绩的排行榜。
+        std::cout << "===== 游戏结束 =====\n";                          // 输出游戏结束标题。
+        std::cout << "玩家：" << nickname_ << "\n";                     // 展示结束时的玩家昵称。
+        std::cout << "本局成绩：" << score_ << " 分\n";                 // 展示本局最终成绩。
         std::cout << "个人最高分：" << PersonalBest(scores) << " 分\n"; // 展示玩家历史最高分。
-        Account::ShowRanking(scores); // 展示历史成绩排行。
-        return true; // 返回保存和展示成功。
+        Account::ShowRanking(scores);                                   // 展示历史成绩排行。
+        return true;                                                    // 返回保存和展示成功。
     }
 
     int ScoreAccount::PersonalBest(const std::vector<ScoreRecord>& scores) const // 查询当前玩家历史最高分。
     {
-        int best = 0; // 没有记录时最高分默认为 0。
+        int best = 0;                          // 没有记录时最高分默认为 0。
         for (const ScoreRecord& item : scores) // 遍历所有历史成绩。
         {
             if (item.nickname == nickname_ && item.score > best) // 只比较当前玩家的更高成绩。
@@ -195,15 +237,16 @@ namespace Account
     void ShowRanking(const std::vector<ScoreRecord>& scores) // 展示历史成绩排行榜。
     {
         std::cout << "\n===== 历史成绩排行 =====\n"; // 输出排行榜标题。
-        if (scores.empty()) // 判断是否存在历史成绩。
+        if (scores.empty())                          // 判断是否存在历史成绩。
         {
             std::cout << "暂无历史成绩\n"; // 没有成绩时显示提示。
-            return; // 结束排行榜展示。
+            return;                        // 结束排行榜展示。
         }
         const std::size_t count = std::min<std::size_t>(scores.size(), 10); // 最多展示前十名。
-        for (std::size_t index = 0; index < count; ++index) // 遍历需要展示的成绩。
+        for (std::size_t index = 0; index < count; ++index)                 // 遍历需要展示的成绩。
         {
-            std::cout << index + 1 << ". " << scores[index].nickname << " : " << scores[index].score << " 分\n"; // 输出名次、昵称和分数。
+            std::cout << index + 1 << ". " << scores[index].nickname << " : " << scores[index].score
+                      << " 分\n"; // 输出名次、昵称和分数。
         }
     }
-}
+} // namespace Account

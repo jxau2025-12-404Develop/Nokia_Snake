@@ -18,12 +18,14 @@ namespace Account
     public:
         // 创建账号对象，只初始化玩家昵称和密码，不自动写入文件。
         explicit ScoreAccount(const std::string& nickname = "Player", const std::string& token = "", const char LS = 's');
+        // 销毁对象时，根据保存开关决定是否写入账号信息。
+        ~ScoreAccount();
         // 将当前对象的昵称和密码写入账号文件。
         bool WriteAccount() const;
         // 设置对象销毁时是否自动写入昵称和密码。
         void SetSaveOnDestroy(bool shouldSave);
         // 是否成功
-        bool checktoken();
+        bool CheckToken();
 
         // 从控制台输入玩家昵称。
         void InputNickname();
@@ -62,6 +64,7 @@ namespace Account
         int score_;            // 保存当前分数。
         std::string token;     // 保存玩家密码。
         bool saveOnDestroy_;   // 控制对象销毁时是否写入账号信息。
+        bool checkToken_;      // 保存注册或登录是否成功的状态。
     };
 
     // 展示历史成绩前十名，不属于 ScoreAccount 类。
