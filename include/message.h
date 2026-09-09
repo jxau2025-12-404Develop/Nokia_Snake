@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <vector>
 
 constexpr int HIGHT = 50;
@@ -30,7 +31,19 @@ typedef struct SnakeHead
     SnakeNode Node;
     // 行走方向
     char hir;
+    // 蛇身长度
+    int snakeLength; // 保存当前蛇的长度。
 } SnakeHead;
 
 // 功能：保存绘制一帧画面所需要的游戏数据。
 // 保存这一帧的数据
+struct GameVivew
+{
+    int width;                        // 保存棋盘宽度。
+    int height;                       // 保存棋盘高度。
+    std::shared_ptr<SnakeHead> snake; // 指向蛇头链表。
+    std::vector<Point> Food;          // 保存食物坐标。
+    std::vector<Point> bomb;          // 保存炸弹坐标
+    int score;                        // 保存当前分数。
+    bool GameFlag;                    // 游戏状态
+};
