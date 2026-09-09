@@ -1,6 +1,5 @@
 // Nokia_Snake.cpp
 #include "NoKia_Snake.h"
-#include "Renderer.h"
 #include "Utils.h"
 
 // 程序运行的主函数

@@ -6,6 +6,7 @@
 #include <random>
 #include <fstream>
 #include <string>
+#include <vector>
 
 constexpr int HIGHT = 50;
 constexpr int WIDTH = 50;
@@ -41,13 +42,14 @@ typedef struct SnakeHead
 // 保存这一帧的数据
 typedef struct
 {
-    int width;        // 保存棋盘宽度。
-    int height;       // 保存棋盘高度。
-    SnakeNode* snake; // 指向蛇头链表。
-    int snakeLength;  // 保存当前蛇的长度。
-    Point food;       // 保存食物坐标。
-    int score;        // 保存当前分数。
-    bool GameFlag;    // 游戏状态
+    int width;               // 保存棋盘宽度。
+    int height;              // 保存棋盘高度。
+    SnakeNode* snake;        // 指向蛇头链表。
+    int snakeLength;         // 保存当前蛇的长度。
+    std::vector<Point> Food; // 保存食物坐标。
+    std::vector<Point> bomb; // 保存炸弹坐标
+    int score;               // 保存当前分数。
+    bool GameFlag;           // 游戏状态
 } GameView;
 
 namespace Utils
