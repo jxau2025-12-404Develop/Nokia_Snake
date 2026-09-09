@@ -25,15 +25,16 @@ typedef struct Snake
 } SnakeNode;
 
 // 蛇头节点
-typedef struct SnakeHead
+class SnakeHead
 {
+protected:
     // 基础信息
     SnakeNode Node;
     // 行走方向
     char hir;
     // 蛇身长度
     int snakeLength; // 保存当前蛇的长度。
-} SnakeHead;
+};
 
 // 功能：保存绘制一帧画面所需要的游戏数据。
 // 保存这一帧的数据
