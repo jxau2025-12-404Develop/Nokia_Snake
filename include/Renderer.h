@@ -15,35 +15,6 @@ typedef struct Point
     int y;
 } Point;
 
-// 蛇身节点
-class SnakeNode
-{
-private:
-    Point xy;
-    std::shared_ptr<SnakeNode> Next;
-};
-
-// 蛇头节点
-class SnakeHead
-{
-public:
-    // 关闭默认构造函数
-    SnakeHead() = delete;
-    // 坐标构造
-    // 初始坐标
-    explicit SnakeHead(Point InitPoint);
-
-    // 获取共享指针
-    // 无参
-    std::shared_ptr<SnakeNode> GetSnakeHead();
-
-private:
-    // 保存共享指针
-    std::weak_ptr<SnakeNode> Node;
-    // 蛇长度
-    int lenght;
-};
-
 // 功能：保存绘制一帧画面所需要的游戏数据。
 // 保存这一帧的数据
 class GameVivew
