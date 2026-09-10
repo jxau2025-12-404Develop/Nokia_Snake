@@ -16,24 +16,27 @@ typedef struct Point
 } Point;
 
 // 蛇身节点
-typedef struct Snake
-{
-    // 蛇身坐标
-    Point xy;
-    // 下一个蛇身的指针
-    SnakeNode* Next;
-} SnakeNode;
+class SnakeNode;
 
 // 蛇头节点
 class SnakeHead
 {
-protected:
-    // 基础信息
-    SnakeNode Node;
-    // 行走方向
-    char hir;
-    // 蛇身长度
-    int snakeLength; // 保存当前蛇的长度。
+public:
+    // 关闭默认构造函数
+    SnakeHead() = delete;
+    // 坐标构造
+    // 初始坐标
+    explicit SnakeHead(Point InitPoint);
+
+    // 获取共享指针
+    // 无参
+    std::shared_ptr<SnakeNode> GetSnakeHead();
+
+private:
+    // 保存共享指针
+    std::weak_ptr<SnakeNode> Node;
+    // 蛇长度
+    int lenght;
 };
 
 // 功能：保存绘制一帧画面所需要的游戏数据。

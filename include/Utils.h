@@ -20,9 +20,6 @@ namespace Utils
         void Pause(const std::string& msg = "Please Enter to continue...");
     } // namespace System
 
-    // 新增：
-    // 不修改 System 中的任何现有函数
-
     // 初始化输出
     // 无参数
     void init();
