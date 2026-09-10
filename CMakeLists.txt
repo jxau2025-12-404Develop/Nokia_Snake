@@ -1,5 +1,5 @@
 # 设置cmake版本
-cmake_minimum_required(VERSION 4.0)
+cmake_minimum_required(VERSION 3.16)
 
 # 设置项目名称
 project(Nokia_Snake VERSION 1.0.0 LANGUAGES C CXX)

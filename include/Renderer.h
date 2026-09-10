@@ -16,7 +16,12 @@ typedef struct Point
 } Point;
 
 // 蛇身节点
-class SnakeNode;
+class SnakeNode
+{
+private:
+    Point xy;
+    std::shared_ptr<SnakeNode> Next;
+};
 
 // 蛇头节点
 class SnakeHead
@@ -41,8 +46,9 @@ private:
 
 // 功能：保存绘制一帧画面所需要的游戏数据。
 // 保存这一帧的数据
-struct GameVivew
+class GameVivew
 {
+private:
     int width;                        // 保存棋盘宽度。
     int height;                       // 保存棋盘高度。
     std::shared_ptr<SnakeHead> snake; // 指向蛇头链表。
