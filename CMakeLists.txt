@@ -1,5 +1,5 @@
 # 设置cmake版本
-cmake_minimum_required(VERSION 4.0)
+cmake_minimum_required(VERSION 3.16)
 
 # 设置项目名称
 project(Nokia_Snake VERSION 1.0.0 LANGUAGES C CXX)
@@ -44,8 +44,9 @@ set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 
 FetchContent_Declare(
     raylib
-    URL https://github.com/raysan5/raylib/archive/refs/tags/5.5.tar.gz
-    DOWNLOAD_EXTRACT_TIMESTAMP ON
+    GIT_REPOSITORY https://github.com/raysan5/raylib.git
+    GIT_TAG 5.5
+    GIT_SHALLOW TRUE
 )
 
 FetchContent_MakeAvailable(raylib)
@@ -53,8 +54,9 @@ FetchContent_MakeAvailable(raylib)
 # 引入 raygui
 FetchContent_Declare(
     raygui
-    URL https://github.com/raysan5/raygui/archive/refs/heads/master.tar.gz
-    DOWNLOAD_EXTRACT_TIMESTAMP ON
+    GIT_REPOSITORY https://github.com/raysan5/raygui.git
+    GIT_TAG master
+    GIT_SHALLOW TRUE
 )
 
 FetchContent_MakeAvailable(raygui)
